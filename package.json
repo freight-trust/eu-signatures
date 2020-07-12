@@ -1,0 +1,60 @@
+{
+  "author": {
+    "email": "yury@strozhevsky.com",
+    "name": "Yury Strozhevsky"
+  },
+  "description": "CAdESjs gives you an ability to make CAdES signatures on pure JavaScript. The libray made with latest CAdES standards in mind",
+  "contributors": [
+    {
+      "email": "rmh@unmitigatedrisk.com",
+      "name": "Ryan Hurst"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/freight-trust/eu-signatures.git"
+  },
+  "devDependencies": {
+    "babel-cli": "latest",
+    "babel-plugin-istanbul": "^4.1.5",
+    "babel-preset-env": "latest",
+    "cross-env": "^5.1.4",
+    "eslint": "^4.19.1",
+    "mocha": "^3.0.2",
+    "nyc": "^11.6.0",
+    "rollup": "latest",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-builtins": "latest",
+    "rollup-plugin-node-resolve": "^1.7.1"
+  },
+  "keywords": [
+    "ES6",
+    "ES2015",
+    "WebCrypto",
+    "CAdES"
+  ],
+  "scripts": {
+    "build": "babel src --compact=false --out-dir build --source-maps",
+    "watch": "babel src --compact=false --out-dir build --source-maps --watch",
+    "ex1": "cd examples/CAdESComplexExample && npm run build && cd ../..",
+    "build:examples": "npm run ex1",
+    "build:tests": "npm run build:examples",
+    "test:node": "cross-env NODE_ENV=test nyc mocha --timeout 40000 --require babel-register",
+    "test": "node -e \"console.log('\\nWARNING: !!! in order to test PKIjs in Node environment you\\nwould need to install additional package node-webcrypto-ossl !!!\\n\\nThe node-webcrypto-ossl is not referenced in PKIjs dependencies\\nanymore because we were noticed users have a problems with\\nthe package installation, especially on Windows platform.\\n\\nThe node-webcrypto-ossl is NOT a mandatory for testing PKIjs -\\nyou could visit test/browser subdir and run all the same tests\\nin your favorite browser.\\n\\nAlso you could check CircleCI - for each build the service runs\\nall tests and results could be easily observed.\\n\\nIf you do need to run PKIjs tests locally using Node please use\\nnpm run test:node')\"",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "name": "cadesjs",
+  "version": "1.0.11",
+  "dependencies": {
+    "asn1js": "latest",
+    "pkijs": "latest",
+    "pvutils": "latest"
+  },
+  "jsnext:main": "./src/index.js",
+  "module": "./src/index.js",
+  "main": "./build/index.js",
+  "license": "MIT"
+}
