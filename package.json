@@ -52,6 +52,7 @@
   "version": "2.0.0",
   "dependencies": {
     "asn1js": "latest",
+    "node-webcrypto-ossl": "^2.1.1",
     "pkijs": "latest",
     "pvutils": "latest"
   },
