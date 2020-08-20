@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true,
 });
 
 var _pkijs = require("pkijs");
@@ -20,11 +20,15 @@ var _SignatureTimeStamp2 = _interopRequireDefault(_SignatureTimeStamp);
 
 var _CompleteCertificateReferences = require("./CompleteCertificateReferences.js");
 
-var _CompleteCertificateReferences2 = _interopRequireDefault(_CompleteCertificateReferences);
+var _CompleteCertificateReferences2 = _interopRequireDefault(
+  _CompleteCertificateReferences
+);
 
 var _CompleteRevocationReferences = require("./CompleteRevocationReferences.js");
 
-var _CompleteRevocationReferences2 = _interopRequireDefault(_CompleteRevocationReferences);
+var _CompleteRevocationReferences2 = _interopRequireDefault(
+  _CompleteRevocationReferences
+);
 
 var _CAdESCTimestamp = require("./CAdESCTimestamp.js");
 
@@ -42,74 +46,94 @@ var _RevocationInfoArchival = require("./RevocationInfoArchival.js");
 
 var _RevocationInfoArchival2 = _interopRequireDefault(_RevocationInfoArchival);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 //**************************************************************************************
 class AttributeCAdES extends _pkijs.Attribute {
-	//**********************************************************************************
-	/**
-  * Constructor for SignedAndUnsignedAttributesCAdES class
-  * @param {Object} [parameters={}]
-  * @property {Object} [schema] asn1js parsed value
-  */
-	constructor(parameters) {
-		super(parameters);
+  //**********************************************************************************
+  /**
+   * Constructor for SignedAndUnsignedAttributesCAdES class
+   * @param {Object} [parameters={}]
+   * @property {Object} [schema] asn1js parsed value
+   */
+  constructor(parameters) {
+    super(parameters);
 
-		this.initializeParsedValues();
-	}
-	//**********************************************************************************
-	/**
-  * Convert parsed asn1js object into current class
-  * @param {!Object} schema
-  */
-	fromSchema(schema) {
-		super.fromSchema(schema);
+    this.initializeParsedValues();
+  }
+  //**********************************************************************************
+  /**
+   * Convert parsed asn1js object into current class
+   * @param {!Object} schema
+   */
+  fromSchema(schema) {
+    super.fromSchema(schema);
 
-		this.initializeParsedValues();
-	}
-	//**********************************************************************************
-	initializeParsedValues() {
-		switch (this.type) {
-			case "0.4.0.1733.2.5":
-				// ATSHashIndex
-				this.parsedValue = new _ATSHashIndex2.default({ schema: this.values[0] });
-				break;
-			case "0.4.0.1733.2.4":
-				// archive-time-stamp-v3
-				this.parsedValue = new _ArchiveTimeStampV2.default({ schema: this.values[0] });
-				break;
-			case "1.2.840.113549.1.9.16.2.14":
-				// signature-time-stamp
-				this.parsedValue = new _SignatureTimeStamp2.default({ schema: this.values[0] });
-				break;
-			case "1.2.840.113549.1.9.16.2.21":
-				// complete-certificate-references
-				this.parsedValue = new _CompleteCertificateReferences2.default({ schema: this.values[0] });
-				break;
-			case "1.2.840.113549.1.9.16.2.22":
-				// complete-revocation-references
-				this.parsedValue = new _CompleteRevocationReferences2.default({ schema: this.values[0] });
-				break;
-			case "1.2.840.113549.1.9.16.2.25":
-				// CAdES-C-Timestamp
-				this.parsedValue = new _CAdESCTimestamp2.default({ schema: this.values[0] });
-				break;
-			case "1.2.840.113549.1.9.16.2.23":
-				// certificate-values
-				this.parsedValue = new _CertificateValues2.default({ schema: this.values[0] });
-				break;
-			case "1.2.840.113549.1.9.16.2.24":
-				// revocation-values
-				this.parsedValue = new _RevocationValues2.default({ schema: this.values[0] });
-				break;
-			case "1.2.840.113583.1.1.8":
-				// Adobe "RevocationInfoArchival"
-				this.parsedValue = new _RevocationInfoArchival2.default({ schema: this.values[0] });
-				break;
-			default:
-		}
-	}
-	//**********************************************************************************
+    this.initializeParsedValues();
+  }
+  //**********************************************************************************
+  initializeParsedValues() {
+    switch (this.type) {
+      case "0.4.0.1733.2.5":
+        // ATSHashIndex
+        this.parsedValue = new _ATSHashIndex2.default({
+          schema: this.values[0],
+        });
+        break;
+      case "0.4.0.1733.2.4":
+        // archive-time-stamp-v3
+        this.parsedValue = new _ArchiveTimeStampV2.default({
+          schema: this.values[0],
+        });
+        break;
+      case "1.2.840.113549.1.9.16.2.14":
+        // signature-time-stamp
+        this.parsedValue = new _SignatureTimeStamp2.default({
+          schema: this.values[0],
+        });
+        break;
+      case "1.2.840.113549.1.9.16.2.21":
+        // complete-certificate-references
+        this.parsedValue = new _CompleteCertificateReferences2.default({
+          schema: this.values[0],
+        });
+        break;
+      case "1.2.840.113549.1.9.16.2.22":
+        // complete-revocation-references
+        this.parsedValue = new _CompleteRevocationReferences2.default({
+          schema: this.values[0],
+        });
+        break;
+      case "1.2.840.113549.1.9.16.2.25":
+        // CAdES-C-Timestamp
+        this.parsedValue = new _CAdESCTimestamp2.default({
+          schema: this.values[0],
+        });
+        break;
+      case "1.2.840.113549.1.9.16.2.23":
+        // certificate-values
+        this.parsedValue = new _CertificateValues2.default({
+          schema: this.values[0],
+        });
+        break;
+      case "1.2.840.113549.1.9.16.2.24":
+        // revocation-values
+        this.parsedValue = new _RevocationValues2.default({
+          schema: this.values[0],
+        });
+        break;
+      case "1.2.840.113583.1.1.8":
+        // Adobe "RevocationInfoArchival"
+        this.parsedValue = new _RevocationInfoArchival2.default({
+          schema: this.values[0],
+        });
+        break;
+      default:
+    }
+  }
+  //**********************************************************************************
 }
 exports.default = AttributeCAdES; //**************************************************************************************
 //# sourceMappingURL=AttributeCAdES.js.map

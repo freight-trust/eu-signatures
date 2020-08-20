@@ -1,70 +1,84 @@
 /* eslint-disable no-undef,no-unreachable */
 import * as asn1js from "asn1js";
-import { getUTCDate, stringToArrayBuffer, utilConcatBuf, arrayBufferToString, toBase64, bufferToHexCodes } from "pvutils";
 import {
-	getCrypto,
-	getAlgorithmParameters,
-	setEngine,
-	OCSPResponse,
-	OCSPRequest,
-	SingleResponse,
-	ResponseData,
-	BasicOCSPResponse,
-	Certificate,
-	ResponseBytes,
-	SignerInfo,
-	SignedData,
-	EncapsulatedContentInfo,
-	ContentInfo,
-	TimeStampResp,
-	TimeStampReq,
-	MessageImprint,
-	AlgorithmIdentifier,
-	PKIStatusInfo,
-	IssuerAndSerialNumber,
-	SignedAndUnsignedAttributes,
-	TSTInfo,
-	OtherRevocationInfoFormat,
-	GeneralName,
-	Attribute,
-	CertificateRevocationList } from "pkijs";
+  getUTCDate,
+  stringToArrayBuffer,
+  utilConcatBuf,
+  arrayBufferToString,
+  toBase64,
+  bufferToHexCodes,
+} from "pvutils";
 import {
-	ESSCertIDv2,
-	SigningCertificateV2,
-	ATSHashIndex,
-	createCommonAttributes,
-	ArchiveTimeStampV3,
-	SignatureTimeStamp,
-	CAdESCTimestamp,
-	CompleteCertificateReferences,
-	CompleteRevocationReferences,
-	CrlOcspRef,
-	CertificateValues,
-	RevocationValues,
-	AttributeCAdES } from "../src/index.js";
+  getCrypto,
+  getAlgorithmParameters,
+  setEngine,
+  OCSPResponse,
+  OCSPRequest,
+  SingleResponse,
+  ResponseData,
+  BasicOCSPResponse,
+  Certificate,
+  ResponseBytes,
+  SignerInfo,
+  SignedData,
+  EncapsulatedContentInfo,
+  ContentInfo,
+  TimeStampResp,
+  TimeStampReq,
+  MessageImprint,
+  AlgorithmIdentifier,
+  PKIStatusInfo,
+  IssuerAndSerialNumber,
+  SignedAndUnsignedAttributes,
+  TSTInfo,
+  OtherRevocationInfoFormat,
+  GeneralName,
+  Attribute,
+  CertificateRevocationList,
+} from "pkijs";
+import {
+  ESSCertIDv2,
+  SigningCertificateV2,
+  ATSHashIndex,
+  createCommonAttributes,
+  ArchiveTimeStampV3,
+  SignatureTimeStamp,
+  CAdESCTimestamp,
+  CompleteCertificateReferences,
+  CompleteRevocationReferences,
+  CrlOcspRef,
+  CertificateValues,
+  RevocationValues,
+  AttributeCAdES,
+} from "../src/index.js";
 import { CryptoEngine } from "pkijs";
 
 const WebCrypto = require("node-webcrypto-ossl");
 const webcrypto = new WebCrypto();
 
 const assert = require("assert");
-setEngine("newEngine", webcrypto, new CryptoEngine({ name: "", crypto: webcrypto, subtle: webcrypto.subtle }));
+setEngine(
+  "newEngine",
+  webcrypto,
+  new CryptoEngine({ name: "", crypto: webcrypto, subtle: webcrypto.subtle })
+);
 //*********************************************************************************
 const validCertificates = [
-	1, // CA certificate
-	2, // OCSP Server certificate
-	3, // TSP Server certificate
-	10 // End-user certificate #1
+  1, // CA certificate
+  2, // OCSP Server certificate
+  3, // TSP Server certificate
+  10, // End-user certificate #1
 ];
 
 const invalidCertificates = [
-	11 // End-user certificate #2
+  11, // End-user certificate #2
 ];
 
 let cmsSignedBuffer = new ArrayBuffer(0);
 
 //region Pre-defined constants
-const CAcert = "MIIDRDCCAi6gAwIBAgIBATALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD\
+const CAcert =
+  "MIIDRDCCAi6gAwIBAgIBATALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD\
     VQQDHiIAUABlAGMAdQBsAGkAYQByACAAVgBlAG4AdAB1AHIAZQBzMB4XDTEzMDEz\
     MTIxMDAwMFoXDTE2MDEzMTIxMDAwMFowODE2MAkGA1UEBhMCVVMwKQYDVQQDHiIA\
     UABlAGMAdQBsAGkAYQByACAAVgBlAG4AdAB1AHIAZQBzMIIBIjANBgkqhkiG9w0B\
@@ -83,7 +97,8 @@ const CAcert = "MIIDRDCCAi6gAwIBAgIBATALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD
     tzfu9960l3sb8waAFL+TtRiGAn86M2nzPvzW9l+kvVsA1vrX5AT+ogw0UnMMIqbA\
     jWnW/iR6yp4PTi2qY3yWFt4QfsDu7w2U";
 
-const CAkey = "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC3uVW46j63o2nD\
+const CAkey =
+  "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC3uVW46j63o2nD\
     0HNumf8+Lu2jahJf4/hADL67juIm33JVTfvAqxhnTpN1c0MHyLWfIlsMTijr+3Fl\
     CQJrepTfMO86GbUlC8u92O515Byue3supqDZSrXDT9+7+/B6msdALmYHEWAjq+Qw\
     fVnjYpB8qF77otv1Ip9ERrx5T1aqHXGDfUF1wEcotqVBzUt/a0J/KIo2JQaonfIM\
@@ -110,7 +125,8 @@ const CAkey = "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC3uVW46j63o2nD\
     Vt5mkOywJJsS0VJxXfBmZehfjZ0lsrnEWxCoDT26zgqlOVaVDwBdcMKJ2VkP+I/f\
     OvYK6PAdNcKye26ME+fv6nJsPw==";
 
-const OCSPcert = "MIID2jCCAsSgAwIBAgIBAjALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD\
+const OCSPcert =
+  "MIID2jCCAsSgAwIBAgIBAjALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD\
     VQQDHiIAUABlAGMAdQBsAGkAYQByACAAVgBlAG4AdAB1AHIAZQBzMB4XDTEzMDEz\
     MTIxMDAwMFoXDTE2MDEzMTIxMDAwMFowgaUxgaIwCQYDVQQGEwJVUzAnBgNVBAse\
     IABPAEMAUwBQACAAVABlAHMAdAAgAFMAZQByAHYAZQByMCkGA1UECh4iAFAAZQBj\
@@ -132,7 +148,8 @@ const OCSPcert = "MIID2jCCAsSgAwIBAgIBAjALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQ
     2Q5pMUc/pkv/c1DpzdrUCBy+C79/+yWeRHaw8k6WJONGPmAP7jSlDOU5zsq+eER3\
     E/guFPN8b8FbYdRfFoPagv0xUGrkj+djcL5ovQrk";
 
-const OCSPkey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkZDGIyJUlWVlm\
+const OCSPkey =
+  "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkZDGIyJUlWVlm\
     h2nPf5fiid1KTBYIPB/C5wb7Wsu/kwXQrKEJwM/DVTBRyvUDYZAXHOoIRKnP2J7F\
     CVN2G0pzUxE1umw2D5hKd0Nve8WsfoxVgsgXgCAACwEse4yohKs7boGFQLXxx7z0\
     v08YjTdi1Tp/2zAQYa8ZXmQ2waVI/0GfxrWxSJKhPLfsFzJ7Kl7NKSTDpjyEKJeK\
@@ -159,7 +176,8 @@ const OCSPkey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCkZDGIyJUlWVl
     urNsJ0DVzPHftJZv4BTFEc9Ne54ins2LN0LBtYo5FKDeoR18SB9xZO1FG6N0Tta1\
     pnxyMq7V5WbWWfxri4oVSEI=";
 
-const TSPcert = "MIID/TCCAuegAwIBAgIBAzALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD\
+const TSPcert =
+  "MIID/TCCAuegAwIBAgIBAzALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD\
     VQQDHiIAUABlAGMAdQBsAGkAYQByACAAVgBlAG4AdAB1AHIAZQBzMB4XDTEzMDEz\
     MTIxMDAwMFoXDTI0MDEzMTIxMDAwMFowgaExgZ4wCQYDVQQGEwJVUzAlBgNVBAse\
     HgBUAFMAUAAgAFQAZQBzAHQAIABTAGUAcgB2AGUAcjApBgNVBAoeIgBQAGUAYwB1\
@@ -182,7 +200,8 @@ const TSPcert = "MIID/TCCAuegAwIBAgIBAzALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQY
     O+SgaUCkuXvPfdbkBz1IdRoI0ObxaFfsQ/wS07CFeHv6vtjoMaWmfauHXnbjHiIz\
     fY9HY1/C9BfL6eaaIUJATZM=";
 
-const TSPkey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCcBqGjAam5SdaB\
+const TSPkey =
+  "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCcBqGjAam5SdaB\
     3lIL0tjLROJ6SfHeQKcGOLPCcEEs2SD6YNLaj+JRY5TJFhGsho2Bsg0AXe1OoNjK\
     UM1LZqUBdqx0I21wirkA3bjewEi4Vu0Pg33JNCbu5ExccYRFai/RT9pfbyf3hoyw\
     e3IUtwr556NyAEsJrjh0o8qrxfw/DcnW/Wo2rogsugALTfEg+oueT/9VqwOVtmLE\
@@ -209,7 +228,8 @@ const TSPkey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCcBqGjAam5SdaB
     xhO9RVKPdxIHn3YUdHydtDYjSDXCwpkZy0B05HarYqiN8SwT3BPdpK7QRj9MML1F\
     PlkFQWgRQ8qjTbH+lqxilrQ=";
 
-const User10cert = "MIIDRTCCAi+gAwIBAgIBCjALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD\
+const User10cert =
+  "MIIDRTCCAi+gAwIBAgIBCjALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD\
     VQQDHiIAUABlAGMAdQBsAGkAYQByACAAVgBlAG4AdAB1AHIAZQBzMB4XDTEzMDIw\
     MTAwMDAwMFoXDTE2MDIwMTAwMDAwMFowLjEsMAkGA1UEBhMCVVMwHwYDVQQDHhgA\
     VAByAHUAcwB0AGUAZAAgAFUAcwBlAHIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw\
@@ -228,7 +248,8 @@ const User10cert = "MIIDRTCCAi+gAwIBAgIBCjALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMw
     7wHRNNyn3YSRoo/Oas8Fyq8CbkjeSwjAuNQ6ZBOz/MO9vSTRU3yOZnfx7f2x7/Ov\
     NuVbUWgQUYno6h/i+0X39njbzfbuFGsm6g==";
 
-const User10key = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDHkigbvBeqP0Qi\
+const User10key =
+  "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDHkigbvBeqP0Qi\
     VW0lz+p58YjwffSKM7nGDvXlnj2TJ73lRqhy9U53TWINqrQhHoqR3dYSiBSfTLgn\
     URcDzembIGTGjVcAhMDoKOPLP/EyshewTx54+uBWA1+TrFr/hG/8zSDLc7iONij9\
     HnG2+tvM4/EWlY/PpbqO5YJoa353/bw+bcWgJ/7FfoKEZ0cFhj4XOMg5cLgT2EBG\
@@ -255,7 +276,8 @@ const User10key = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDHkigbvBeqP
     yqRZgYAO8ZuZ2oUGXULaJWC8W25xQ5tpZX5w/uaF+0WNsMxW8nR7QXyaAq8UDmOX\
     HUn/qN0YH9sNU0u7kPm3Cwem";
 
-const User11cert = "MIIDSTCCAjOgAwIBAgIBCzALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD\
+const User11cert =
+  "MIIDSTCCAjOgAwIBAgIBCzALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYD\
     VQQDHiIAUABlAGMAdQBsAGkAYQByACAAVgBlAG4AdAB1AHIAZQBzMB4XDTEzMDIw\
     MTAwMDAwMFoXDTE2MDIwMTAwMDAwMFowMjEwMAkGA1UEBhMCVVMwIwYDVQQDHhwA\
     VQBuAHQAcgB1AHMAdABlAGQAIABVAHMAZQByMIIBIjANBgkqhkiG9w0BAQEFAAOC\
@@ -274,7 +296,8 @@ const User11cert = "MIIDSTCCAjOgAwIBAgIBCzALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMw
     3Y1Djrrovarxlge08ZyF5jq9f6MCByznayT4B5tqdiYBUlyeLLUIaC6t/zxXAXGU\
     Ejqu1Mk3qRQj2AglTRCNppK3H98TUy3rBCLlslA=";
 
-const User11key = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyzYzv97R74GeY\
+const User11key =
+  "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyzYzv97R74GeY\
     rU41uO+M37W0O+9QFqffP8a/1B/Peh++OZCmH55pLanc5ZYv+Q9aHM4he/zFg5S2\
     sTBIBRcyXENIbva2NmhoA+dhHO1qodILdVWjGMpeTVxrk0IM7PGJv/nxpz4GiKSy\
     UvogDV/UZGrSZ52uhUWZBStk/G89JsUTgZO773nDEiqHzlPC50CWgOjuBds3BdZ7\
@@ -301,7 +324,8 @@ const User11key = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCyzYzv97R74
     PKzcKYMPeJ8+RTyddUCs3HyPoyTM5Wlq+Ioq54BC8g7DLdWBsgSetT73xaz4UZvk\
     DRHbuIW+qwowf1XQPjH68zk=";
 
-const CRL = "MIIB0jCBvQIBATALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYDVQQDHiIA\
+const CRL =
+  "MIIB0jCBvQIBATALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYDVQQDHiIA\
     UABlAGMAdQBsAGkAYQByACAAVgBlAG4AdAB1AHIAZQBzFw0xNTA0MjMwNjU0MDNa\
     Fw0xNTA2MzAyMTAwMDBaMCIwIAIBCxcNMTUwNDIzMDY1NDAzWjAMMAoGA1UdFQQD\
     CgEBoC8wLTAKBgNVHRQEAwIBAjAfBgNVHSMEGDAWgBQzJ+Ru+0uafrHDlcY/L2Qj\
@@ -313,23 +337,20 @@ const CRL = "MIIB0jCBvQIBATALBgkqhkiG9w0BAQUwODE2MAkGA1UEBhMCVVMwKQYDVQQDHiIA\
     roeG6ocGoDBNZr87xbsjz5eNq/0nkh3kK0RqVfVDbTAUQF+6P8g=";
 //endregion
 //*********************************************************************************
-function formatPEM(pemString)
-{
-	const stringLength = pemString.length;
-	let resultString = "";
-	
-	for(let i = 0, count = 0; i < stringLength; i++, count++)
-	{
-		if(count > 63)
-		{
-			resultString = `${resultString}\r\n`;
-			count = 0;
-		}
-		
-		resultString = `${resultString}${pemString[i]}`;
-	}
-	
-	return resultString;
+function formatPEM(pemString) {
+  const stringLength = pemString.length;
+  let resultString = "";
+
+  for (let i = 0, count = 0; i < stringLength; i++, count++) {
+    if (count > 63) {
+      resultString = `${resultString}\r\n`;
+      count = 0;
+    }
+
+    resultString = `${resultString}${pemString[i]}`;
+  }
+
+  return resultString;
 }
 //*********************************************************************************
 /**
@@ -337,940 +358,1037 @@ function formatPEM(pemString)
  * @param {OCSPRequest} request
  * @return {Promise}
  */
-function getOCSPResponse(request)
-{
-	//region Initial variables
-	let sequence = Promise.resolve();
-	
-	const responses = [];
-	
-	let basicResponse;
-	let ocspResponse;
-	
-	let ocspPublicKey;
-	
-	let asn1CertSimpl = asn1js.fromBER(stringToArrayBuffer(atob(OCSPcert)));
-	const certSimpl = new Certificate({ schema: asn1CertSimpl.result });
-	//endregion
-	
-	//region Get a "crypto" extension
-	const crypto = getCrypto();
-	if(typeof crypto === "undefined")
-		return Promise.reject("No WebCrypto extension found");
-	//endregion
-	
-	sequence = sequence.then(() => 
-	{
-		//region Get making OCSP response for each certificate in the request 
-		for(let i = 0; i < request.tbsRequest.requestList.length; i++)
-		{
-			//region Initial variables 
-			let valid = false;
-			//endregion 
-			
-			//region Check the certificate for "to be valid" 
-			for(let j = 0; j < validCertificates.length; j++)
-			{
-				if(request.tbsRequest.requestList[i].reqCert.serialNumber.valueBlock.valueDec === validCertificates[j])
-				{
-					valid = true;
-					
-					const response = new SingleResponse({
-						certID: request.tbsRequest.requestList[i].reqCert,
-						certStatus: new asn1js.Primitive({
-							idBlock: {
-								tagClass: 3, // CONTEXT-SPECIFIC
-								tagNumber: 0 // [0]
-							},
-							lenBlockLength: 1 // The length contains one byte 0x00
-						}),
-						thisUpdate: getUTCDate(new Date())
-					});
-					
-					responses.push(response);
-				}
-			}
-			//endregion 
-			
-			//region Check the certificate for "to be invalid" 
-			if(!valid)
-			{
-				for(let j = 0; j < invalidCertificates.length; j++)
-				{
-					if(request.tbsRequest.requestList[i].reqCert.serialNumber.valueBlock.valueDec === invalidCertificates[j])
-					{
-						const response = new SingleResponse({
-							certID: request.tbsRequest.requestList[i].reqCert,
-							certStatus: new asn1js.Constructed({
-								idBlock: {
-									tagClass: 3, // CONTEXT-SPECIFIC
-									tagMumber: 1 // [1]
-								},
-								value: [
-									new asn1js.GeneralizedTime({ valueDate: getUTCDate(new Date(2014, 0, 1)) }),
-									new asn1js.Constructed({
-										idBlock: {
-											tagClass: 3, // CONTEXT-SPECIFIC
-											tagNumber: 0 // [0]
-										},
-										value: [new asn1js.Enumerated({ value: 1 })] // keyCompromise
-									})
-								]
-							}),
-							thisUpdate: getUTCDate(new Date())
-						});
-						
-						responses.push(response);
-					}
-				}
-			}
-			//endregion 
-		}
-		//endregion 
-		
-		//region Making final OCSP response object 
-		basicResponse = new BasicOCSPResponse({
-			tbsResponseData: new ResponseData({
-				responderID: certSimpl.subject,
-				producedAt: getUTCDate(new Date()),
-				responses: responses
-			}),
-			signatureAlgorithm: certSimpl.signatureAlgorithm,
-			certs: [certSimpl]
-		});
-		
-		ocspResponse = new OCSPResponse({
-			responseStatus: new asn1js.Enumerated({ value: 0 }) // successful
-		});
-		//endregion 
-	});
-	
-	sequence = sequence.then(() => certSimpl.getPublicKey());
-	
-	sequence = sequence.then(result =>
-	{
-		ocspPublicKey = result;
-		
-		return crypto.importKey("pkcs8",
-			stringToArrayBuffer(atob(OCSPkey)),
-			{
-				name: result.algorithm.name,
-				hash: result.algorithm.hash || {}
-			},
-			true,
-			["sign"]);
-	});
-	
-	sequence = sequence.then(result => basicResponse.sign(result, ocspPublicKey.algorithm.hash.name || "SHA-256"));
-	
-	sequence = sequence.then(() =>
-	{
-		ocspResponse.responseBytes = new ResponseBytes({
-			responseType: "1.3.6.1.5.5.7.48.1.1", // id-pkix-ocsp-basic
-			response: new asn1js.OctetString({ valueHex: basicResponse.toSchema().toBER(false) })
-		});
-		
-		return ocspResponse.toSchema().toBER(false);
-	});
-	
-	return sequence;
-}
-//*********************************************************************************
-function getTSPResponse(request)
-{
-	//region Initial variables
-	let sequence = Promise.resolve();
-	
-	const genTime = getUTCDate(new Date());
-	
-	let asn1CertSimpl = asn1js.fromBER(stringToArrayBuffer(atob(TSPcert)));
-	const certSimpl = new Certificate({ schema: asn1CertSimpl.result });
-	
-	const eSSCertIDv2 = new ESSCertIDv2();
-	
-	let tspKey = {};
-	let tspPublicKey;
-	
-	let cmsSignedSimpl;
-	
-	let tstInfo;
-	
-	const signerInfo = new SignerInfo({
-		version: 1,
-		sid: new IssuerAndSerialNumber({
-			issuer: certSimpl.issuer,
-			serialNumber: certSimpl.serialNumber
-		})
-	});
-	signerInfo.signedAttrs = new SignedAndUnsignedAttributes({
-		type: 0
-	});
-	//endregion
-	
-	//region Get a "crypto" extension
-	const crypto = getCrypto();
-	if(typeof crypto === "undefined")
-		return Promise.reject("No WebCrypto extension found");
-	//endregion
-	
-	sequence = sequence.then(() => certSimpl.getPublicKey());
-	
-	sequence = sequence.then(result =>
-	{
-		tspPublicKey = result;
-		
-		const parameters = getAlgorithmParameters(result.algorithm.name, "importKey");
-		
-		return crypto.importKey("pkcs8",
-			stringToArrayBuffer(atob(TSPkey)),
-			parameters.algorithm,
-			true,
-			["sign"]);
-	});
-	
-	sequence = sequence.then(result =>
-	{
-		tspKey = result;
-		
-		// #region Prepare buffer with combined "messageImprint" and "genTime"
-		const asn1GenTime = new asn1js.GeneralizedTime({ valueDate: genTime });
-		const buffer = utilConcatBuf(request.messageImprint.toSchema().toBER(false), asn1GenTime.toBER(false));
-		// #endregion
-		
-		return crypto.digest({ name: "SHA-1" }, buffer);
-	});
-	
-	sequence = sequence.then(result =>
-	{
-		// noinspection JSCheckFunctionSignatures
-		const newView = new Uint8Array(result);
-		newView[0] = 0x01;
-		
-		tstInfo = new TSTInfo({
-			version: 1,
-			policy: "1.1.1.1",
-			messageImprint: request.messageImprint,
-			serialNumber: new asn1js.Integer({ valueHex: result }),
-			genTime: genTime,
-			tsa: new GeneralName({
-				type: 4,
-				value: certSimpl.subject
-			})
-		});
-	});
-	
-	sequence = sequence.then(() =>
-	{
-		signerInfo.signedAttrs.attributes.push(new Attribute({
-			type: "1.2.840.113549.1.9.3",
-			values: [
-				new asn1js.ObjectIdentifier({ value: "1.2.840.113549.1.9.16.1.4" }) // Time-stamp token
-			]
-		}));
+function getOCSPResponse(request) {
+  //region Initial variables
+  let sequence = Promise.resolve();
 
-		signerInfo.signedAttrs.attributes.push(new Attribute({
-			type: "1.2.840.113549.1.9.5",
-			values: [
-				new asn1js.UTCTime({ valueDate: getUTCDate(new Date()) })
-			]
-		}));
-	});
-	
-	sequence = sequence.then(() => crypto.digest({ name: "SHA-1" }, tstInfo.toSchema().toBER(false)));
-	
-	sequence = sequence.then(result =>
-	{
-		signerInfo.signedAttrs.attributes.push(new Attribute({
-			type: "1.2.840.113549.1.9.4", // message digest
-			values: [
-				new asn1js.OctetString({ valueHex: result })
-			]
-		}));
-	});
-	
-	sequence = sequence.then(() => eSSCertIDv2.fillValues({
-		hashAlgorithm: "SHA-1",
-		certificate: certSimpl
-	})).then(() =>
-	{
-		const signingCertificateV2 = new SigningCertificateV2({
-			certs: [
-				eSSCertIDv2
-			]
-		});
-		
-		signerInfo.signedAttrs.attributes.push(new Attribute({
-			type: "1.2.840.113549.1.9.16.2.47",
-			values: [signingCertificateV2.toSchema()]
-		}));
-	});
-	
-	sequence = sequence.then(() =>
-	{
-		cmsSignedSimpl = new SignedData({
-			version: 3,
-			encapContentInfo: new EncapsulatedContentInfo({
-				eContentType: "1.2.840.113549.1.9.16.1.4" // "tSTInfo" content type
-				//eContentType: "1.2.840.113549.1.7.1" // "data" content type
-			}),
-			signerInfos: [signerInfo],
-			certificates: [certSimpl]
-		});
-		
-		cmsSignedSimpl.encapContentInfo.eContent = new asn1js.OctetString({ valueHex: tstInfo.toSchema().toBER(false) });
-		
-		const parameters = getAlgorithmParameters(tspPublicKey.algorithm.name, "sign");
-		
-		return cmsSignedSimpl.sign(tspKey, 0, parameters.algorithm.hash.name || {});
-	});
-	
-	sequence = sequence.then(() =>
-	{
-		const tspResponse = new TimeStampResp({
-			status: new PKIStatusInfo({
-				status: 0 // granted
-			}),
-			timeStampToken: new ContentInfo({
-				contentType: "1.2.840.113549.1.7.2",
-				content: cmsSignedSimpl.toSchema(false)
-			})
-		});
-		
-		return tspResponse.toSchema().toBER(false);
-	});
-	
-	return sequence;
-}
-//*********************************************************************************
-function parseCMSSigned()
-{
-	//region Initial check
-	if(cmsSignedBuffer.byteLength === 0)
-	{
-		alert("Nothing to parse!");
-		return;
-	}
-	//endregion
-	
-	//region Initial activities
-	// noinspection InnerHTMLJS
-	document.getElementById("cms-dgst-algos").innerHTML = "";
-	
-	document.getElementById("cms-certs").style.display = "none";
-	document.getElementById("cms-crls").style.display = "none";
-	
-	const certificatesTable = document.getElementById("cms-certificates");
-	while(certificatesTable.rows.length > 1)
-		certificatesTable.deleteRow(certificatesTable.rows.length - 1);
-	
-	const crlsTable = document.getElementById("cms-rev-lists");
-	while(crlsTable.rows.length > 1)
-		crlsTable.deleteRow(crlsTable.rows.length - 1);
-	//endregion
-	
-	//region Decode existing CMS Signed Data
-	const asn1 = asn1js.fromBER(cmsSignedBuffer);
-	const cmsContentSimpl = new ContentInfo({ schema: asn1.result });
-	const cmsSignedSimpl = new SignedData({ schema: cmsContentSimpl.content });
-	
-	for(const signerInfo of cmsSignedSimpl.signerInfos)
-	{
-		if("signedAttrs" in signerInfo)
-			signerInfo.signedAttrs.attributes = Array.from(signerInfo.signedAttrs.attributes, element => new AttributeCAdES(element));
-		
-		if("unsignedAttrs" in signerInfo)
-			signerInfo.unsignedAttrs.attributes = Array.from(signerInfo.unsignedAttrs.attributes, element => new AttributeCAdES(element));
-	}
-	//endregion
-	
-	//region Put information about digest algorithms in the CMS Signed Data
-	const dgstmap = {
-		"1.3.14.3.2.26": "SHA-1",
-		"2.16.840.1.101.3.4.2.1": "SHA-256",
-		"2.16.840.1.101.3.4.2.2": "SHA-384",
-		"2.16.840.1.101.3.4.2.3": "SHA-512"
-	};
-	
-	for(let i = 0; i < cmsSignedSimpl.digestAlgorithms.length; i++)
-	{
-		let typeval = dgstmap[cmsSignedSimpl.digestAlgorithms[i].algorithmId];
-		if(typeof typeval === "undefined")
-			typeval = cmsSignedSimpl.digestAlgorithms[i].algorithmId;
-		
-		const ulrow = `<li><p><span>${typeval}</span></p></li>`;
-		
-		// noinspection InnerHTMLJS
-		document.getElementById("cms-dgst-algos").innerHTML = document.getElementById("cms-dgst-algos").innerHTML + ulrow;
-	}
-	//endregion
-	
-	//region Put information about encapsulated content type
-	const contypemap = {
-		"1.3.6.1.4.1.311.2.1.4": "Authenticode signing information",
-		"1.2.840.113549.1.7.1": "Data content"
-	};
-	
-	let eContentType = contypemap[cmsSignedSimpl.encapContentInfo.eContentType];
-	if(typeof eContentType === "undefined")
-		eContentType = cmsSignedSimpl.encapContentInfo.eContentType;
-	
-	// noinspection InnerHTMLJS
-	document.getElementById("cms-encap-type").innerHTML = eContentType;
-	//endregion
-	
-	//region Put information about included certificates
-	const rdnmap = {
-		"2.5.4.6": "C",
-		"2.5.4.10": "O",
-		"2.5.4.11": "OU",
-		"2.5.4.3": "CN",
-		"2.5.4.7": "L",
-		"2.5.4.8": "S",
-		"2.5.4.12": "T",
-		"2.5.4.42": "GN",
-		"2.5.4.43": "I",
-		"2.5.4.4": "SN",
-		"1.2.840.113549.1.9.1": "E-mail"
-	};
-	
-	if("certificates" in cmsSignedSimpl)
-	{
-		for(let j = 0; j < cmsSignedSimpl.certificates.length; j++)
-		{
-			let ul = "<ul>";
-			
-			for(let i = 0; i < cmsSignedSimpl.certificates[j].issuer.typesAndValues.length; i++)
-			{
-				let typeval = rdnmap[cmsSignedSimpl.certificates[j].issuer.typesAndValues[i].type];
-				if(typeof typeval === "undefined")
-					typeval = cmsSignedSimpl.certificates[j].issuer.typesAndValues[i].type;
-				
-				const subjval = cmsSignedSimpl.certificates[j].issuer.typesAndValues[i].value.valueBlock.value;
-				
-				ul += `<li><p><span>${typeval}</span> ${subjval}</p></li>`;
-			}
-			
-			ul = `${ul}</ul>`;
-			
-			const row = certificatesTable.insertRow(certificatesTable.rows.length);
-			const cell0 = row.insertCell(0);
-			// noinspection InnerHTMLJS
-			cell0.innerHTML = bufferToHexCodes(cmsSignedSimpl.certificates[j].serialNumber.valueBlock.valueHex);
-			const cell1 = row.insertCell(1);
-			// noinspection InnerHTMLJS
-			cell1.innerHTML = ul;
-		}
-		
-		document.getElementById("cms-certs").style.display = "block";
-	}
-	//endregion
-	
-	//region Put information about included CRLs
-	if("crls" in cmsSignedSimpl)
-	{
-		for(let j = 0; j < cmsSignedSimpl.crls.length; j++)
-		{
-			if(typeof cmsSignedSimpl.crls[j] !== CertificateRevocationList)
-				continue;
-			
-			let ul = "<ul>";
-			
-			for(let i = 0; i < cmsSignedSimpl.crls[j].issuer.typesAndValues.length; i++)
-			{
-				let typeval = rdnmap[cmsSignedSimpl.crls[j].issuer.typesAndValues[i].type];
-				if(typeof typeval === "undefined")
-					typeval = cmsSignedSimpl.crls[j].issuer.typesAndValues[i].type;
-				
-				const subjval = cmsSignedSimpl.crls[j].issuer.typesAndValues[i].value.valueBlock.value;
-				
-				ul += `<li><p><span>${typeval}</span> ${subjval}</p></li>`;
-			}
-			
-			ul = `${ul}</ul>`;
-			
-			const row = crlsTable.insertRow(certificatesTable.rows.length);
-			const cell = row.insertCell(0);
-			// noinspection InnerHTMLJS
-			cell.innerHTML = ul;
-		}
-		
-		document.getElementById("cms-certs").style.display = "block";
-	}
-	//endregion
-	
-	//region Put information about number of signers
-	// noinspection InnerHTMLJS
-	document.getElementById("cms-signs").innerHTML = cmsSignedSimpl.signerInfos.length.toString();
-	//endregion
-	
-	document.getElementById("cms-signed-data-block").style.display = "block";
-}
-//*********************************************************************************
-function makeCAdESAv3Internal()
-{
-	//region Initial variables
-	let sequence = Promise.resolve();
-	
-	let userPublicKey;
-	let userPrivateKey;
-	
-	const dataBuffer = new ArrayBuffer(6);
-	const dataView = new Uint8Array(dataBuffer);
-	dataView[0] = 0x00;
-	dataView[1] = 0x01;
-	dataView[2] = 0x02;
-	dataView[3] = 0x03;
-	dataView[4] = 0x04;
-	dataView[5] = 0x05;
-	
-	let cmsSignedSimpl;
-	
-	const ocspRequest = new OCSPRequest();
-	
-	const aTSHashIndex = new ATSHashIndex();
-	
-	let asn1 = asn1js.fromBER(stringToArrayBuffer(atob(User10cert)));
-	const certSimpl = new Certificate({ schema: asn1.result });
-	
-	asn1 = asn1js.fromBER(stringToArrayBuffer(atob(CAcert)));
-	const caCertSimpl = new Certificate({ schema: asn1.result });
-	//endregion
-	
-	//region Get a "crypto" extension
-	const crypto = getCrypto();
-	if(typeof crypto === "undefined")
-		return Promise.reject("No WebCrypto extension found");
-	//endregion
+  const responses = [];
 
-	sequence = sequence.then(() => certSimpl.getPublicKey());
-	
-	sequence = sequence.then(result =>
-	{
-		userPublicKey = result;
-		
-		return crypto.importKey("pkcs8",
-			stringToArrayBuffer(atob(User10key)),
-			{
-				name: result.algorithm.name,
-				hash: result.algorithm.hash || {}
-			},
-			true,
-			["sign"]);
-	});
-	
-	sequence = sequence.then(result =>
-	{
-		userPrivateKey = result;
-		
-		cmsSignedSimpl = new SignedData({
-			version: 1,
-			encapContentInfo: new EncapsulatedContentInfo({
-				eContentType: "1.2.840.113549.1.7.1" // "data" content type
-			}),
-			signerInfos: [
-				new SignerInfo({
-					version: 1,
-					sid: new IssuerAndSerialNumber({
-						issuer: certSimpl.issuer,
-						serialNumber: certSimpl.serialNumber
-					})
-				})
-			],
-			certificates: [certSimpl]
-		});
-		
-		cmsSignedSimpl.encapContentInfo.eContent = new asn1js.OctetString({ valueHex: dataBuffer });
-		
-		return createCommonAttributes(cmsSignedSimpl, {
-			hashAlgorithm: "SHA-1",
-			certificate: certSimpl,
-			contentOID: "1.2.840.113549.1.7.1" // "data" content type
-		});
-	}).then(result =>
-	{
-		if(("signedAttrs" in cmsSignedSimpl.signerInfos[0]) === false)
-			cmsSignedSimpl.signerInfos[0].signedAttrs = new SignedAndUnsignedAttributes({ type: 0 });
-		
-		for(let i = 0; i < result.length; i++)
-			cmsSignedSimpl.signerInfos[0].signedAttrs.attributes.push(result[i]);
-	});
-	
-	sequence = sequence.then(() => cmsSignedSimpl.sign(userPrivateKey, 0, userPublicKey.algorithm.hash.name || {}));
-	
-	sequence = sequence.then(() => ocspRequest.createForCertificate(certSimpl, {
-		hashAlgorithm: "SHA-1",
-		issuerCertificate: caCertSimpl
-	})).then(() => getOCSPResponse(ocspRequest))
-		.then(result =>
-		{
-			// noinspection JSCheckFunctionSignatures
-			asn1 = asn1js.fromBER(result);
-			let ocspResponse = new OCSPResponse({ schema: asn1.result });
-			
-			if(("crls" in cmsSignedSimpl) === false)
-				cmsSignedSimpl.crls = [];
-			
-			const asn1Temp = asn1js.fromBER(ocspResponse.responseBytes.response.valueBlock.valueHex);
-			const tempResponse = new BasicOCSPResponse({ schema: asn1Temp.result });
-			
-			cmsSignedSimpl.crls.push(new OtherRevocationInfoFormat({
-				otherRevInfoFormat: ocspResponse.responseBytes.responseType,
-				otherRevInfo: tempResponse.toSchema()
-			}));
-		});
-	
-	sequence = sequence.then(() => aTSHashIndex.fillValues(cmsSignedSimpl, 0, {
-		hashAlgorithm: "SHA-1"
-	})).then(() =>
-	{
-		const archiveTimeStampV3 = new ArchiveTimeStampV3();
-		
-		return archiveTimeStampV3.getStampingBuffer(cmsSignedSimpl, 0, {
-			hashAlgorithm: "SHA-1",
-			aTSHashIndex: aTSHashIndex.toSchema().toBER(false)
-		});
-	}).then(result =>
-	{
-		const tspRequest = new TimeStampReq({
-			version: 1,
-			messageImprint: new MessageImprint({
-				hashAlgorithm: new AlgorithmIdentifier({
-					algorithmId: "1.3.14.3.2.26",
-					algorithmParams: new asn1js.Null()
-				}),
-				hashedMessage: new asn1js.OctetString({ valueHex: result })
-			})
-		});
-		
-		return getTSPResponse(tspRequest);
-	}).then(result =>
-	{
-		if(("unsignedAttrs" in cmsSignedSimpl.signerInfos[0]) === false)
-		{
-			cmsSignedSimpl.signerInfos[0].unsignedAttrs = new SignedAndUnsignedAttributes({
-				type: 1 // UnsignedAttributes
-			});
-		}
+  let basicResponse;
+  let ocspResponse;
 
-		const archiveTimeStampV3 = new ArchiveTimeStampV3({
-			aTSHashIndex: aTSHashIndex
-		});
-		
-		const av3Attribute = archiveTimeStampV3.makeAttribute({
-			tspResponse: result
-		});
-		
-		cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(av3Attribute);
-		
-		const cmsContent = new ContentInfo({
-			contentType: "1.2.840.113549.1.7.2",
-			content: cmsSignedSimpl.toSchema(true)
-		});
-		
-		cmsSignedBuffer = cmsContent.toSchema().toBER(false);
-	});
-	
-	return sequence;
-}
-//*********************************************************************************
-function makeCAdESAv3()
-{
-	return makeCAdESAv3Internal().then(() =>
-	{
-		// noinspection InnerHTMLJS
-		let resultString = "-----BEGIN CMS-----\r\n";
-		resultString += formatPEM(window.btoa(arrayBufferToString(cmsSignedBuffer)));
-		resultString += "\r\n-----END CMS-----\r\n\r\n";
-		
-		// noinspection InnerHTMLJS
-		document.getElementById("new_data").innerHTML = resultString;
-		
-		parseCMSSigned();
-	});
-}
-//*********************************************************************************
-function makeCAdESXLInternal()
-{
-	//region Initial variables
-	let sequence = Promise.resolve();
-	
-	let userPublicKey;
-	let userPrivateKey;
-	
-	const dataBuffer = new ArrayBuffer(6);
-	const dataView = new Uint8Array(dataBuffer);
-	dataView[0] = 0x00;
-	dataView[1] = 0x01;
-	dataView[2] = 0x02;
-	dataView[3] = 0x03;
-	dataView[4] = 0x04;
-	dataView[5] = 0x05;
-	
-	let cmsSignedSimpl;
+  let ocspPublicKey;
 
-	const signatureTimeStamp = new SignatureTimeStamp();
-	const cadesCTimeStamp = new CAdESCTimestamp();
-	
-	const completeCertificateReferences = new CompleteCertificateReferences();
-	const completeRevocationReferences = new CompleteRevocationReferences();
-	
-	const ocspRequest = new OCSPRequest();
-	
-	let ocspResponse;
-	
-	let asn1 = asn1js.fromBER(stringToArrayBuffer(atob(User10cert)));
-	const certSimpl = new Certificate({ schema: asn1.result });
-	
-	asn1 = asn1js.fromBER(stringToArrayBuffer(atob(CAcert)));
-	const caCertSimpl = new Certificate({ schema: asn1.result });
-	//endregion
-	
-	//region Get a "crypto" extension
-	const crypto = getCrypto();
-	if(typeof crypto === "undefined")
-		return Promise.reject("No WebCrypto extension found");
-	//endregion
-	
-	
-	sequence = sequence.then(() => certSimpl.getPublicKey());
-	
-	sequence = sequence.then(result =>
-	{
-		userPublicKey = result;
-		
-		return crypto.importKey("pkcs8",
-			stringToArrayBuffer(atob(User10key)),
-			{
-				name: result.algorithm.name,
-				hash: result.algorithm.hash || {}
-			},
-			true,
-			["sign"]);
-	});
-	
-	sequence = sequence.then(result =>
-	{
-		userPrivateKey = result;
-		
-		cmsSignedSimpl = new SignedData({
-			version: 1,
-			encapContentInfo: new EncapsulatedContentInfo({
-				eContentType: "1.2.840.113549.1.7.1" // "data" content type
-			}),
-			signerInfos: [
-				new SignerInfo({
-					version: 1,
-					sid: new IssuerAndSerialNumber({
-						issuer: certSimpl.issuer,
-						serialNumber: certSimpl.serialNumber
-					})
-				})
-			],
-			certificates: [certSimpl]
-		});
-		
-		cmsSignedSimpl.encapContentInfo.eContent = new asn1js.OctetString({ valueHex: dataBuffer });
-		
-		return createCommonAttributes(cmsSignedSimpl, {
-			hashAlgorithm: "SHA-1",
-			certificate: certSimpl,
-			contentOID: "1.2.840.113549.1.7.1" // "data" content type
-		});
-	}).then(result =>
-	{
-		if(("signedAttrs" in cmsSignedSimpl.signerInfos[0]) === false)
-			cmsSignedSimpl.signerInfos[0].signedAttrs = new SignedAndUnsignedAttributes({ type: 0 });
-		
-		for(let i = 0; i < result.length; i++)
-			cmsSignedSimpl.signerInfos[0].signedAttrs.attributes.push(result[i]);
-	});
-	
-	sequence = sequence.then(() => cmsSignedSimpl.sign(userPrivateKey, 0, userPublicKey.algorithm.hash.name || {}));
-	
-	sequence = sequence.then(() => signatureTimeStamp.getStampingBuffer(cmsSignedSimpl, 0, { hashAlgorithm: "SHA-1" }))
-		.then(result =>
-		{
-			return getTSPResponse(new TimeStampReq({
-				version: 1,
-				messageImprint: new MessageImprint({
-					hashAlgorithm: new AlgorithmIdentifier({
-						algorithmId: "1.3.14.3.2.26",
-						algorithmParams: new asn1js.Null()
-					}),
-					hashedMessage: new asn1js.OctetString({ valueHex: result })
-				})
-			}));
-		})
-		.then(result =>
-		{
-			if(("unsignedAttrs" in cmsSignedSimpl.signerInfos[0]) === false)
-			{
-				cmsSignedSimpl.signerInfos[0].unsignedAttrs = new SignedAndUnsignedAttributes({
-					type: 1 // UnsignedAttributes
-				});
-			}
-			
-			cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(signatureTimeStamp.makeAttribute({ tspResponse: result }));
-		});
-	
-	sequence = sequence.then(() => ocspRequest.createForCertificate(certSimpl, {
-		hashAlgorithm: "SHA-1",
-		issuerCertificate: caCertSimpl
-	})).then(() => getOCSPResponse(ocspRequest))
-		.then(result =>
-		{
-			// noinspection JSCheckFunctionSignatures
-			asn1 = asn1js.fromBER(result);
-			ocspResponse = new OCSPResponse({ schema: asn1.result });
-			
-			if(("crls" in cmsSignedSimpl) === false)
-				cmsSignedSimpl.crls = [];
-			
-			const asn1Temp = asn1js.fromBER(ocspResponse.responseBytes.response.valueBlock.valueHex);
-			const basicResponse = new BasicOCSPResponse({ schema: asn1Temp.result });
-			
-			//region Append OCSP certificates into "certificates" array
-			if("certs" in basicResponse)
-			{
-				if(("certificates" in cmsSignedSimpl) === false)
-					cmsSignedSimpl.certificates = [];
-				
-				for(let i = 0; i < basicResponse.certs.length; i++)
-					cmsSignedSimpl.certificates.push(basicResponse.certs[i]);
-			}
-			//endregion
-			
-			cmsSignedSimpl.certificates.push(caCertSimpl);
-		});
-	
-	//region Append "complete_certificate_references" and "complete_revocation_references" attributes
-	sequence = sequence.then(() => completeCertificateReferences.fillValues(cmsSignedSimpl, 0, { hashAlgorithm: "SHA-1", signerCertificate: certSimpl }))
-		.then(() =>
-		{
-			cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(completeCertificateReferences.makeAttribute());
-		});
-	
-	sequence = sequence.then(() => completeRevocationReferences.fillValues(cmsSignedSimpl, 0, { hashAlgorithm: "SHA-1", ocspResponses: [ ocspResponse ] }))
-		.then(() =>
-		{
-			//region Append two "revocation values" for two remaining certificates (for OCSP server and CA)
-			completeRevocationReferences.completeRevocationRefs.push(new CrlOcspRef());
-			completeRevocationReferences.completeRevocationRefs.push(new CrlOcspRef());
-			//endregion
-			
-			cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(completeRevocationReferences.makeAttribute());
-		});
-	//endregion
+  let asn1CertSimpl = asn1js.fromBER(stringToArrayBuffer(atob(OCSPcert)));
+  const certSimpl = new Certificate({ schema: asn1CertSimpl.result });
+  //endregion
 
-	//region Add "certificate-values" and "revocation-values" attributes
-	sequence = sequence.then(() =>
-	{
-		const certificateValues = new CertificateValues();
-		certificateValues.fillValues(cmsSignedSimpl);
-		cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(certificateValues.makeAttribute());
-		
-		const revocationValues = new RevocationValues();
-		revocationValues.fillValues(cmsSignedSimpl, {
-			ocspResponses: [ ocspResponse.toSchema().toBER(false) ]
-		});
-		cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(revocationValues.makeAttribute());
-	});
-	//endregion
-	
-	//region Add "CAdES-C-Timestamp" attribute
-	sequence = sequence.then(() => cadesCTimeStamp.getStampingBuffer(cmsSignedSimpl, 0, {
-		hashAlgorithm: "SHA-1",
-		signatureTimeStamp,
-		completeCertificateReferences,
-		completeRevocationReferences
-	})).then(result =>
-	{
-		return getTSPResponse(new TimeStampReq({
-			version: 1,
-			messageImprint: new MessageImprint({
-				hashAlgorithm: new AlgorithmIdentifier({
-					algorithmId: "1.3.14.3.2.26",
-					algorithmParams: new asn1js.Null()
-				}),
-				hashedMessage: new asn1js.OctetString({ valueHex: result })
-			})
-		}));
-	}).then(result =>
-	{
-		cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(cadesCTimeStamp.makeAttribute({ tspResponse: result }));
-	});
-	//endregion
-	
-	//region Make final content
-	sequence = sequence.then(() =>
-	{
-		const cmsContent = new ContentInfo({
-			contentType: "1.2.840.113549.1.7.2",
-			content: cmsSignedSimpl.toSchema(true)
-		});
-		
-		cmsSignedBuffer = cmsContent.toSchema().toBER(false);
-	});
-	//endregion
-	
-	return sequence;
+  //region Get a "crypto" extension
+  const crypto = getCrypto();
+  if (typeof crypto === "undefined")
+    return Promise.reject("No WebCrypto extension found");
+  //endregion
+
+  sequence = sequence.then(() => {
+    //region Get making OCSP response for each certificate in the request
+    for (let i = 0; i < request.tbsRequest.requestList.length; i++) {
+      //region Initial variables
+      let valid = false;
+      //endregion
+
+      //region Check the certificate for "to be valid"
+      for (let j = 0; j < validCertificates.length; j++) {
+        if (
+          request.tbsRequest.requestList[i].reqCert.serialNumber.valueBlock
+            .valueDec === validCertificates[j]
+        ) {
+          valid = true;
+
+          const response = new SingleResponse({
+            certID: request.tbsRequest.requestList[i].reqCert,
+            certStatus: new asn1js.Primitive({
+              idBlock: {
+                tagClass: 3, // CONTEXT-SPECIFIC
+                tagNumber: 0, // [0]
+              },
+              lenBlockLength: 1, // The length contains one byte 0x00
+            }),
+            thisUpdate: getUTCDate(new Date()),
+          });
+
+          responses.push(response);
+        }
+      }
+      //endregion
+
+      //region Check the certificate for "to be invalid"
+      if (!valid) {
+        for (let j = 0; j < invalidCertificates.length; j++) {
+          if (
+            request.tbsRequest.requestList[i].reqCert.serialNumber.valueBlock
+              .valueDec === invalidCertificates[j]
+          ) {
+            const response = new SingleResponse({
+              certID: request.tbsRequest.requestList[i].reqCert,
+              certStatus: new asn1js.Constructed({
+                idBlock: {
+                  tagClass: 3, // CONTEXT-SPECIFIC
+                  tagMumber: 1, // [1]
+                },
+                value: [
+                  new asn1js.GeneralizedTime({
+                    valueDate: getUTCDate(new Date(2014, 0, 1)),
+                  }),
+                  new asn1js.Constructed({
+                    idBlock: {
+                      tagClass: 3, // CONTEXT-SPECIFIC
+                      tagNumber: 0, // [0]
+                    },
+                    value: [new asn1js.Enumerated({ value: 1 })], // keyCompromise
+                  }),
+                ],
+              }),
+              thisUpdate: getUTCDate(new Date()),
+            });
+
+            responses.push(response);
+          }
+        }
+      }
+      //endregion
+    }
+    //endregion
+
+    //region Making final OCSP response object
+    basicResponse = new BasicOCSPResponse({
+      tbsResponseData: new ResponseData({
+        responderID: certSimpl.subject,
+        producedAt: getUTCDate(new Date()),
+        responses: responses,
+      }),
+      signatureAlgorithm: certSimpl.signatureAlgorithm,
+      certs: [certSimpl],
+    });
+
+    ocspResponse = new OCSPResponse({
+      responseStatus: new asn1js.Enumerated({ value: 0 }), // successful
+    });
+    //endregion
+  });
+
+  sequence = sequence.then(() => certSimpl.getPublicKey());
+
+  sequence = sequence.then((result) => {
+    ocspPublicKey = result;
+
+    return crypto.importKey(
+      "pkcs8",
+      stringToArrayBuffer(atob(OCSPkey)),
+      {
+        name: result.algorithm.name,
+        hash: result.algorithm.hash || {},
+      },
+      true,
+      ["sign"]
+    );
+  });
+
+  sequence = sequence.then((result) =>
+    basicResponse.sign(result, ocspPublicKey.algorithm.hash.name || "SHA-256")
+  );
+
+  sequence = sequence.then(() => {
+    ocspResponse.responseBytes = new ResponseBytes({
+      responseType: "1.3.6.1.5.5.7.48.1.1", // id-pkix-ocsp-basic
+      response: new asn1js.OctetString({
+        valueHex: basicResponse.toSchema().toBER(false),
+      }),
+    });
+
+    return ocspResponse.toSchema().toBER(false);
+  });
+
+  return sequence;
 }
 //*********************************************************************************
-function makeCAdESXL()
-{
-	return makeCAdESXLInternal().then(() =>
-	{
-		// noinspection InnerHTMLJS
-		let resultString = "-----BEGIN CMS-----\r\n";
-		resultString += formatPEM(window.btoa(arrayBufferToString(cmsSignedBuffer)));
-		resultString += "\r\n-----END CMS-----\r\n\r\n";
-		
-		// noinspection InnerHTMLJS
-		document.getElementById("new_data").innerHTML = resultString;
-		
-		parseCMSSigned();
-	});
+function getTSPResponse(request) {
+  //region Initial variables
+  let sequence = Promise.resolve();
+
+  const genTime = getUTCDate(new Date());
+
+  let asn1CertSimpl = asn1js.fromBER(stringToArrayBuffer(atob(TSPcert)));
+  const certSimpl = new Certificate({ schema: asn1CertSimpl.result });
+
+  const eSSCertIDv2 = new ESSCertIDv2();
+
+  let tspKey = {};
+  let tspPublicKey;
+
+  let cmsSignedSimpl;
+
+  let tstInfo;
+
+  const signerInfo = new SignerInfo({
+    version: 1,
+    sid: new IssuerAndSerialNumber({
+      issuer: certSimpl.issuer,
+      serialNumber: certSimpl.serialNumber,
+    }),
+  });
+  signerInfo.signedAttrs = new SignedAndUnsignedAttributes({
+    type: 0,
+  });
+  //endregion
+
+  //region Get a "crypto" extension
+  const crypto = getCrypto();
+  if (typeof crypto === "undefined")
+    return Promise.reject("No WebCrypto extension found");
+  //endregion
+
+  sequence = sequence.then(() => certSimpl.getPublicKey());
+
+  sequence = sequence.then((result) => {
+    tspPublicKey = result;
+
+    const parameters = getAlgorithmParameters(
+      result.algorithm.name,
+      "importKey"
+    );
+
+    return crypto.importKey(
+      "pkcs8",
+      stringToArrayBuffer(atob(TSPkey)),
+      parameters.algorithm,
+      true,
+      ["sign"]
+    );
+  });
+
+  sequence = sequence.then((result) => {
+    tspKey = result;
+
+    // #region Prepare buffer with combined "messageImprint" and "genTime"
+    const asn1GenTime = new asn1js.GeneralizedTime({ valueDate: genTime });
+    const buffer = utilConcatBuf(
+      request.messageImprint.toSchema().toBER(false),
+      asn1GenTime.toBER(false)
+    );
+    // #endregion
+
+    return crypto.digest({ name: "SHA-1" }, buffer);
+  });
+
+  sequence = sequence.then((result) => {
+    // noinspection JSCheckFunctionSignatures
+    const newView = new Uint8Array(result);
+    newView[0] = 0x01;
+
+    tstInfo = new TSTInfo({
+      version: 1,
+      policy: "1.1.1.1",
+      messageImprint: request.messageImprint,
+      serialNumber: new asn1js.Integer({ valueHex: result }),
+      genTime: genTime,
+      tsa: new GeneralName({
+        type: 4,
+        value: certSimpl.subject,
+      }),
+    });
+  });
+
+  sequence = sequence.then(() => {
+    signerInfo.signedAttrs.attributes.push(
+      new Attribute({
+        type: "1.2.840.113549.1.9.3",
+        values: [
+          new asn1js.ObjectIdentifier({ value: "1.2.840.113549.1.9.16.1.4" }), // Time-stamp token
+        ],
+      })
+    );
+
+    signerInfo.signedAttrs.attributes.push(
+      new Attribute({
+        type: "1.2.840.113549.1.9.5",
+        values: [new asn1js.UTCTime({ valueDate: getUTCDate(new Date()) })],
+      })
+    );
+  });
+
+  sequence = sequence.then(() =>
+    crypto.digest({ name: "SHA-1" }, tstInfo.toSchema().toBER(false))
+  );
+
+  sequence = sequence.then((result) => {
+    signerInfo.signedAttrs.attributes.push(
+      new Attribute({
+        type: "1.2.840.113549.1.9.4", // message digest
+        values: [new asn1js.OctetString({ valueHex: result })],
+      })
+    );
+  });
+
+  sequence = sequence
+    .then(() =>
+      eSSCertIDv2.fillValues({
+        hashAlgorithm: "SHA-1",
+        certificate: certSimpl,
+      })
+    )
+    .then(() => {
+      const signingCertificateV2 = new SigningCertificateV2({
+        certs: [eSSCertIDv2],
+      });
+
+      signerInfo.signedAttrs.attributes.push(
+        new Attribute({
+          type: "1.2.840.113549.1.9.16.2.47",
+          values: [signingCertificateV2.toSchema()],
+        })
+      );
+    });
+
+  sequence = sequence.then(() => {
+    cmsSignedSimpl = new SignedData({
+      version: 3,
+      encapContentInfo: new EncapsulatedContentInfo({
+        eContentType: "1.2.840.113549.1.9.16.1.4", // "tSTInfo" content type
+        //eContentType: "1.2.840.113549.1.7.1" // "data" content type
+      }),
+      signerInfos: [signerInfo],
+      certificates: [certSimpl],
+    });
+
+    cmsSignedSimpl.encapContentInfo.eContent = new asn1js.OctetString({
+      valueHex: tstInfo.toSchema().toBER(false),
+    });
+
+    const parameters = getAlgorithmParameters(
+      tspPublicKey.algorithm.name,
+      "sign"
+    );
+
+    return cmsSignedSimpl.sign(tspKey, 0, parameters.algorithm.hash.name || {});
+  });
+
+  sequence = sequence.then(() => {
+    const tspResponse = new TimeStampResp({
+      status: new PKIStatusInfo({
+        status: 0, // granted
+      }),
+      timeStampToken: new ContentInfo({
+        contentType: "1.2.840.113549.1.7.2",
+        content: cmsSignedSimpl.toSchema(false),
+      }),
+    });
+
+    return tspResponse.toSchema().toBER(false);
+  });
+
+  return sequence;
 }
 //*********************************************************************************
-function handleParsingFile(evt)
-{
-	const tempReader = new FileReader();
-	
-	const currentFiles = evt.target.files;
-	
-	// noinspection AnonymousFunctionJS
-	tempReader.onload =
-		event =>
-		{
-			// noinspection JSUnresolvedVariable
-			cmsSignedBuffer = event.target.result;
-			parseCMSSigned();
-		};
-	
-	tempReader.readAsArrayBuffer(currentFiles[0]);
+function parseCMSSigned() {
+  //region Initial check
+  if (cmsSignedBuffer.byteLength === 0) {
+    alert("Nothing to parse!");
+    return;
+  }
+  //endregion
+
+  //region Initial activities
+  // noinspection InnerHTMLJS
+  document.getElementById("cms-dgst-algos").innerHTML = "";
+
+  document.getElementById("cms-certs").style.display = "none";
+  document.getElementById("cms-crls").style.display = "none";
+
+  const certificatesTable = document.getElementById("cms-certificates");
+  while (certificatesTable.rows.length > 1)
+    certificatesTable.deleteRow(certificatesTable.rows.length - 1);
+
+  const crlsTable = document.getElementById("cms-rev-lists");
+  while (crlsTable.rows.length > 1)
+    crlsTable.deleteRow(crlsTable.rows.length - 1);
+  //endregion
+
+  //region Decode existing CMS Signed Data
+  const asn1 = asn1js.fromBER(cmsSignedBuffer);
+  const cmsContentSimpl = new ContentInfo({ schema: asn1.result });
+  const cmsSignedSimpl = new SignedData({ schema: cmsContentSimpl.content });
+
+  for (const signerInfo of cmsSignedSimpl.signerInfos) {
+    if ("signedAttrs" in signerInfo)
+      signerInfo.signedAttrs.attributes = Array.from(
+        signerInfo.signedAttrs.attributes,
+        (element) => new AttributeCAdES(element)
+      );
+
+    if ("unsignedAttrs" in signerInfo)
+      signerInfo.unsignedAttrs.attributes = Array.from(
+        signerInfo.unsignedAttrs.attributes,
+        (element) => new AttributeCAdES(element)
+      );
+  }
+  //endregion
+
+  //region Put information about digest algorithms in the CMS Signed Data
+  const dgstmap = {
+    "1.3.14.3.2.26": "SHA-1",
+    "2.16.840.1.101.3.4.2.1": "SHA-256",
+    "2.16.840.1.101.3.4.2.2": "SHA-384",
+    "2.16.840.1.101.3.4.2.3": "SHA-512",
+  };
+
+  for (let i = 0; i < cmsSignedSimpl.digestAlgorithms.length; i++) {
+    let typeval = dgstmap[cmsSignedSimpl.digestAlgorithms[i].algorithmId];
+    if (typeof typeval === "undefined")
+      typeval = cmsSignedSimpl.digestAlgorithms[i].algorithmId;
+
+    const ulrow = `<li><p><span>${typeval}</span></p></li>`;
+
+    // noinspection InnerHTMLJS
+    document.getElementById("cms-dgst-algos").innerHTML =
+      document.getElementById("cms-dgst-algos").innerHTML + ulrow;
+  }
+  //endregion
+
+  //region Put information about encapsulated content type
+  const contypemap = {
+    "1.3.6.1.4.1.311.2.1.4": "Authenticode signing information",
+    "1.2.840.113549.1.7.1": "Data content",
+  };
+
+  let eContentType = contypemap[cmsSignedSimpl.encapContentInfo.eContentType];
+  if (typeof eContentType === "undefined")
+    eContentType = cmsSignedSimpl.encapContentInfo.eContentType;
+
+  // noinspection InnerHTMLJS
+  document.getElementById("cms-encap-type").innerHTML = eContentType;
+  //endregion
+
+  //region Put information about included certificates
+  const rdnmap = {
+    "2.5.4.6": "C",
+    "2.5.4.10": "O",
+    "2.5.4.11": "OU",
+    "2.5.4.3": "CN",
+    "2.5.4.7": "L",
+    "2.5.4.8": "S",
+    "2.5.4.12": "T",
+    "2.5.4.42": "GN",
+    "2.5.4.43": "I",
+    "2.5.4.4": "SN",
+    "1.2.840.113549.1.9.1": "E-mail",
+  };
+
+  if ("certificates" in cmsSignedSimpl) {
+    for (let j = 0; j < cmsSignedSimpl.certificates.length; j++) {
+      let ul = "<ul>";
+
+      for (
+        let i = 0;
+        i < cmsSignedSimpl.certificates[j].issuer.typesAndValues.length;
+        i++
+      ) {
+        let typeval =
+          rdnmap[cmsSignedSimpl.certificates[j].issuer.typesAndValues[i].type];
+        if (typeof typeval === "undefined")
+          typeval =
+            cmsSignedSimpl.certificates[j].issuer.typesAndValues[i].type;
+
+        const subjval =
+          cmsSignedSimpl.certificates[j].issuer.typesAndValues[i].value
+            .valueBlock.value;
+
+        ul += `<li><p><span>${typeval}</span> ${subjval}</p></li>`;
+      }
+
+      ul = `${ul}</ul>`;
+
+      const row = certificatesTable.insertRow(certificatesTable.rows.length);
+      const cell0 = row.insertCell(0);
+      // noinspection InnerHTMLJS
+      cell0.innerHTML = bufferToHexCodes(
+        cmsSignedSimpl.certificates[j].serialNumber.valueBlock.valueHex
+      );
+      const cell1 = row.insertCell(1);
+      // noinspection InnerHTMLJS
+      cell1.innerHTML = ul;
+    }
+
+    document.getElementById("cms-certs").style.display = "block";
+  }
+  //endregion
+
+  //region Put information about included CRLs
+  if ("crls" in cmsSignedSimpl) {
+    for (let j = 0; j < cmsSignedSimpl.crls.length; j++) {
+      if (typeof cmsSignedSimpl.crls[j] !== CertificateRevocationList) continue;
+
+      let ul = "<ul>";
+
+      for (
+        let i = 0;
+        i < cmsSignedSimpl.crls[j].issuer.typesAndValues.length;
+        i++
+      ) {
+        let typeval =
+          rdnmap[cmsSignedSimpl.crls[j].issuer.typesAndValues[i].type];
+        if (typeof typeval === "undefined")
+          typeval = cmsSignedSimpl.crls[j].issuer.typesAndValues[i].type;
+
+        const subjval =
+          cmsSignedSimpl.crls[j].issuer.typesAndValues[i].value.valueBlock
+            .value;
+
+        ul += `<li><p><span>${typeval}</span> ${subjval}</p></li>`;
+      }
+
+      ul = `${ul}</ul>`;
+
+      const row = crlsTable.insertRow(certificatesTable.rows.length);
+      const cell = row.insertCell(0);
+      // noinspection InnerHTMLJS
+      cell.innerHTML = ul;
+    }
+
+    document.getElementById("cms-certs").style.display = "block";
+  }
+  //endregion
+
+  //region Put information about number of signers
+  // noinspection InnerHTMLJS
+  document.getElementById(
+    "cms-signs"
+  ).innerHTML = cmsSignedSimpl.signerInfos.length.toString();
+  //endregion
+
+  document.getElementById("cms-signed-data-block").style.display = "block";
 }
 //*********************************************************************************
-context("Hack for Rollup.js", () =>
-{
-	return;
-	
-	// noinspection UnreachableCodeJS
-	makeCAdESAv3();
-	makeCAdESXL();
-	handleParsingFile();
-	setEngine();
+function makeCAdESAv3Internal() {
+  //region Initial variables
+  let sequence = Promise.resolve();
+
+  let userPublicKey;
+  let userPrivateKey;
+
+  const dataBuffer = new ArrayBuffer(6);
+  const dataView = new Uint8Array(dataBuffer);
+  dataView[0] = 0x00;
+  dataView[1] = 0x01;
+  dataView[2] = 0x02;
+  dataView[3] = 0x03;
+  dataView[4] = 0x04;
+  dataView[5] = 0x05;
+
+  let cmsSignedSimpl;
+
+  const ocspRequest = new OCSPRequest();
+
+  const aTSHashIndex = new ATSHashIndex();
+
+  let asn1 = asn1js.fromBER(stringToArrayBuffer(atob(User10cert)));
+  const certSimpl = new Certificate({ schema: asn1.result });
+
+  asn1 = asn1js.fromBER(stringToArrayBuffer(atob(CAcert)));
+  const caCertSimpl = new Certificate({ schema: asn1.result });
+  //endregion
+
+  //region Get a "crypto" extension
+  const crypto = getCrypto();
+  if (typeof crypto === "undefined")
+    return Promise.reject("No WebCrypto extension found");
+  //endregion
+
+  sequence = sequence.then(() => certSimpl.getPublicKey());
+
+  sequence = sequence.then((result) => {
+    userPublicKey = result;
+
+    return crypto.importKey(
+      "pkcs8",
+      stringToArrayBuffer(atob(User10key)),
+      {
+        name: result.algorithm.name,
+        hash: result.algorithm.hash || {},
+      },
+      true,
+      ["sign"]
+    );
+  });
+
+  sequence = sequence
+    .then((result) => {
+      userPrivateKey = result;
+
+      cmsSignedSimpl = new SignedData({
+        version: 1,
+        encapContentInfo: new EncapsulatedContentInfo({
+          eContentType: "1.2.840.113549.1.7.1", // "data" content type
+        }),
+        signerInfos: [
+          new SignerInfo({
+            version: 1,
+            sid: new IssuerAndSerialNumber({
+              issuer: certSimpl.issuer,
+              serialNumber: certSimpl.serialNumber,
+            }),
+          }),
+        ],
+        certificates: [certSimpl],
+      });
+
+      cmsSignedSimpl.encapContentInfo.eContent = new asn1js.OctetString({
+        valueHex: dataBuffer,
+      });
+
+      return createCommonAttributes(cmsSignedSimpl, {
+        hashAlgorithm: "SHA-1",
+        certificate: certSimpl,
+        contentOID: "1.2.840.113549.1.7.1", // "data" content type
+      });
+    })
+    .then((result) => {
+      if ("signedAttrs" in cmsSignedSimpl.signerInfos[0] === false)
+        cmsSignedSimpl.signerInfos[0].signedAttrs = new SignedAndUnsignedAttributes(
+          { type: 0 }
+        );
+
+      for (let i = 0; i < result.length; i++)
+        cmsSignedSimpl.signerInfos[0].signedAttrs.attributes.push(result[i]);
+    });
+
+  sequence = sequence.then(() =>
+    cmsSignedSimpl.sign(
+      userPrivateKey,
+      0,
+      userPublicKey.algorithm.hash.name || {}
+    )
+  );
+
+  sequence = sequence
+    .then(() =>
+      ocspRequest.createForCertificate(certSimpl, {
+        hashAlgorithm: "SHA-1",
+        issuerCertificate: caCertSimpl,
+      })
+    )
+    .then(() => getOCSPResponse(ocspRequest))
+    .then((result) => {
+      // noinspection JSCheckFunctionSignatures
+      asn1 = asn1js.fromBER(result);
+      let ocspResponse = new OCSPResponse({ schema: asn1.result });
+
+      if ("crls" in cmsSignedSimpl === false) cmsSignedSimpl.crls = [];
+
+      const asn1Temp = asn1js.fromBER(
+        ocspResponse.responseBytes.response.valueBlock.valueHex
+      );
+      const tempResponse = new BasicOCSPResponse({ schema: asn1Temp.result });
+
+      cmsSignedSimpl.crls.push(
+        new OtherRevocationInfoFormat({
+          otherRevInfoFormat: ocspResponse.responseBytes.responseType,
+          otherRevInfo: tempResponse.toSchema(),
+        })
+      );
+    });
+
+  sequence = sequence
+    .then(() =>
+      aTSHashIndex.fillValues(cmsSignedSimpl, 0, {
+        hashAlgorithm: "SHA-1",
+      })
+    )
+    .then(() => {
+      const archiveTimeStampV3 = new ArchiveTimeStampV3();
+
+      return archiveTimeStampV3.getStampingBuffer(cmsSignedSimpl, 0, {
+        hashAlgorithm: "SHA-1",
+        aTSHashIndex: aTSHashIndex.toSchema().toBER(false),
+      });
+    })
+    .then((result) => {
+      const tspRequest = new TimeStampReq({
+        version: 1,
+        messageImprint: new MessageImprint({
+          hashAlgorithm: new AlgorithmIdentifier({
+            algorithmId: "1.3.14.3.2.26",
+            algorithmParams: new asn1js.Null(),
+          }),
+          hashedMessage: new asn1js.OctetString({ valueHex: result }),
+        }),
+      });
+
+      return getTSPResponse(tspRequest);
+    })
+    .then((result) => {
+      if ("unsignedAttrs" in cmsSignedSimpl.signerInfos[0] === false) {
+        cmsSignedSimpl.signerInfos[0].unsignedAttrs = new SignedAndUnsignedAttributes(
+          {
+            type: 1, // UnsignedAttributes
+          }
+        );
+      }
+
+      const archiveTimeStampV3 = new ArchiveTimeStampV3({
+        aTSHashIndex: aTSHashIndex,
+      });
+
+      const av3Attribute = archiveTimeStampV3.makeAttribute({
+        tspResponse: result,
+      });
+
+      cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(av3Attribute);
+
+      const cmsContent = new ContentInfo({
+        contentType: "1.2.840.113549.1.7.2",
+        content: cmsSignedSimpl.toSchema(true),
+      });
+
+      cmsSignedBuffer = cmsContent.toSchema().toBER(false);
+    });
+
+  return sequence;
+}
+//*********************************************************************************
+function makeCAdESAv3() {
+  return makeCAdESAv3Internal().then(() => {
+    // noinspection InnerHTMLJS
+    let resultString = "-----BEGIN CMS-----\r\n";
+    resultString += formatPEM(
+      window.btoa(arrayBufferToString(cmsSignedBuffer))
+    );
+    resultString += "\r\n-----END CMS-----\r\n\r\n";
+
+    // noinspection InnerHTMLJS
+    document.getElementById("new_data").innerHTML = resultString;
+
+    parseCMSSigned();
+  });
+}
+//*********************************************************************************
+function makeCAdESXLInternal() {
+  //region Initial variables
+  let sequence = Promise.resolve();
+
+  let userPublicKey;
+  let userPrivateKey;
+
+  const dataBuffer = new ArrayBuffer(6);
+  const dataView = new Uint8Array(dataBuffer);
+  dataView[0] = 0x00;
+  dataView[1] = 0x01;
+  dataView[2] = 0x02;
+  dataView[3] = 0x03;
+  dataView[4] = 0x04;
+  dataView[5] = 0x05;
+
+  let cmsSignedSimpl;
+
+  const signatureTimeStamp = new SignatureTimeStamp();
+  const cadesCTimeStamp = new CAdESCTimestamp();
+
+  const completeCertificateReferences = new CompleteCertificateReferences();
+  const completeRevocationReferences = new CompleteRevocationReferences();
+
+  const ocspRequest = new OCSPRequest();
+
+  let ocspResponse;
+
+  let asn1 = asn1js.fromBER(stringToArrayBuffer(atob(User10cert)));
+  const certSimpl = new Certificate({ schema: asn1.result });
+
+  asn1 = asn1js.fromBER(stringToArrayBuffer(atob(CAcert)));
+  const caCertSimpl = new Certificate({ schema: asn1.result });
+  //endregion
+
+  //region Get a "crypto" extension
+  const crypto = getCrypto();
+  if (typeof crypto === "undefined")
+    return Promise.reject("No WebCrypto extension found");
+  //endregion
+
+  sequence = sequence.then(() => certSimpl.getPublicKey());
+
+  sequence = sequence.then((result) => {
+    userPublicKey = result;
+
+    return crypto.importKey(
+      "pkcs8",
+      stringToArrayBuffer(atob(User10key)),
+      {
+        name: result.algorithm.name,
+        hash: result.algorithm.hash || {},
+      },
+      true,
+      ["sign"]
+    );
+  });
+
+  sequence = sequence
+    .then((result) => {
+      userPrivateKey = result;
+
+      cmsSignedSimpl = new SignedData({
+        version: 1,
+        encapContentInfo: new EncapsulatedContentInfo({
+          eContentType: "1.2.840.113549.1.7.1", // "data" content type
+        }),
+        signerInfos: [
+          new SignerInfo({
+            version: 1,
+            sid: new IssuerAndSerialNumber({
+              issuer: certSimpl.issuer,
+              serialNumber: certSimpl.serialNumber,
+            }),
+          }),
+        ],
+        certificates: [certSimpl],
+      });
+
+      cmsSignedSimpl.encapContentInfo.eContent = new asn1js.OctetString({
+        valueHex: dataBuffer,
+      });
+
+      return createCommonAttributes(cmsSignedSimpl, {
+        hashAlgorithm: "SHA-1",
+        certificate: certSimpl,
+        contentOID: "1.2.840.113549.1.7.1", // "data" content type
+      });
+    })
+    .then((result) => {
+      if ("signedAttrs" in cmsSignedSimpl.signerInfos[0] === false)
+        cmsSignedSimpl.signerInfos[0].signedAttrs = new SignedAndUnsignedAttributes(
+          { type: 0 }
+        );
+
+      for (let i = 0; i < result.length; i++)
+        cmsSignedSimpl.signerInfos[0].signedAttrs.attributes.push(result[i]);
+    });
+
+  sequence = sequence.then(() =>
+    cmsSignedSimpl.sign(
+      userPrivateKey,
+      0,
+      userPublicKey.algorithm.hash.name || {}
+    )
+  );
+
+  sequence = sequence
+    .then(() =>
+      signatureTimeStamp.getStampingBuffer(cmsSignedSimpl, 0, {
+        hashAlgorithm: "SHA-1",
+      })
+    )
+    .then((result) => {
+      return getTSPResponse(
+        new TimeStampReq({
+          version: 1,
+          messageImprint: new MessageImprint({
+            hashAlgorithm: new AlgorithmIdentifier({
+              algorithmId: "1.3.14.3.2.26",
+              algorithmParams: new asn1js.Null(),
+            }),
+            hashedMessage: new asn1js.OctetString({ valueHex: result }),
+          }),
+        })
+      );
+    })
+    .then((result) => {
+      if ("unsignedAttrs" in cmsSignedSimpl.signerInfos[0] === false) {
+        cmsSignedSimpl.signerInfos[0].unsignedAttrs = new SignedAndUnsignedAttributes(
+          {
+            type: 1, // UnsignedAttributes
+          }
+        );
+      }
+
+      cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(
+        signatureTimeStamp.makeAttribute({ tspResponse: result })
+      );
+    });
+
+  sequence = sequence
+    .then(() =>
+      ocspRequest.createForCertificate(certSimpl, {
+        hashAlgorithm: "SHA-1",
+        issuerCertificate: caCertSimpl,
+      })
+    )
+    .then(() => getOCSPResponse(ocspRequest))
+    .then((result) => {
+      // noinspection JSCheckFunctionSignatures
+      asn1 = asn1js.fromBER(result);
+      ocspResponse = new OCSPResponse({ schema: asn1.result });
+
+      if ("crls" in cmsSignedSimpl === false) cmsSignedSimpl.crls = [];
+
+      const asn1Temp = asn1js.fromBER(
+        ocspResponse.responseBytes.response.valueBlock.valueHex
+      );
+      const basicResponse = new BasicOCSPResponse({ schema: asn1Temp.result });
+
+      //region Append OCSP certificates into "certificates" array
+      if ("certs" in basicResponse) {
+        if ("certificates" in cmsSignedSimpl === false)
+          cmsSignedSimpl.certificates = [];
+
+        for (let i = 0; i < basicResponse.certs.length; i++)
+          cmsSignedSimpl.certificates.push(basicResponse.certs[i]);
+      }
+      //endregion
+
+      cmsSignedSimpl.certificates.push(caCertSimpl);
+    });
+
+  //region Append "complete_certificate_references" and "complete_revocation_references" attributes
+  sequence = sequence
+    .then(() =>
+      completeCertificateReferences.fillValues(cmsSignedSimpl, 0, {
+        hashAlgorithm: "SHA-1",
+        signerCertificate: certSimpl,
+      })
+    )
+    .then(() => {
+      cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(
+        completeCertificateReferences.makeAttribute()
+      );
+    });
+
+  sequence = sequence
+    .then(() =>
+      completeRevocationReferences.fillValues(cmsSignedSimpl, 0, {
+        hashAlgorithm: "SHA-1",
+        ocspResponses: [ocspResponse],
+      })
+    )
+    .then(() => {
+      //region Append two "revocation values" for two remaining certificates (for OCSP server and CA)
+      completeRevocationReferences.completeRevocationRefs.push(
+        new CrlOcspRef()
+      );
+      completeRevocationReferences.completeRevocationRefs.push(
+        new CrlOcspRef()
+      );
+      //endregion
+
+      cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(
+        completeRevocationReferences.makeAttribute()
+      );
+    });
+  //endregion
+
+  //region Add "certificate-values" and "revocation-values" attributes
+  sequence = sequence.then(() => {
+    const certificateValues = new CertificateValues();
+    certificateValues.fillValues(cmsSignedSimpl);
+    cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(
+      certificateValues.makeAttribute()
+    );
+
+    const revocationValues = new RevocationValues();
+    revocationValues.fillValues(cmsSignedSimpl, {
+      ocspResponses: [ocspResponse.toSchema().toBER(false)],
+    });
+    cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(
+      revocationValues.makeAttribute()
+    );
+  });
+  //endregion
+
+  //region Add "CAdES-C-Timestamp" attribute
+  sequence = sequence
+    .then(() =>
+      cadesCTimeStamp.getStampingBuffer(cmsSignedSimpl, 0, {
+        hashAlgorithm: "SHA-1",
+        signatureTimeStamp,
+        completeCertificateReferences,
+        completeRevocationReferences,
+      })
+    )
+    .then((result) => {
+      return getTSPResponse(
+        new TimeStampReq({
+          version: 1,
+          messageImprint: new MessageImprint({
+            hashAlgorithm: new AlgorithmIdentifier({
+              algorithmId: "1.3.14.3.2.26",
+              algorithmParams: new asn1js.Null(),
+            }),
+            hashedMessage: new asn1js.OctetString({ valueHex: result }),
+          }),
+        })
+      );
+    })
+    .then((result) => {
+      cmsSignedSimpl.signerInfos[0].unsignedAttrs.attributes.push(
+        cadesCTimeStamp.makeAttribute({ tspResponse: result })
+      );
+    });
+  //endregion
+
+  //region Make final content
+  sequence = sequence.then(() => {
+    const cmsContent = new ContentInfo({
+      contentType: "1.2.840.113549.1.7.2",
+      content: cmsSignedSimpl.toSchema(true),
+    });
+
+    cmsSignedBuffer = cmsContent.toSchema().toBER(false);
+  });
+  //endregion
+
+  return sequence;
+}
+//*********************************************************************************
+function makeCAdESXL() {
+  return makeCAdESXLInternal().then(() => {
+    // noinspection InnerHTMLJS
+    let resultString = "-----BEGIN CMS-----\r\n";
+    resultString += formatPEM(
+      window.btoa(arrayBufferToString(cmsSignedBuffer))
+    );
+    resultString += "\r\n-----END CMS-----\r\n\r\n";
+
+    // noinspection InnerHTMLJS
+    document.getElementById("new_data").innerHTML = resultString;
+
+    parseCMSSigned();
+  });
+}
+//*********************************************************************************
+function handleParsingFile(evt) {
+  const tempReader = new FileReader();
+
+  const currentFiles = evt.target.files;
+
+  // noinspection AnonymousFunctionJS
+  tempReader.onload = (event) => {
+    // noinspection JSUnresolvedVariable
+    cmsSignedBuffer = event.target.result;
+    parseCMSSigned();
+  };
+
+  tempReader.readAsArrayBuffer(currentFiles[0]);
+}
+//*********************************************************************************
+context("Hack for Rollup.js", () => {
+  return;
+
+  // noinspection UnreachableCodeJS
+  makeCAdESAv3();
+  makeCAdESXL();
+  handleParsingFile();
+  setEngine();
 });
 //*********************************************************************************
-context("CAdES Complex Example", () =>
-{
-	it("Making CAdES-A v3 Data", () => makeCAdESAv3Internal().then(() =>
-	{
-		console.log(`CAdES-A v3 Data: ${toBase64(arrayBufferToString(cmsSignedBuffer))}`);
-	}));
-	
-	it("Making CAdES-XL Data", () => makeCAdESXLInternal().then(() =>
-	{
-		console.log(`CAdES-XL Data: ${toBase64(arrayBufferToString(cmsSignedBuffer))}`);
-	}));
+context("CAdES Complex Example", () => {
+  it("Making CAdES-A v3 Data", () =>
+    makeCAdESAv3Internal().then(() => {
+      console.log(
+        `CAdES-A v3 Data: ${toBase64(arrayBufferToString(cmsSignedBuffer))}`
+      );
+    }));
+
+  it("Making CAdES-XL Data", () =>
+    makeCAdESXLInternal().then(() => {
+      console.log(
+        `CAdES-XL Data: ${toBase64(arrayBufferToString(cmsSignedBuffer))}`
+      );
+    }));
 });
 //*********************************************************************************
