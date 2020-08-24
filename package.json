@@ -15,14 +15,16 @@
     "url": "git://github.com/freight-trust/eu-signatures.git"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^15.0.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "babel-cli": "latest",
     "babel-plugin-istanbul": "^4.1.5",
     "babel-preset-env": "latest",
     "cross-env": "^5.1.4",
     "eslint": "^4.19.1",
-    "mocha": "^3.0.2",
+    "mocha": "^3.5.3",
     "nyc": "^11.6.0",
-    "rollup": "latest",
+    "rollup": "^2.26.4",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-builtins": "latest",
     "rollup-plugin-node-resolve": "^1.7.1"
@@ -47,9 +49,10 @@
     "node": ">=6.0.0"
   },
   "name": "cadesjs",
-  "version": "1.0.11",
+  "version": "2.2.0",
   "dependencies": {
     "asn1js": "latest",
+    "node-webcrypto-ossl": "^2.1.1",
     "pkijs": "latest",
     "pvutils": "latest"
   },
