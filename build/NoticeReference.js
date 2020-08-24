@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -10,21 +10,7 @@ var asn1js = _interopRequireWildcard(_asn1js);
 
 var _pvutils = require("pvutils");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class NoticeReference {
@@ -40,11 +26,7 @@ class NoticeReference {
      * @type {string}
      * @description organization
      */
-    this.organization = (0, _pvutils.getParametersValue)(
-      parameters,
-      "organization",
-      NoticeReference.defaultValues("organization")
-    );
+    this.organization = (0, _pvutils.getParametersValue)(parameters, "organization", NoticeReference.defaultValues("organization"));
     /**
      * @type {number}
      * @description Type number for "organization"
@@ -54,11 +36,7 @@ class NoticeReference {
      * @type {Array}
      * @description noticeNumbers
      */
-    this.noticeNumbers = (0, _pvutils.getParametersValue)(
-      parameters,
-      "noticeNumbers",
-      NoticeReference.defaultValues("noticeNumbers")
-    );
+    this.noticeNumbers = (0, _pvutils.getParametersValue)(parameters, "noticeNumbers", NoticeReference.defaultValues("noticeNumbers"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -77,9 +55,7 @@ class NoticeReference {
       case "noticeNumbers":
         return [];
       default:
-        throw new Error(
-          `Invalid member name for NoticeReference class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for NoticeReference class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -95,9 +71,7 @@ class NoticeReference {
       case "noticeNumbers":
         return memberValue.length === 0;
       default:
-        throw new Error(
-          `Invalid member name for NoticeReference class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for NoticeReference class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -123,23 +97,14 @@ class NoticeReference {
     return new asn1js.Sequence({
       name: names.blockName || "",
       optional: names.optional || false,
-      value: [
-        new asn1js.Choice({
-          value: [
-            new asn1js.VisibleString({ name: names.organization || "" }),
-            new asn1js.BmpString({ name: names.organization || "" }),
-            new asn1js.Utf8String({ name: names.organization || "" }),
-          ],
-        }),
-        new asn1js.Sequence({
-          value: [
-            new asn1js.Repeated({
-              name: names.noticeNumbers || "",
-              value: new asn1js.Integer(),
-            }),
-          ],
-        }),
-      ],
+      value: [new asn1js.Choice({
+        value: [new asn1js.VisibleString({ name: names.organization || "" }), new asn1js.BmpString({ name: names.organization || "" }), new asn1js.Utf8String({ name: names.organization || "" })]
+      }), new asn1js.Sequence({
+        value: [new asn1js.Repeated({
+          name: names.noticeNumbers || "",
+          value: new asn1js.Integer()
+        })]
+      })]
     });
   }
   //**********************************************************************************
@@ -149,21 +114,14 @@ class NoticeReference {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      NoticeReference.schema({
-        names: {
-          organization: "organization",
-          noticeNumbers: "noticeNumbers",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, NoticeReference.schema({
+      names: {
+        organization: "organization",
+        noticeNumbers: "noticeNumbers"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for NoticeReference"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for NoticeReference");
     //endregion
 
     //region Get internal properties from parsed schema
@@ -186,9 +144,7 @@ class NoticeReference {
         this._organizationType = 2;
         break;
       default:
-        throw new Error(
-          "Object's schema was not verified against input data for NoticeReference"
-        );
+        throw new Error("Object's schema was not verified against input data for NoticeReference");
     }
 
     this.noticeNumbers = Array.from(asn1.result.noticeNumbers);
@@ -205,9 +161,7 @@ class NoticeReference {
 
     switch (this._organizationType) {
       case 0:
-        outputArray.push(
-          new asn1js.VisibleString({ value: this.organization })
-        );
+        outputArray.push(new asn1js.VisibleString({ value: this.organization }));
         break;
       case 1:
         outputArray.push(new asn1js.BmpString({ value: this.organization }));
@@ -219,16 +173,14 @@ class NoticeReference {
         throw new Error('Non-initialized "organization" value');
     }
 
-    outputArray.push(
-      new asn1js.Sequence({
-        value: Array.from(this.noticeNumbers),
-      })
-    );
+    outputArray.push(new asn1js.Sequence({
+      value: Array.from(this.noticeNumbers)
+    }));
     //endregion
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: outputArray,
+      value: outputArray
     });
     //endregion
   }
@@ -240,7 +192,7 @@ class NoticeReference {
   toJSON() {
     return {
       organization: this.organization,
-      noticeNumbers: Array.from(this.noticeNumbers.toJSON()),
+      noticeNumbers: Array.from(this.noticeNumbers.toJSON())
     };
   }
   //**********************************************************************************

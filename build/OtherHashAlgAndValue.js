@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -12,21 +12,7 @@ var _pvutils = require("pvutils");
 
 var _pkijs = require("pkijs");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class OtherHashAlgAndValue {
@@ -42,20 +28,12 @@ class OtherHashAlgAndValue {
      * @type {AlgorithmIdentifier}
      * @description hashAlgorithm
      */
-    this.hashAlgorithm = (0, _pvutils.getParametersValue)(
-      parameters,
-      "hashAlgorithm",
-      OtherHashAlgAndValue.defaultValues("hashAlgorithm")
-    );
+    this.hashAlgorithm = (0, _pvutils.getParametersValue)(parameters, "hashAlgorithm", OtherHashAlgAndValue.defaultValues("hashAlgorithm"));
     /**
      * @type {OctetString}
      * @description hashValue
      */
-    this.hashValue = (0, _pvutils.getParametersValue)(
-      parameters,
-      "hashValue",
-      OtherHashAlgAndValue.defaultValues("hashValue")
-    );
+    this.hashValue = (0, _pvutils.getParametersValue)(parameters, "hashValue", OtherHashAlgAndValue.defaultValues("hashValue"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -74,9 +52,7 @@ class OtherHashAlgAndValue {
       case "hashValue":
         return new asn1js.OctetString();
       default:
-        throw new Error(
-          `Invalid member name for OtherHashAlgAndValue class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OtherHashAlgAndValue class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -89,13 +65,9 @@ class OtherHashAlgAndValue {
     switch (memberName) {
       case "hashAlgorithm":
       case "hashValue":
-        return memberValue.isEqual(
-          OtherHashAlgAndValue.defaultValues(memberValue)
-        );
+        return memberValue.isEqual(OtherHashAlgAndValue.defaultValues(memberValue));
       default:
-        throw new Error(
-          `Invalid member name for OtherHashAlgAndValue class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OtherHashAlgAndValue class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -121,18 +93,13 @@ class OtherHashAlgAndValue {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        _pkijs.AlgorithmIdentifier.schema(
-          names.hashAlgorithm || {
-            names: {
-              blockName: "OtherHashAlgAndValue.hashAlgorithm",
-            },
-          }
-        ),
-        new asn1js.OctetString({
-          name: names.hashValue || "OtherHashAlgAndValue.hashValue",
-        }),
-      ],
+      value: [_pkijs.AlgorithmIdentifier.schema(names.hashAlgorithm || {
+        names: {
+          blockName: "OtherHashAlgAndValue.hashAlgorithm"
+        }
+      }), new asn1js.OctetString({
+        name: names.hashValue || "OtherHashAlgAndValue.hashValue"
+      })]
     });
   }
   //**********************************************************************************
@@ -142,30 +109,23 @@ class OtherHashAlgAndValue {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      OtherHashAlgAndValue.schema({
-        names: {
-          hashAlgorithm: {
-            names: {
-              blockName: "hashAlgorithm",
-            },
-          },
-          hashValue: "hashValue",
+    const asn1 = asn1js.compareSchema(schema, schema, OtherHashAlgAndValue.schema({
+      names: {
+        hashAlgorithm: {
+          names: {
+            blockName: "hashAlgorithm"
+          }
         },
-      })
-    );
+        hashValue: "hashValue"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for OtherHashAlgAndValue"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for OtherHashAlgAndValue");
     //endregion
 
     //region Get internal properties from parsed schema
     this.hashAlgorithm = new _pkijs.AlgorithmIdentifier({
-      schema: asn1.result.hashAlgorithm,
+      schema: asn1.result.hashAlgorithm
     });
     this.hashValue = asn1.result.hashValue;
     //endregion
@@ -178,7 +138,7 @@ class OtherHashAlgAndValue {
   toSchema() {
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: [this.hashAlgorithm.toSchema(), this.hashValue],
+      value: [this.hashAlgorithm.toSchema(), this.hashValue]
     });
     //endregion
   }
@@ -190,7 +150,7 @@ class OtherHashAlgAndValue {
   toJSON() {
     return {
       hashAlgorithm: this.hashAlgorithm.toJSON(),
-      hashValue: this.hashValue.toJSON(),
+      hashValue: this.hashValue.toJSON()
     };
   }
   //**********************************************************************************

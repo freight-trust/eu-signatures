@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -14,25 +14,9 @@ var _NoticeReference = require("./NoticeReference.js");
 
 var _NoticeReference2 = _interopRequireDefault(_NoticeReference);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 // noinspection JSUnusedGlobalSymbols
@@ -50,22 +34,14 @@ class SPUserNotice {
        * @type {NoticeReference}
        * @description noticeRef
        */
-      this.noticeRef = (0, _pvutils.getParametersValue)(
-        parameters,
-        "noticeRef",
-        SPUserNotice.defaultValues("noticeRef")
-      );
+      this.noticeRef = (0, _pvutils.getParametersValue)(parameters, "noticeRef", SPUserNotice.defaultValues("noticeRef"));
 
     if ("explicitText" in parameters) {
       /**
        * @type {string}
        * @description explicitText
        */
-      this.explicitText = (0, _pvutils.getParametersValue)(
-        parameters,
-        "explicitText",
-        SPUserNotice.defaultValues("explicitText")
-      );
+      this.explicitText = (0, _pvutils.getParametersValue)(parameters, "explicitText", SPUserNotice.defaultValues("explicitText"));
 
       this._explicitTextType = -1; // 0 - VISIBLESTRING, 1 - BMPSTRING, 2 - UTF8STRING
     }
@@ -87,9 +63,7 @@ class SPUserNotice {
       case "explicitText":
         return "";
       default:
-        throw new Error(
-          `Invalid member name for SPUserNotice class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for SPUserNotice class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -101,22 +75,11 @@ class SPUserNotice {
   static compareWithDefault(memberName, memberValue) {
     switch (memberName) {
       case "noticeRef":
-        return (
-          _NoticeReference2.default.compareWithDefault(
-            "organization",
-            memberValue.organization
-          ) &&
-          _NoticeReference2.default.compareWithDefault(
-            "noticeNumbers",
-            memberValue.noticeNumbers
-          )
-        );
+        return _NoticeReference2.default.compareWithDefault("organization", memberValue.organization) && _NoticeReference2.default.compareWithDefault("noticeNumbers", memberValue.noticeNumbers);
       case "explicitText":
         return memberValue === "";
       default:
-        throw new Error(
-          `Invalid member name for SPUserNotice class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for SPUserNotice class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -140,23 +103,14 @@ class SPUserNotice {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        _NoticeReference2.default.schema(
-          names.sPUserNotice || {
-            names: {
-              blockName: "",
-              optional: true,
-            },
-          }
-        ),
-        new asn1js.Choice({
-          value: [
-            new asn1js.VisibleString({ name: names.explicitText || "" }),
-            new asn1js.BmpString({ name: names.explicitText || "" }),
-            new asn1js.Utf8String({ name: names.explicitText || "" }),
-          ],
-        }),
-      ],
+      value: [_NoticeReference2.default.schema(names.sPUserNotice || {
+        names: {
+          blockName: "",
+          optional: true
+        }
+      }), new asn1js.Choice({
+        value: [new asn1js.VisibleString({ name: names.explicitText || "" }), new asn1js.BmpString({ name: names.explicitText || "" }), new asn1js.Utf8String({ name: names.explicitText || "" })]
+      })]
     });
   }
   //**********************************************************************************
@@ -166,32 +120,22 @@ class SPUserNotice {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      SPUserNotice.schema({
-        names: {
-          noticeRef: {
-            names: {
-              blockName: "noticeRef",
-            },
-          },
-          explicitText: "explicitText",
+    const asn1 = asn1js.compareSchema(schema, schema, SPUserNotice.schema({
+      names: {
+        noticeRef: {
+          names: {
+            blockName: "noticeRef"
+          }
         },
-      })
-    );
+        explicitText: "explicitText"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for SPUserNotice"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for SPUserNotice");
     //endregion
 
     //region Get internal properties from parsed schema
-    if ("noticeRef" in asn1.result)
-      this.noticeRef = new _NoticeReference2.default({
-        schema: asn1.result.noticeRef,
-      });
+    if ("noticeRef" in asn1.result) this.noticeRef = new _NoticeReference2.default({ schema: asn1.result.noticeRef });
 
     if ("explicitText" in asn1.result) {
       this.explicitText = asn1.result.explicitText.valueBlock.value;
@@ -210,9 +154,7 @@ class SPUserNotice {
           this._explicitTextType = 2;
           break;
         default:
-          throw new Error(
-            "Object's schema was not verified against input data for SPUserNotice"
-          );
+          throw new Error("Object's schema was not verified against input data for SPUserNotice");
       }
     }
     //endregion
@@ -231,9 +173,7 @@ class SPUserNotice {
     if ("explicitText" in this) {
       switch (this._explicitTextType) {
         case 0:
-          outputArray.push(
-            new asn1js.VisibleString({ value: this.explicitText })
-          );
+          outputArray.push(new asn1js.VisibleString({ value: this.explicitText }));
           break;
         case 1:
           outputArray.push(new asn1js.BmpString({ value: this.explicitText }));
@@ -242,16 +182,14 @@ class SPUserNotice {
           outputArray.push(new asn1js.Utf8String({ value: this.explicitText }));
           break;
         default:
-          throw new Error(
-            'The "explicitText" property was not correctly initialized'
-          );
+          throw new Error('The "explicitText" property was not correctly initialized');
       }
     }
     //endregion
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: outputArray,
+      value: outputArray
     });
     //endregion
   }

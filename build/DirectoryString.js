@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -10,21 +10,7 @@ var asn1js = _interopRequireWildcard(_asn1js);
 
 var _pvutils = require("pvutils");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class DirectoryString {
@@ -40,20 +26,12 @@ class DirectoryString {
      * @type {number}
      * @description 0 - TELETEXSTRING, 1 - PRINTABLESTRING, 2 - UNIVERSALSTRING, 3 - UTF8STRING, 4 - BMPSTRING
      */
-    this.type = (0, _pvutils.getParametersValue)(
-      parameters,
-      "type",
-      DirectoryString.defaultValues("type")
-    );
+    this.type = (0, _pvutils.getParametersValue)(parameters, "type", DirectoryString.defaultValues("type"));
     /**
      * @type {Array}
      * @description value
      */
-    this.value = (0, _pvutils.getParametersValue)(
-      parameters,
-      "value",
-      DirectoryString.defaultValues("value")
-    );
+    this.value = (0, _pvutils.getParametersValue)(parameters, "value", DirectoryString.defaultValues("value"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -72,9 +50,7 @@ class DirectoryString {
       case "value":
         return "";
       default:
-        throw new Error(
-          `Invalid member name for DirectoryString class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for DirectoryString class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -90,9 +66,7 @@ class DirectoryString {
       case "values":
         return memberValue === "";
       default:
-        throw new Error(
-          `Invalid member name for DirectoryString class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for DirectoryString class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -102,24 +76,11 @@ class DirectoryString {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      new asn1js.Choice({
-        value: [
-          new asn1js.TeletexString({ name: "directoryString" }),
-          new asn1js.PrintableString({ name: "directoryString" }),
-          new asn1js.UniversalString({ name: "directoryString" }),
-          new asn1js.Utf8String({ name: "directoryString" }),
-          new asn1js.BmpString({ name: "directoryString" }),
-        ],
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, new asn1js.Choice({
+      value: [new asn1js.TeletexString({ name: "directoryString" }), new asn1js.PrintableString({ name: "directoryString" }), new asn1js.UniversalString({ name: "directoryString" }), new asn1js.Utf8String({ name: "directoryString" }), new asn1js.BmpString({ name: "directoryString" })]
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for DirectoryString"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for DirectoryString");
     //endregion
 
     //region Get internal properties from parsed schema
@@ -149,9 +110,7 @@ class DirectoryString {
         this.type = 4;
         break;
       default:
-        throw new Error(
-          "Object's schema was not verified against input data for DirectoryString"
-        );
+        throw new Error("Object's schema was not verified against input data for DirectoryString");
     }
     //endregion
   }
@@ -186,9 +145,7 @@ class DirectoryString {
         result = new asn1js.BmpString({ value: this.value });
         break;
       default:
-        throw new Error(
-          'Incorrectly initialized data for "DirectoryString" class'
-        );
+        throw new Error('Incorrectly initialized data for "DirectoryString" class');
     }
     //endregion
 
@@ -204,7 +161,7 @@ class DirectoryString {
   toJSON() {
     return {
       value: this.value,
-      type: this.type,
+      type: this.type
     };
   }
   //**********************************************************************************

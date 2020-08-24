@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -20,25 +20,9 @@ var _CrlIdentifier = require("./CrlIdentifier.js");
 
 var _CrlIdentifier2 = _interopRequireDefault(_CrlIdentifier);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class CrlValidatedID {
@@ -54,11 +38,7 @@ class CrlValidatedID {
      * @type {OctetString|OtherHashAlgAndValue}
      * @description crlHash
      */
-    this.crlHash = (0, _pvutils.getParametersValue)(
-      parameters,
-      "crlHash",
-      CrlValidatedID.defaultValues("crlHash")
-    );
+    this.crlHash = (0, _pvutils.getParametersValue)(parameters, "crlHash", CrlValidatedID.defaultValues("crlHash"));
 
     this._crlHashType = -1; // 0 - OCTETSTRING, 1 - "OtherHashAlgAndValue"
 
@@ -67,11 +47,7 @@ class CrlValidatedID {
        * @type {CrlIdentifier}
        * @description crlIdentifier
        */
-      this.crlIdentifier = (0, _pvutils.getParametersValue)(
-        parameters,
-        "crlIdentifier",
-        CrlValidatedID.defaultValues("crlIdentifier")
-      );
+      this.crlIdentifier = (0, _pvutils.getParametersValue)(parameters, "crlIdentifier", CrlValidatedID.defaultValues("crlIdentifier"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -90,9 +66,7 @@ class CrlValidatedID {
       case "crlIdentifier":
         return new _CrlIdentifier2.default();
       default:
-        throw new Error(
-          `Invalid member name for CrlValidatedID class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CrlValidatedID class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -106,21 +80,9 @@ class CrlValidatedID {
       case "crlHash":
         return memberValue instanceof asn1js.Any;
       case "crlIdentifier":
-        return (
-          _CrlIdentifier2.default.compareWithDefault(
-            "crlissuer",
-            memberValue.crlissuer
-          ) &&
-          _CrlIdentifier2.default.compareWithDefault(
-            "crlIssuedTime",
-            memberValue.crlIssuedTime
-          ) &&
-          "crlNumber" in memberValue === false
-        );
+        return _CrlIdentifier2.default.compareWithDefault("crlissuer", memberValue.crlissuer) && _CrlIdentifier2.default.compareWithDefault("crlIssuedTime", memberValue.crlIssuedTime) && "crlNumber" in memberValue === false;
       default:
-        throw new Error(
-          `Invalid member name for CrlValidatedID class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CrlValidatedID class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -146,27 +108,17 @@ class CrlValidatedID {
     return new asn1js.Sequence({
       name: names.blockName || "",
       optional: names.optional || false,
-      value: [
-        new asn1js.Choice({
-          value: [
-            new asn1js.OctetString({ name: names.crlHashSimple || "" }),
-            _OtherHashAlgAndValue2.default.schema(
-              names.crlHashComplex || {
-                names: {
-                  blockName: "",
-                },
-              }
-            ),
-          ],
-        }),
-        _CrlIdentifier2.default.schema(
-          names.crlIdentifier || {
-            names: {
-              blockName: "",
-            },
+      value: [new asn1js.Choice({
+        value: [new asn1js.OctetString({ name: names.crlHashSimple || "" }), _OtherHashAlgAndValue2.default.schema(names.crlHashComplex || {
+          names: {
+            blockName: ""
           }
-        ),
-      ],
+        })]
+      }), _CrlIdentifier2.default.schema(names.crlIdentifier || {
+        names: {
+          blockName: ""
+        }
+      })]
     });
   }
   //**********************************************************************************
@@ -176,30 +128,23 @@ class CrlValidatedID {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      CrlValidatedID.schema({
-        names: {
-          crlHashSimple: "crlHash",
-          crlHashComplex: {
-            names: {
-              blockName: "crlHash",
-            },
-          },
-          crlIdentifier: {
-            names: {
-              blockName: "crlIdentifier",
-            },
-          },
+    const asn1 = asn1js.compareSchema(schema, schema, CrlValidatedID.schema({
+      names: {
+        crlHashSimple: "crlHash",
+        crlHashComplex: {
+          names: {
+            blockName: "crlHash"
+          }
         },
-      })
-    );
+        crlIdentifier: {
+          names: {
+            blockName: "crlIdentifier"
+          }
+        }
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for CrlValidatedID"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for CrlValidatedID");
     //endregion
 
     //region Get internal properties from parsed schema
@@ -207,16 +152,13 @@ class CrlValidatedID {
       this.crlHash = asn1.result.crlHash;
       this._crlHashType = 0;
     } else {
-      this.crlHash = new _OtherHashAlgAndValue2.default({
-        schema: asn1.result.crlHash,
-      });
+      this.crlHash = new _OtherHashAlgAndValue2.default({ schema: asn1.result.crlHash });
       this._crlHashType = 1;
     }
 
-    if ("crlIdentifier" in asn1.result)
-      this.crlIdentifier = new _CrlIdentifier2.default({
-        schema: asn1.result.crlIdentifier,
-      });
+    if ("crlIdentifier" in asn1.result) this.crlIdentifier = new _CrlIdentifier2.default({
+      schema: asn1.result.crlIdentifier
+    });
     //endregion
   }
   //**********************************************************************************
@@ -225,24 +167,21 @@ class CrlValidatedID {
    * @returns {Object} asn1js object
    */
   toSchema() {
-    if (this._crlHashType === -1)
-      throw new Error('Incorrectly initialized "CrlValidatedID" class');
+    if (this._crlHashType === -1) throw new Error('Incorrectly initialized "CrlValidatedID" class');
 
     //region Create array for output sequence
     const outputArray = [];
 
     if (this._crlHashType === 0)
       // OCTETSTRING
-      outputArray.push(this.crlHash);
-    else outputArray.push(this.crlHash.toSchema());
+      outputArray.push(this.crlHash);else outputArray.push(this.crlHash.toSchema());
 
-    if ("crlIdentifier" in this)
-      outputArray.push(this.crlIdentifier.toSchema());
+    if ("crlIdentifier" in this) outputArray.push(this.crlIdentifier.toSchema());
     //endregion
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: outputArray,
+      value: outputArray
     });
     //endregion
   }
@@ -253,11 +192,10 @@ class CrlValidatedID {
    */
   toJSON() {
     const _object = {
-      crlHash: this.crlHash.toJSON(),
+      crlHash: this.crlHash.toJSON()
     };
 
-    if ("crlIdentifier" in this)
-      _object.crlIdentifier = this.crlIdentifier.toJSON();
+    if ("crlIdentifier" in this) _object.crlIdentifier = this.crlIdentifier.toJSON();
 
     return _object;
   }
@@ -283,33 +221,26 @@ class CrlValidatedID {
 
     if ("crl" in parameters) crl = parameters.crl;
     // in_window.org.pkijs.simpl.CRL
-    else
-      return Promise.reject(
-        'Parameter "crl" is mandatory for making "CrlValidatedID"'
-      );
+    else return Promise.reject('Parameter "crl" is mandatory for making "CrlValidatedID"');
     //endregion
 
     //region Get a "crypto" extension
     const crypto = (0, _pkijs.getCrypto)();
-    if (typeof crypto === "undefined")
-      return Promise.reject("Unable to create WebCrypto object");
+    if (typeof crypto === "undefined") return Promise.reject("Unable to create WebCrypto object");
     //endregion
 
     //region Fill correct value for "hashIndAlgorithm"
     sequence = sequence.then(() => {
       if (hashAlgorithm.toUpperCase() !== "SHA-1") {
         const oid = (0, _pkijs.getOIDByAlgorithm)({ name: hashAlgorithm });
-        if (oid === "")
-          return Promise.reject(
-            `Incorrect hashing algorithm: ${hashAlgorithm}`
-          );
+        if (oid === "") return Promise.reject(`Incorrect hashing algorithm: ${hashAlgorithm}`);
 
         _this._crlHashType = 1;
         _this.crlHash = new _OtherHashAlgAndValue2.default({
           hashAlgorithm: new _pkijs.AlgorithmIdentifier({
             algorithmId: oid,
-            algorithmParams: new asn1js.Null(),
-          }),
+            algorithmParams: new asn1js.Null()
+          })
         });
       } else _this._crlHashType = 0;
 
@@ -318,28 +249,16 @@ class CrlValidatedID {
     //endregion
 
     //region Create all remaining attributes
-    sequence = sequence
-      .then(
-        () =>
-          crypto.digest({ name: hashAlgorithm }, crl.toSchema().toBER(false)),
-        (error) => Promise.reject(error)
-      )
-      .then(
-        (result) => {
-          if (_this._crlHashType === 0)
-            _this.crlHash = new asn1js.OctetString({ valueHex: result });
-          else
-            _this.crlHash.hashValue = new asn1js.OctetString({
-              valueHex: result,
-            });
+    sequence = sequence.then(() => crypto.digest({ name: hashAlgorithm }, crl.toSchema().toBER(false)), error => Promise.reject(error)).then(result => {
+      if (_this._crlHashType === 0) _this.crlHash = new asn1js.OctetString({ valueHex: result });else _this.crlHash.hashValue = new asn1js.OctetString({
+        valueHex: result
+      });
 
-          _this.crlIdentifier = new _CrlIdentifier2.default();
-          _this.crlIdentifier.fillValues({
-            crl,
-          });
-        },
-        (error) => Promise.reject(error)
-      );
+      _this.crlIdentifier = new _CrlIdentifier2.default();
+      _this.crlIdentifier.fillValues({
+        crl
+      });
+    }, error => Promise.reject(error));
     //endregion
 
     return sequence;

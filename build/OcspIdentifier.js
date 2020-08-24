@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -12,21 +12,7 @@ var _pvutils = require("pvutils");
 
 var _pkijs = require("pkijs");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class OcspIdentifier {
@@ -42,20 +28,12 @@ class OcspIdentifier {
      * @type {RelativeDistinguishedNames|OctetString|Any}
      * @description ocspResponderID
      */
-    this.ocspResponderID = (0, _pvutils.getParametersValue)(
-      parameters,
-      "ocspResponderID",
-      OcspIdentifier.defaultValues("ocspResponderID")
-    );
+    this.ocspResponderID = (0, _pvutils.getParametersValue)(parameters, "ocspResponderID", OcspIdentifier.defaultValues("ocspResponderID"));
     /**
      * @type {Date}
      * @description producedAt
      */
-    this.producedAt = (0, _pvutils.getParametersValue)(
-      parameters,
-      "producedAt",
-      OcspIdentifier.defaultValues("producedAt")
-    );
+    this.producedAt = (0, _pvutils.getParametersValue)(parameters, "producedAt", OcspIdentifier.defaultValues("producedAt"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -74,9 +52,7 @@ class OcspIdentifier {
       case "producedAt":
         return new Date(0, 0, 0);
       default:
-        throw new Error(
-          `Invalid member name for OcspIdentifier class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OcspIdentifier class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -92,9 +68,7 @@ class OcspIdentifier {
       case "producedAt":
         return memberValue === OcspIdentifier.defaultValues(memberName);
       default:
-        throw new Error(
-          `Invalid member name for OcspIdentifier class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OcspIdentifier class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -119,29 +93,23 @@ class OcspIdentifier {
     return new asn1js.Sequence({
       name: names.blockName || "",
       optional: names.optional || false,
-      value: [
-        new asn1js.Choice({
-          value: [
-            new asn1js.Constructed({
-              name: names.ocspResponderID || "",
-              idBlock: {
-                tagClass: 3, // CONTEXT-SPECIFIC
-                tagNumber: 1, // [1]
-              },
-              value: [_pkijs.RelativeDistinguishedNames.schema()],
-            }),
-            new asn1js.Constructed({
-              name: names.ocspResponderID || "",
-              idBlock: {
-                tagClass: 3, // CONTEXT-SPECIFIC
-                tagNumber: 2, // [2]
-              },
-              value: [new asn1js.OctetString()],
-            }),
-          ],
-        }),
-        new asn1js.GeneralizedTime({ name: names.producedAt || "" }),
-      ],
+      value: [new asn1js.Choice({
+        value: [new asn1js.Constructed({
+          name: names.ocspResponderID || "",
+          idBlock: {
+            tagClass: 3, // CONTEXT-SPECIFIC
+            tagNumber: 1 // [1]
+          },
+          value: [_pkijs.RelativeDistinguishedNames.schema()]
+        }), new asn1js.Constructed({
+          name: names.ocspResponderID || "",
+          idBlock: {
+            tagClass: 3, // CONTEXT-SPECIFIC
+            tagNumber: 2 // [2]
+          },
+          value: [new asn1js.OctetString()]
+        })]
+      }), new asn1js.GeneralizedTime({ name: names.producedAt || "" })]
     });
   }
   //**********************************************************************************
@@ -151,29 +119,20 @@ class OcspIdentifier {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      OcspIdentifier.schema({
-        names: {
-          ocspResponderID: "ocspResponderID",
-          producedAt: "producedAt",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, OcspIdentifier.schema({
+      names: {
+        ocspResponderID: "ocspResponderID",
+        producedAt: "producedAt"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for OcspIdentifier"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for OcspIdentifier");
     //endregion
 
     //region Get internal properties from parsed schema
-    if (asn1.result.ocspResponderID.idBlock.tagNumber === 1)
-      this.ocspResponderID = new _pkijs.RelativeDistinguishedNames({
-        schema: asn1.result.ocspResponderID.valueBlock.value[0],
-      });
-    else this.ocspResponderID = asn1.result.ocspResponderID.valueBlock.value[0]; // OCTETSTRING
+    if (asn1.result.ocspResponderID.idBlock.tagNumber === 1) this.ocspResponderID = new _pkijs.RelativeDistinguishedNames({
+      schema: asn1.result.ocspResponderID.valueBlock.value[0]
+    });else this.ocspResponderID = asn1.result.ocspResponderID.valueBlock.value[0]; // OCTETSTRING
 
     this.producedAt = asn1.result.producedAt.toDate();
     //endregion
@@ -184,24 +143,19 @@ class OcspIdentifier {
    * @returns {Object} asn1js object
    */
   toSchema() {
-    if (this.ocspResponderID instanceof asn1js.Any)
-      throw new Error('Incorrectly initialized "OcspIdentifier" class');
+    if (this.ocspResponderID instanceof asn1js.Any) throw new Error('Incorrectly initialized "OcspIdentifier" class');
 
     //region Create array for output sequence
     const outputArray = [];
 
-    if (this.ocspResponderID instanceof _pkijs.RelativeDistinguishedNames)
-      outputArray.push(this.ocspResponderID.toSchema());
-    else outputArray.push(this.ocspResponderID);
+    if (this.ocspResponderID instanceof _pkijs.RelativeDistinguishedNames) outputArray.push(this.ocspResponderID.toSchema());else outputArray.push(this.ocspResponderID);
 
-    outputArray.push(
-      new asn1js.GeneralizedTime({ valueDate: this.producedAt })
-    );
+    outputArray.push(new asn1js.GeneralizedTime({ valueDate: this.producedAt }));
     //endregion
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: outputArray,
+      value: outputArray
     });
     //endregion
   }
@@ -211,12 +165,11 @@ class OcspIdentifier {
    * @returns {Object}
    */
   toJSON() {
-    if (this.ocspResponderID instanceof asn1js.Any)
-      throw new Error('Incorrectly initialized "OcspIdentifier" class');
+    if (this.ocspResponderID instanceof asn1js.Any) throw new Error('Incorrectly initialized "OcspIdentifier" class');
 
     return {
       ocspResponderID: this.ocspResponderID.toJSON(),
-      producedAt: this.producedAt,
+      producedAt: this.producedAt
     };
   }
   //**********************************************************************************
@@ -232,41 +185,31 @@ class OcspIdentifier {
     //region Check input parameters
     if ("ocspResponse" in parameters) ocspResponse = parameters.ocspResponse;
     // in_window.org.pkijs.simpl.OCSP_RESPONSE
-    else
-      throw new Error(
-        'Parameter "ocspResponse" is mandatory for making "OcspResponsesID"'
-      );
+    else throw new Error('Parameter "ocspResponse" is mandatory for making "OcspResponsesID"');
     //endregion
 
     //region Fill internal fields
     if ("responseBytes" in ocspResponse) {
       if (ocspResponse.responseBytes.responseType === "1.3.6.1.5.5.7.48.1.1") {
         // id-pkix-ocsp-basic
-        const asn1 = asn1js.fromBER(
-          ocspResponse.responseBytes.response.valueBlock.valueHex
-        );
-        const basicResponse = new _pkijs.BasicOCSPResponse({
-          schema: asn1.result,
-        });
+        const asn1 = asn1js.fromBER(ocspResponse.responseBytes.response.valueBlock.valueHex);
+        const basicResponse = new _pkijs.BasicOCSPResponse({ schema: asn1.result });
 
-        if (
-          basicResponse.tbsResponseData.responderID instanceof
-          _pkijs.RelativeDistinguishedNames
-        ) {
+        if (basicResponse.tbsResponseData.responderID instanceof _pkijs.RelativeDistinguishedNames) {
           this.ocspResponderID = new asn1js.Constructed({
             idBlock: {
               tagClass: 3, // CONTEXT-SPECIFIC
-              tagNumber: 1, // [1]
+              tagNumber: 1 // [1]
             },
-            value: [basicResponse.tbsResponseData.responderID.toSchema()],
+            value: [basicResponse.tbsResponseData.responderID.toSchema()]
           });
         } else {
           this.ocspResponderID = new asn1js.Constructed({
             idBlock: {
               tagClass: 3, // CONTEXT-SPECIFIC
-              tagNumber: 2, // [2]
+              tagNumber: 2 // [2]
             },
-            value: [basicResponse.tbsResponseData.responderID],
+            value: [basicResponse.tbsResponseData.responderID]
           });
         }
 

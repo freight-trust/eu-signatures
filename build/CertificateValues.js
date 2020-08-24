@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -12,21 +12,7 @@ var _pvutils = require("pvutils");
 
 var _pkijs = require("pkijs");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 // noinspection JSUnusedGlobalSymbols
@@ -43,11 +29,7 @@ class CertificateValues {
      * @type {Array.<Certificate>}
      * @description certificateValues
      */
-    this.certificateValues = (0, _pvutils.getParametersValue)(
-      parameters,
-      "certificateValues",
-      CertificateValues.defaultValues("certificateValues")
-    );
+    this.certificateValues = (0, _pvutils.getParametersValue)(parameters, "certificateValues", CertificateValues.defaultValues("certificateValues"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -64,9 +46,7 @@ class CertificateValues {
       case "certificateValues":
         return [];
       default:
-        throw new Error(
-          `Invalid member name for CertificateValues class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CertificateValues class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -80,9 +60,7 @@ class CertificateValues {
       case "certificateValues":
         return memberValue.length === 0;
       default:
-        throw new Error(
-          `Invalid member name for CertificateValues class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CertificateValues class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -105,12 +83,10 @@ class CertificateValues {
     return new asn1js.Sequence({
       name: names.blockName || "",
       optional: names.optional || false,
-      value: [
-        new asn1js.Repeated({
-          name: names.certificateValues || "",
-          value: _pkijs.Certificate.schema(),
-        }),
-      ],
+      value: [new asn1js.Repeated({
+        name: names.certificateValues || "",
+        value: _pkijs.Certificate.schema()
+      })]
     });
   }
   //**********************************************************************************
@@ -120,27 +96,17 @@ class CertificateValues {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      CertificateValues.schema({
-        names: {
-          certificateValues: "certificateValues",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, CertificateValues.schema({
+      names: {
+        certificateValues: "certificateValues"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for CertificateValues"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for CertificateValues");
     //endregion
 
     //region Get internal properties from parsed schema
-    this.certificateValues = Array.from(
-      asn1.result.certificateValues,
-      (element) => new _pkijs.Certificate({ schema: element })
-    );
+    this.certificateValues = Array.from(asn1.result.certificateValues, element => new _pkijs.Certificate({ schema: element }));
     //endregion
   }
   //**********************************************************************************
@@ -151,9 +117,7 @@ class CertificateValues {
   toSchema() {
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: Array.from(this.certificateValues, (element) =>
-        element.toSchema()
-      ),
+      value: Array.from(this.certificateValues, element => element.toSchema())
     });
     //endregion
   }
@@ -164,17 +128,14 @@ class CertificateValues {
    */
   toJSON() {
     return {
-      certificateValues: Array.from(this.certificateValues, (element) =>
-        element.toJSON()
-      ),
+      certificateValues: Array.from(this.certificateValues, element => element.toJSON())
     };
   }
   //**********************************************************************************
   fillValues(cmsSigned) {
     if ("certificates" in cmsSigned) {
       for (let i = 0; i < cmsSigned.certificates.length; i++) {
-        if (cmsSigned.certificates[i] instanceof _pkijs.Certificate)
-          this.certificateValues.push(cmsSigned.certificates[i]);
+        if (cmsSigned.certificates[i] instanceof _pkijs.Certificate) this.certificateValues.push(cmsSigned.certificates[i]);
       }
     }
   }
@@ -182,7 +143,7 @@ class CertificateValues {
   makeAttribute() {
     return new _pkijs.Attribute({
       type: "1.2.840.113549.1.9.16.2.23",
-      values: [this.toSchema()],
+      values: [this.toSchema()]
     });
   }
   //**********************************************************************************

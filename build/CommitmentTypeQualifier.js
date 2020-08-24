@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -10,21 +10,7 @@ var asn1js = _interopRequireWildcard(_asn1js);
 
 var _pvutils = require("pvutils");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class CommitmentTypeQualifier {
@@ -40,20 +26,12 @@ class CommitmentTypeQualifier {
      * @type {string}
      * @description commitmentTypeIdentifier
      */
-    this.commitmentTypeIdentifier = (0, _pvutils.getParametersValue)(
-      parameters,
-      "commitmentTypeIdentifier",
-      CommitmentTypeQualifier.defaultValues("commitmentTypeIdentifier")
-    );
+    this.commitmentTypeIdentifier = (0, _pvutils.getParametersValue)(parameters, "commitmentTypeIdentifier", CommitmentTypeQualifier.defaultValues("commitmentTypeIdentifier"));
     /**
      * @type {*}
      * @description qualifier
      */
-    this.qualifier = (0, _pvutils.getParametersValue)(
-      parameters,
-      "qualifier",
-      CommitmentTypeQualifier.defaultValues("qualifier")
-    );
+    this.qualifier = (0, _pvutils.getParametersValue)(parameters, "qualifier", CommitmentTypeQualifier.defaultValues("qualifier"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -72,9 +50,7 @@ class CommitmentTypeQualifier {
       case "qualifier":
         return new asn1js.Any();
       default:
-        throw new Error(
-          `Invalid member name for CommitmentTypeQualifier class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CommitmentTypeQualifier class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -90,9 +66,7 @@ class CommitmentTypeQualifier {
       case "qualifier":
         return memberValue instanceof asn1js.Any;
       default:
-        throw new Error(
-          `Invalid member name for CommitmentTypeQualifier class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CommitmentTypeQualifier class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -117,14 +91,11 @@ class CommitmentTypeQualifier {
     return new asn1js.Sequence({
       name: names.blockName || "",
       optional: names.optional || false,
-      value: [
-        new asn1js.ObjectIdentifier({
-          name: names.commitmentTypeIdentifier || "",
-        }),
-        new asn1js.Any({
-          name: names.qualifier || "",
-        }),
-      ],
+      value: [new asn1js.ObjectIdentifier({
+        name: names.commitmentTypeIdentifier || ""
+      }), new asn1js.Any({
+        name: names.qualifier || ""
+      })]
     });
   }
   //**********************************************************************************
@@ -134,21 +105,14 @@ class CommitmentTypeQualifier {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      CommitmentTypeQualifier.schema({
-        names: {
-          commitmentTypeIdentifier: "commitmentTypeIdentifier",
-          qualifier: "qualifier",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, CommitmentTypeQualifier.schema({
+      names: {
+        commitmentTypeIdentifier: "commitmentTypeIdentifier",
+        qualifier: "qualifier"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for CommitmentTypeQualifier"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for CommitmentTypeQualifier");
     //endregion
 
     //region Get internal properties from parsed schema
@@ -162,15 +126,11 @@ class CommitmentTypeQualifier {
    * @returns {Object} asn1js object
    */
   toSchema() {
-    if (CommitmentTypeQualifier.compareWithDefault("qualifier", this.qualifier))
-      throw new Error('Member "qualifier" was not correctly initialized');
+    if (CommitmentTypeQualifier.compareWithDefault("qualifier", this.qualifier)) throw new Error('Member "qualifier" was not correctly initialized');
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: [
-        new asn1js.ObjectIdentifier({ value: this.commitmentTypeIdentifier }),
-        this.qualifier,
-      ],
+      value: [new asn1js.ObjectIdentifier({ value: this.commitmentTypeIdentifier }), this.qualifier]
     });
     //endregion
   }
@@ -180,12 +140,11 @@ class CommitmentTypeQualifier {
    * @returns {Object}
    */
   toJSON() {
-    if (CommitmentTypeQualifier.compareWithDefault("qualifier", this.qualifier))
-      throw new Error('Member "qualifier" was not correctly initialized');
+    if (CommitmentTypeQualifier.compareWithDefault("qualifier", this.qualifier)) throw new Error('Member "qualifier" was not correctly initialized');
 
     return {
       commitmentTypeIdentifier: this.commitmentTypeIdentifier,
-      qualifier: this.qualifier.toJSON(),
+      qualifier: this.qualifier.toJSON()
     };
   }
   //**********************************************************************************

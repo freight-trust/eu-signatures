@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -10,21 +10,7 @@ var asn1js = _interopRequireWildcard(_asn1js);
 
 var _pvutils = require("pvutils");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 // noinspection JSUnusedGlobalSymbols
@@ -42,21 +28,13 @@ class ContentHints {
        * @type {string}
        * @description contentDescription
        */
-      this.contentDescription = (0, _pvutils.getParametersValue)(
-        parameters,
-        "contentDescription",
-        ContentHints.defaultValues("contentDescription")
-      );
+      this.contentDescription = (0, _pvutils.getParametersValue)(parameters, "contentDescription", ContentHints.defaultValues("contentDescription"));
 
     /**
      * @type {string}
      * @description contentType
      */
-    this.contentType = (0, _pvutils.getParametersValue)(
-      parameters,
-      "contentType",
-      ContentHints.defaultValues("contentType")
-    );
+    this.contentType = (0, _pvutils.getParametersValue)(parameters, "contentType", ContentHints.defaultValues("contentType"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -74,9 +52,7 @@ class ContentHints {
       case "contentType":
         return "";
       default:
-        throw new Error(
-          `Invalid member name for ContentHints class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for ContentHints class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -91,9 +67,7 @@ class ContentHints {
       case "contentType":
         return memberValue === "";
       default:
-        throw new Error(
-          `Invalid member name for ContentHints class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for ContentHints class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -117,13 +91,10 @@ class ContentHints {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        new asn1js.Utf8String({
-          name: names.contentDescription || "",
-          optinal: true,
-        }),
-        new asn1js.ObjectIdentifier({ name: names.contentType || "" }),
-      ],
+      value: [new asn1js.Utf8String({
+        name: names.contentDescription || "",
+        optinal: true
+      }), new asn1js.ObjectIdentifier({ name: names.contentType || "" })]
     });
   }
   //**********************************************************************************
@@ -133,26 +104,18 @@ class ContentHints {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      ContentHints.schema({
-        names: {
-          contentDescription: "contentDescription",
-          contentType: "contentType",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, ContentHints.schema({
+      names: {
+        contentDescription: "contentDescription",
+        contentType: "contentType"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for ContentHints"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for ContentHints");
     //endregion
 
     //region Get internal properties from parsed schema
-    if ("contentDescription" in asn1.result)
-      this.contentDescription = asn1.result.contentDescription.valueBlock.value;
+    if ("contentDescription" in asn1.result) this.contentDescription = asn1.result.contentDescription.valueBlock.value;
 
     // noinspection JSUnusedGlobalSymbols
     this.contentType = asn1.result.contentType.valueBlock.toString();
@@ -166,10 +129,7 @@ class ContentHints {
   toSchema() {
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: [
-        new asn1js.Utf8String({ value: this.contentType }),
-        new asn1js.ObjectIdentifier({ value: this.contentType }),
-      ],
+      value: [new asn1js.Utf8String({ value: this.contentType }), new asn1js.ObjectIdentifier({ value: this.contentType })]
     });
     //endregion
   }
@@ -181,7 +141,7 @@ class ContentHints {
   toJSON() {
     return {
       contentDescription: this.contentDescription,
-      contentType: this.contentType,
+      contentType: this.contentType
     };
   }
   //**********************************************************************************

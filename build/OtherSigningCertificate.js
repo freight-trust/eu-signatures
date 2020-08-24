@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -16,25 +16,9 @@ var _OtherCertID = require("./OtherCertID.js");
 
 var _OtherCertID2 = _interopRequireDefault(_OtherCertID);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 // noinspection JSUnusedGlobalSymbols
@@ -51,22 +35,14 @@ class OtherSigningCertificate {
      * @type {Array.<OtherCertID>}
      * @description certs
      */
-    this.certs = (0, _pvutils.getParametersValue)(
-      parameters,
-      "certs",
-      OtherSigningCertificate.defaultValues("certs")
-    );
+    this.certs = (0, _pvutils.getParametersValue)(parameters, "certs", OtherSigningCertificate.defaultValues("certs"));
 
     if ("policies" in parameters)
       /**
        * @type {Array.<PolicyInformation>}
        * @description policies
        */
-      this.policies = (0, _pvutils.getParametersValue)(
-        parameters,
-        "policies",
-        OtherSigningCertificate.defaultValues("policies")
-      );
+      this.policies = (0, _pvutils.getParametersValue)(parameters, "policies", OtherSigningCertificate.defaultValues("policies"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -84,9 +60,7 @@ class OtherSigningCertificate {
       case "policies":
         return [];
       default:
-        throw new Error(
-          `Invalid member name for OtherSigningCertificate class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OtherSigningCertificate class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -101,9 +75,7 @@ class OtherSigningCertificate {
       case "policies":
         return memberValue.length === 0;
       default:
-        throw new Error(
-          `Invalid member name for OtherSigningCertificate class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OtherSigningCertificate class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -129,24 +101,17 @@ class OtherSigningCertificate {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        new asn1js.Sequence({
-          value: [
-            new asn1js.Repeated({
-              name: names.certs || "",
-              value: _OtherCertID2.default.schema(),
-            }),
-          ],
-        }),
-        new asn1js.Sequence({
-          value: [
-            new asn1js.Repeated({
-              name: names.policies || "",
-              value: _pkijs.PolicyInformation.schema(),
-            }),
-          ],
-        }),
-      ],
+      value: [new asn1js.Sequence({
+        value: [new asn1js.Repeated({
+          name: names.certs || "",
+          value: _OtherCertID2.default.schema()
+        })]
+      }), new asn1js.Sequence({
+        value: [new asn1js.Repeated({
+          name: names.policies || "",
+          value: _pkijs.PolicyInformation.schema()
+        })]
+      })]
     });
   }
   //**********************************************************************************
@@ -156,38 +121,24 @@ class OtherSigningCertificate {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      OtherSigningCertificate.schema({
-        names: {
-          certs: "certs",
-          policies: "policies",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, OtherSigningCertificate.schema({
+      names: {
+        certs: "certs",
+        policies: "policies"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for OtherSigningCertificate"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for OtherSigningCertificate");
     //endregion
 
     //region Get internal properties from parsed schema
     //region certs
     // noinspection JSUnusedGlobalSymbols
-    this.certs = Array.from(
-      asn1.result.certs,
-      (element) => new _OtherCertID2.default({ schema: element })
-    );
+    this.certs = Array.from(asn1.result.certs, element => new _OtherCertID2.default({ schema: element }));
     //endregion
 
     //region policies
-    if ("policies" in asn1.result)
-      this.policies = Array.from(
-        asn1.result.policies,
-        (element) => new _pkijs.PolicyInformation({ schema: element })
-      );
+    if ("policies" in asn1.result) this.policies = Array.from(asn1.result.policies, element => new _pkijs.PolicyInformation({ schema: element }));
     //endregion
     //endregion
   }
@@ -198,26 +149,22 @@ class OtherSigningCertificate {
    */
   toSchema() {
     //region Create array for output sequence
-    const outputArray = [
-      new asn1js.Sequence({
-        value: Array.from(this.certs, (element) => element.toSchema()),
-      }),
-    ];
+    const outputArray = [new asn1js.Sequence({
+      value: Array.from(this.certs, element => element.toSchema())
+    })];
 
     //region policies
     if ("policies" in this) {
-      outputArray.push(
-        new asn1js.Sequence({
-          value: Array.from(this.policies, (element) => element.toSchema()),
-        })
-      );
+      outputArray.push(new asn1js.Sequence({
+        value: Array.from(this.policies, element => element.toSchema())
+      }));
     }
     //endregion
     //endregion
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: outputArray,
+      value: outputArray
     });
     //endregion
   }
@@ -228,14 +175,11 @@ class OtherSigningCertificate {
    */
   toJSON() {
     const _object = {
-      certs: Array.from(this.certs, (element) => element.toJSON()),
+      certs: Array.from(this.certs, element => element.toJSON())
     };
 
     //region policies
-    if ("policies" in this)
-      _object.policies = Array.from(this.policies, (element) =>
-        element.toJSON()
-      );
+    if ("policies" in this) _object.policies = Array.from(this.policies, element => element.toJSON());
     //endregion
 
     return _object;

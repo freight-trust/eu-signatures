@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _pkijs = require("pkijs");
@@ -30,9 +30,7 @@ var _OcspListID = require("./OcspListID.js");
 
 var _OcspListID2 = _interopRequireDefault(_OcspListID);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //**************************************************************************************
 // noinspection JSUnusedGlobalSymbols
@@ -74,75 +72,58 @@ class CompleteRevocationReferences extends _CompleteRevocationRefs2.default {
 
     //region Append references for all CRLs
     if ("crls" in cmsSigned) {
-      sequence = sequence.then(
-        () => {
-          const promises = [];
+      sequence = sequence.then(() => {
+        const promises = [];
 
-          for (let i = 0; i < cmsSigned.crls.length; i++) {
-            crlRefs.push(new _CrlValidatedID2.default());
-            promises.push(
-              crlRefs[crlRefs.length - 1].fillValues({
-                hashAlgorithm,
-                crl: cmsSigned.crls[i],
-              })
-            );
-          }
+        for (let i = 0; i < cmsSigned.crls.length; i++) {
+          crlRefs.push(new _CrlValidatedID2.default());
+          promises.push(crlRefs[crlRefs.length - 1].fillValues({
+            hashAlgorithm,
+            crl: cmsSigned.crls[i]
+          }));
+        }
 
-          return Promise.all(promises);
-        },
-        (error) => Promise.reject(error)
-      );
+        return Promise.all(promises);
+      }, error => Promise.reject(error));
     }
     //endregion
 
     //region Append references for all OCSPs
     if (ocspResponses.length) {
-      sequence = sequence.then(
-        () => {
-          const promises = [];
+      sequence = sequence.then(() => {
+        const promises = [];
 
-          for (let i = 0; i < ocspResponses.length; i++) {
-            ocspRefs.push(new _OcspResponsesID2.default());
-            promises.push(
-              ocspRefs[ocspRefs.length - 1].fillValues({
-                hashAlgorithm,
-                ocspResponse: ocspResponses[i],
-              })
-            );
-          }
+        for (let i = 0; i < ocspResponses.length; i++) {
+          ocspRefs.push(new _OcspResponsesID2.default());
+          promises.push(ocspRefs[ocspRefs.length - 1].fillValues({
+            hashAlgorithm,
+            ocspResponse: ocspResponses[i]
+          }));
+        }
 
-          return Promise.all(promises);
-        },
-        (error) => Promise.reject(error)
-      );
+        return Promise.all(promises);
+      }, error => Promise.reject(error));
     }
     //endregion
 
     //region Push all values "in place"
-    return sequence.then(
-      () => {
-        if (crlRefs.length || ocspRefs.length) {
-          _this.completeRevocationRefs.push(new _CrlOcspRef2.default());
+    return sequence.then(() => {
+      if (crlRefs.length || ocspRefs.length) {
+        _this.completeRevocationRefs.push(new _CrlOcspRef2.default());
 
-          if (crlRefs.length) {
-            _this.completeRevocationRefs[
-              _this.completeRevocationRefs.length - 1
-            ].crlids = new _CRLListID2.default({
-              crls: crlRefs,
-            });
-          }
-
-          if (ocspRefs.length) {
-            _this.completeRevocationRefs[
-              _this.completeRevocationRefs.length - 1
-            ].ocspids = new _OcspListID2.default({
-              ocspResponses: ocspRefs,
-            });
-          }
+        if (crlRefs.length) {
+          _this.completeRevocationRefs[_this.completeRevocationRefs.length - 1].crlids = new _CRLListID2.default({
+            crls: crlRefs
+          });
         }
-      },
-      (error) => Promise.reject(error)
-    );
+
+        if (ocspRefs.length) {
+          _this.completeRevocationRefs[_this.completeRevocationRefs.length - 1].ocspids = new _OcspListID2.default({
+            ocspResponses: ocspRefs
+          });
+        }
+      }
+    }, error => Promise.reject(error));
     //endregion
   }
   //**********************************************************************************
@@ -155,7 +136,7 @@ class CompleteRevocationReferences extends _CompleteRevocationRefs2.default {
     //region Create and return attribute
     return new _pkijs.Attribute({
       type: "1.2.840.113549.1.9.16.2.22",
-      values: [this.toSchema()],
+      values: [this.toSchema()]
     });
     //endregion
   }

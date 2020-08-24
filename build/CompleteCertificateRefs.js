@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -14,25 +14,9 @@ var _OtherCertID = require("./OtherCertID.js");
 
 var _OtherCertID2 = _interopRequireDefault(_OtherCertID);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class CompleteCertificateRefs {
@@ -48,11 +32,7 @@ class CompleteCertificateRefs {
      * @type {Array.<OtherCertID>}
      * @description completeCertificateRefs
      */
-    this.completeCertificateRefs = (0, _pvutils.getParametersValue)(
-      parameters,
-      "completeCertificateRefs",
-      CompleteCertificateRefs.defaultValues("completeCertificateRefs")
-    );
+    this.completeCertificateRefs = (0, _pvutils.getParametersValue)(parameters, "completeCertificateRefs", CompleteCertificateRefs.defaultValues("completeCertificateRefs"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -69,9 +49,7 @@ class CompleteCertificateRefs {
       case "completeCertificateRefs":
         return [];
       default:
-        throw new Error(
-          `Invalid member name for CompleteCertificateRefs class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CompleteCertificateRefs class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -85,9 +63,7 @@ class CompleteCertificateRefs {
       case "completeCertificateRefs":
         return memberValue.length === 0;
       default:
-        throw new Error(
-          `Invalid member name for CompleteCertificateRefs class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CompleteCertificateRefs class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -108,12 +84,10 @@ class CompleteCertificateRefs {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        new asn1js.Repeated({
-          name: names.completeCertificateRefs || "",
-          value: _OtherCertID2.default.schema(),
-        }),
-      ],
+      value: [new asn1js.Repeated({
+        name: names.completeCertificateRefs || "",
+        value: _OtherCertID2.default.schema()
+      })]
     });
   }
   //**********************************************************************************
@@ -123,27 +97,17 @@ class CompleteCertificateRefs {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      CompleteCertificateRefs.schema({
-        names: {
-          completeCertificateRefs: "completeCertificateRefs",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, CompleteCertificateRefs.schema({
+      names: {
+        completeCertificateRefs: "completeCertificateRefs"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for CompleteCertificateRefs"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for CompleteCertificateRefs");
     //endregion
 
     //region Get internal properties from parsed schema
-    this.completeCertificateRefs = Array.from(
-      asn1.result.completeCertificateRefs,
-      (element) => new _OtherCertID2.default({ schema: element })
-    );
+    this.completeCertificateRefs = Array.from(asn1.result.completeCertificateRefs, element => new _OtherCertID2.default({ schema: element }));
     //endregion
   }
   //**********************************************************************************
@@ -154,9 +118,7 @@ class CompleteCertificateRefs {
   toSchema() {
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: Array.from(this.completeCertificateRefs, (element) =>
-        element.toSchema()
-      ),
+      value: Array.from(this.completeCertificateRefs, element => element.toSchema())
     });
     //endregion
   }
@@ -167,10 +129,7 @@ class CompleteCertificateRefs {
    */
   toJSON() {
     return {
-      completeCertificateRefs: Array.from(
-        this.completeCertificateRefs,
-        (element) => element.toJSON()
-      ),
+      completeCertificateRefs: Array.from(this.completeCertificateRefs, element => element.toJSON())
     };
   }
   //**********************************************************************************

@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -14,25 +14,9 @@ var _CrlOcspRef = require("./CrlOcspRef.js");
 
 var _CrlOcspRef2 = _interopRequireDefault(_CrlOcspRef);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class CompleteRevocationRefs {
@@ -48,11 +32,7 @@ class CompleteRevocationRefs {
      * @type {Array.<CrlOcspRef>}
      * @description completeRevocationRefs
      */
-    this.completeRevocationRefs = (0, _pvutils.getParametersValue)(
-      parameters,
-      "completeRevocationRefs",
-      CompleteRevocationRefs.defaultValues("completeRevocationRefs")
-    );
+    this.completeRevocationRefs = (0, _pvutils.getParametersValue)(parameters, "completeRevocationRefs", CompleteRevocationRefs.defaultValues("completeRevocationRefs"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -69,9 +49,7 @@ class CompleteRevocationRefs {
       case "completeRevocationRefs":
         return [];
       default:
-        throw new Error(
-          `Invalid member name for CompleteRevocationRefs class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CompleteRevocationRefs class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -85,9 +63,7 @@ class CompleteRevocationRefs {
       case "completeRevocationRefs":
         return memberValue.length === 0;
       default:
-        throw new Error(
-          `Invalid member name for CompleteRevocationRefs class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CompleteRevocationRefs class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -110,12 +86,10 @@ class CompleteRevocationRefs {
     return new asn1js.Sequence({
       name: names.blockName || "",
       optional: names.optional || false,
-      value: [
-        new asn1js.Repeated({
-          name: names.completeRevocationRefs || "",
-          value: _CrlOcspRef2.default.schema(),
-        }),
-      ],
+      value: [new asn1js.Repeated({
+        name: names.completeRevocationRefs || "",
+        value: _CrlOcspRef2.default.schema()
+      })]
     });
   }
   //**********************************************************************************
@@ -125,27 +99,17 @@ class CompleteRevocationRefs {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      CompleteRevocationRefs.schema({
-        names: {
-          completeRevocationRefs: "completeRevocationRefs",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, CompleteRevocationRefs.schema({
+      names: {
+        completeRevocationRefs: "completeRevocationRefs"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for CompleteRevocationRefs"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for CompleteRevocationRefs");
     //endregion
 
     //region Get internal properties from parsed schema
-    this.completeRevocationRefs = Array.from(
-      asn1.result.completeRevocationRefs,
-      (element) => new _CrlOcspRef2.default({ schema: element })
-    );
+    this.completeRevocationRefs = Array.from(asn1.result.completeRevocationRefs, element => new _CrlOcspRef2.default({ schema: element }));
     //endregion
   }
   //**********************************************************************************
@@ -156,9 +120,7 @@ class CompleteRevocationRefs {
   toSchema() {
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: Array.from(this.completeRevocationRefs, (element) =>
-        element.toSchema()
-      ),
+      value: Array.from(this.completeRevocationRefs, element => element.toSchema())
     });
     //endregion
   }
@@ -169,10 +131,7 @@ class CompleteRevocationRefs {
    */
   toJSON() {
     return {
-      completeRevocationRefs: Array.from(
-        this.completeRevocationRefs,
-        (element) => element.toJSON()
-      ),
+      completeRevocationRefs: Array.from(this.completeRevocationRefs, element => element.toJSON())
     };
   }
   //**********************************************************************************

@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -10,21 +10,7 @@ var asn1js = _interopRequireWildcard(_asn1js);
 
 var _pvutils = require("pvutils");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class OtherRevRefs {
@@ -40,20 +26,12 @@ class OtherRevRefs {
      * @type {string}
      * @description otherRevRefType
      */
-    this.otherRevRefType = (0, _pvutils.getParametersValue)(
-      parameters,
-      "otherRevRefType",
-      OtherRevRefs.defaultValues("otherRevRefType")
-    );
+    this.otherRevRefType = (0, _pvutils.getParametersValue)(parameters, "otherRevRefType", OtherRevRefs.defaultValues("otherRevRefType"));
     /**
      * @type {*}
      * @description otherRevRefs
      */
-    this.otherRevRefs = (0, _pvutils.getParametersValue)(
-      parameters,
-      "otherRevRefs",
-      OtherRevRefs.defaultValues("otherRevRefs")
-    );
+    this.otherRevRefs = (0, _pvutils.getParametersValue)(parameters, "otherRevRefs", OtherRevRefs.defaultValues("otherRevRefs"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -72,9 +50,7 @@ class OtherRevRefs {
       case "otherRevRefs":
         return new asn1js.Any();
       default:
-        throw new Error(
-          `Invalid member name for OtherRevRefs class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OtherRevRefs class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -90,9 +66,7 @@ class OtherRevRefs {
       case "otherRevRefs":
         return memberValue instanceof asn1js.Any;
       default:
-        throw new Error(
-          `Invalid member name for OtherRevRefs class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OtherRevRefs class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -119,12 +93,9 @@ class OtherRevRefs {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        new asn1js.ObjectIdentifier({ name: names.otherRevRefType || "" }),
-        new asn1js.Any({
-          name: names.otherRevRefs || "",
-        }),
-      ],
+      value: [new asn1js.ObjectIdentifier({ name: names.otherRevRefType || "" }), new asn1js.Any({
+        name: names.otherRevRefs || ""
+      })]
     });
   }
   //**********************************************************************************
@@ -134,21 +105,14 @@ class OtherRevRefs {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      OtherRevRefs.schema({
-        names: {
-          otherRevRefType: "otherRevRefType",
-          otherRevRefs: "otherRevRefs",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, OtherRevRefs.schema({
+      names: {
+        otherRevRefType: "otherRevRefType",
+        otherRevRefs: "otherRevRefs"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for OtherRevRefs"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for OtherRevRefs");
     //endregion
 
     //region Get internal properties from parsed schema
@@ -162,15 +126,11 @@ class OtherRevRefs {
    * @returns {Object} asn1js object
    */
   toSchema() {
-    if (this.otherRevRefs instanceof asn1js.Any)
-      throw new Error('Incorrectly initialized "OtherRevRefs" class');
+    if (this.otherRevRefs instanceof asn1js.Any) throw new Error('Incorrectly initialized "OtherRevRefs" class');
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: [
-        new asn1js.ObjectIdentifier({ value: this.otherRevRefType }),
-        this.otherRevRefs,
-      ],
+      value: [new asn1js.ObjectIdentifier({ value: this.otherRevRefType }), this.otherRevRefs]
     });
     //endregion
   }
@@ -180,12 +140,11 @@ class OtherRevRefs {
    * @returns {Object}
    */
   toJSON() {
-    if (this.otherRevRefs instanceof asn1js.Any)
-      throw new Error('Incorrectly initialized "OtherRevRefs" class');
+    if (this.otherRevRefs instanceof asn1js.Any) throw new Error('Incorrectly initialized "OtherRevRefs" class');
 
     return {
       otherRevRefType: this.otherRevRefType,
-      otherRevRefs: this.otherRevRefs.toJSON(),
+      otherRevRefs: this.otherRevRefs.toJSON()
     };
   }
   //**********************************************************************************

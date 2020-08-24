@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -12,21 +12,7 @@ var _pvutils = require("pvutils");
 
 var _pkijs = require("pkijs");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 // noinspection JSUnusedGlobalSymbols
@@ -44,11 +30,7 @@ class CAdESCTimestamp extends _pkijs.ContentInfo {
      * @type {ArrayBuffer}
      * @description tspResponse
      */
-    this.tspResponse = (0, _pvutils.getParametersValue)(
-      parameters,
-      "tspResponse",
-      new ArrayBuffer(0)
-    );
+    this.tspResponse = (0, _pvutils.getParametersValue)(parameters, "tspResponse", new ArrayBuffer(0));
   }
   //**********************************************************************************
   // noinspection JSUnusedGlobalSymbols
@@ -74,64 +56,30 @@ class CAdESCTimestamp extends _pkijs.ContentInfo {
 
     //region Get a "crypto" extension
     const crypto = (0, _pkijs.getCrypto)();
-    if (typeof crypto === "undefined")
-      return Promise.reject("Unable to create WebCrypto object");
+    if (typeof crypto === "undefined") return Promise.reject("Unable to create WebCrypto object");
     //endregion
 
     //region Check input parameters
     if ("hashAlgorithm" in parameters) hashAlgorithm = parameters.hashAlgorithm;
 
-    if ("signatureTimeStamp" in parameters)
-      signatureTimeStamp = parameters.signatureTimeStamp;
-    else
-      return Promise.reject(
-        'Parameter "signatureTimeStamp" is mandatory for making "CAdES-C-Timestamp" attribute'
-      );
+    if ("signatureTimeStamp" in parameters) signatureTimeStamp = parameters.signatureTimeStamp;else return Promise.reject('Parameter "signatureTimeStamp" is mandatory for making "CAdES-C-Timestamp" attribute');
 
-    if ("completeCertificateReferences" in parameters)
-      completeCertificateReferences = parameters.completeCertificateReferences;
-    else
-      return Promise.reject(
-        'Parameter "completeCertificateReferences" is mandatory for making "CAdES-C-Timestamp" attribute'
-      );
+    if ("completeCertificateReferences" in parameters) completeCertificateReferences = parameters.completeCertificateReferences;else return Promise.reject('Parameter "completeCertificateReferences" is mandatory for making "CAdES-C-Timestamp" attribute');
 
-    if ("completeRevocationReferences" in parameters)
-      completeRevocationReferences = parameters.completeRevocationReferences;
-    else
-      return Promise.reject(
-        'Parameter "completeRevocationReferences" is mandatory for making "CAdES-C-Timestamp" attribute'
-      );
+    if ("completeRevocationReferences" in parameters) completeRevocationReferences = parameters.completeRevocationReferences;else return Promise.reject('Parameter "completeRevocationReferences" is mandatory for making "CAdES-C-Timestamp" attribute');
     //endregion
 
     //region Make stamping buffer
-    sequence = sequence.then(
-      () => {
-        resultBuffer = (0, _pvutils.utilConcatBuf)(
-          resultBuffer,
-          cmsSignedData.signerInfos[signerIndex].signature.valueBlock.valueHex
-        );
-        resultBuffer = (0, _pvutils.utilConcatBuf)(
-          resultBuffer,
-          signatureTimeStamp.makeAttribute().toSchema().toBER(false)
-        );
-        resultBuffer = (0, _pvutils.utilConcatBuf)(
-          resultBuffer,
-          completeCertificateReferences.makeAttribute().toSchema().toBER(false)
-        );
-        resultBuffer = (0, _pvutils.utilConcatBuf)(
-          resultBuffer,
-          completeRevocationReferences.makeAttribute().toSchema().toBER(false)
-        );
-      },
-      (error) => Promise.reject(error)
-    );
+    sequence = sequence.then(() => {
+      resultBuffer = (0, _pvutils.utilConcatBuf)(resultBuffer, cmsSignedData.signerInfos[signerIndex].signature.valueBlock.valueHex);
+      resultBuffer = (0, _pvutils.utilConcatBuf)(resultBuffer, signatureTimeStamp.makeAttribute().toSchema().toBER(false));
+      resultBuffer = (0, _pvutils.utilConcatBuf)(resultBuffer, completeCertificateReferences.makeAttribute().toSchema().toBER(false));
+      resultBuffer = (0, _pvutils.utilConcatBuf)(resultBuffer, completeRevocationReferences.makeAttribute().toSchema().toBER(false));
+    }, error => Promise.reject(error));
     //endregion
 
     //region Make hash of signature
-    sequence = sequence.then(
-      () => crypto.digest({ name: hashAlgorithm }, resultBuffer),
-      (error) => Promise.reject(error)
-    );
+    sequence = sequence.then(() => crypto.digest({ name: hashAlgorithm }, resultBuffer), error => Promise.reject(error));
     //endregion
 
     return sequence;
@@ -148,13 +96,8 @@ class CAdESCTimestamp extends _pkijs.ContentInfo {
     //endregion
 
     //region Check input parameters
-    if ("tspResponse" in parameters) tspResponse = parameters.tspResponse;
-    else {
-      if ("tspResponse" in this) tspResponse = this.tspResponse;
-      else
-        throw new Error(
-          'Parameter "tspResponse" is mandatory for making "CAdES-C-Timestamp" attribute'
-        );
+    if ("tspResponse" in parameters) tspResponse = parameters.tspResponse;else {
+      if ("tspResponse" in this) tspResponse = this.tspResponse;else throw new Error('Parameter "tspResponse" is mandatory for making "CAdES-C-Timestamp" attribute');
     }
 
     this.tspResponse = tspResponse;
@@ -166,15 +109,13 @@ class CAdESCTimestamp extends _pkijs.ContentInfo {
     //endregion
 
     //region Initialize internal variables from "tspResponse"
-    if ("timeStampToken" in tspResponse)
-      this.fromSchema(tspResponse.timeStampToken.toSchema());
-    else throw new Error('No neccessary "timeStampToken" inside "tspResponse"');
+    if ("timeStampToken" in tspResponse) this.fromSchema(tspResponse.timeStampToken.toSchema());else throw new Error('No neccessary "timeStampToken" inside "tspResponse"');
     //endregion
 
     //region Create and return attribute
     return new _pkijs.Attribute({
       type: "1.2.840.113549.1.9.16.2.25",
-      values: [this.toSchema()],
+      values: [this.toSchema()]
     });
     //endregion
   }

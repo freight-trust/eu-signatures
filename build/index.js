@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports.SPUserNotice = exports.SigPolicyQualifierInfo = exports.SigningCertificateV2 = exports.SignerLocation = exports.SignatureTimeStamp = exports.SignaturePolicyId = exports.RevocationValues = exports.RevocationInfoArchival = exports.OtherSigningCertificate = exports.OtherRevVals = exports.OtherRevRefs = exports.OtherHashAlgAndValue = exports.OtherCertID = exports.OcspResponsesID = exports.OcspListID = exports.OcspIdentifier = exports.NoticeReference = exports.IssuerSerial = exports.ESSCertIDv2 = exports.DirectoryString = exports.CrlValidatedID = exports.CrlOcspRef = exports.CRLListID = exports.CrlIdentifier = exports.ContentReference = exports.ContentHints = exports.CompleteRevocationRefs = exports.CompleteRevocationReferences = exports.CompleteCertificateRefs = exports.CompleteCertificateReferences = exports.CommitmentTypeQualifier = exports.CommitmentTypeIndication = exports.CertificateValues = exports.CAdESCTimestamp = exports.ATSHashIndex = exports.AttributeCAdES = exports.ArchiveTimeStampV3 = exports.createCommonAttributes = undefined;
 
@@ -29,33 +29,23 @@ var _CertificateValues2 = _interopRequireDefault(_CertificateValues);
 
 var _CommitmentTypeIndication = require("./CommitmentTypeIndication.js");
 
-var _CommitmentTypeIndication2 = _interopRequireDefault(
-  _CommitmentTypeIndication
-);
+var _CommitmentTypeIndication2 = _interopRequireDefault(_CommitmentTypeIndication);
 
 var _CommitmentTypeQualifier = require("./CommitmentTypeQualifier.js");
 
-var _CommitmentTypeQualifier2 = _interopRequireDefault(
-  _CommitmentTypeQualifier
-);
+var _CommitmentTypeQualifier2 = _interopRequireDefault(_CommitmentTypeQualifier);
 
 var _CompleteCertificateReferences = require("./CompleteCertificateReferences.js");
 
-var _CompleteCertificateReferences2 = _interopRequireDefault(
-  _CompleteCertificateReferences
-);
+var _CompleteCertificateReferences2 = _interopRequireDefault(_CompleteCertificateReferences);
 
 var _CompleteCertificateRefs = require("./CompleteCertificateRefs.js");
 
-var _CompleteCertificateRefs2 = _interopRequireDefault(
-  _CompleteCertificateRefs
-);
+var _CompleteCertificateRefs2 = _interopRequireDefault(_CompleteCertificateRefs);
 
 var _CompleteRevocationReferences = require("./CompleteRevocationReferences.js");
 
-var _CompleteRevocationReferences2 = _interopRequireDefault(
-  _CompleteRevocationReferences
-);
+var _CompleteRevocationReferences2 = _interopRequireDefault(_CompleteRevocationReferences);
 
 var _CompleteRevocationRefs = require("./CompleteRevocationRefs.js");
 
@@ -131,9 +121,7 @@ var _OtherRevVals2 = _interopRequireDefault(_OtherRevVals);
 
 var _OtherSigningCertificate = require("./OtherSigningCertificate.js");
 
-var _OtherSigningCertificate2 = _interopRequireDefault(
-  _OtherSigningCertificate
-);
+var _OtherSigningCertificate2 = _interopRequireDefault(_OtherSigningCertificate);
 
 var _RevocationInfoArchival = require("./RevocationInfoArchival.js");
 
@@ -167,9 +155,7 @@ var _SPUserNotice = require("./SPUserNotice.js");
 
 var _SPUserNotice2 = _interopRequireDefault(_SPUserNotice);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.createCommonAttributes = _common.createCommonAttributes;
 exports.ArchiveTimeStampV3 = _ArchiveTimeStampV2.default;

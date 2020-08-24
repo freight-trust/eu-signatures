@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -14,25 +14,9 @@ var _OcspResponsesID = require("./OcspResponsesID.js");
 
 var _OcspResponsesID2 = _interopRequireDefault(_OcspResponsesID);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class OcspListID {
@@ -48,11 +32,7 @@ class OcspListID {
      * @type {Array.<OcspResponsesID>}
      * @description ocspResponses
      */
-    this.ocspResponses = (0, _pvutils.getParametersValue)(
-      parameters,
-      "ocspResponses",
-      OcspListID.defaultValues("ocspResponses")
-    );
+    this.ocspResponses = (0, _pvutils.getParametersValue)(parameters, "ocspResponses", OcspListID.defaultValues("ocspResponses"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -69,9 +49,7 @@ class OcspListID {
       case "ocspResponses":
         return [];
       default:
-        throw new Error(
-          `Invalid member name for OcspListID class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OcspListID class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -85,9 +63,7 @@ class OcspListID {
       case "ocspResponses":
         return memberValue.length === 0;
       default:
-        throw new Error(
-          `Invalid member name for OcspListID class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OcspListID class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -111,27 +87,23 @@ class OcspListID {
     return new asn1js.Sequence({
       name: names.blockName || "",
       optional: names.optional || false,
-      value: [
-        new asn1js.Repeated({
-          value: new asn1js.Sequence({
-            value: [
-              new asn1js.Repeated({
-                name: names.ocspResponses || "",
-                value: _OcspResponsesID2.default.schema({
+      value: [new asn1js.Repeated({
+        value: new asn1js.Sequence({
+          value: [new asn1js.Repeated({
+            name: names.ocspResponses || "",
+            value: _OcspResponsesID2.default.schema({
+              names: {
+                blockName: "ocspResponses.int",
+                ocspIdentifier: {
                   names: {
-                    blockName: "ocspResponses.int",
-                    ocspIdentifier: {
-                      names: {
-                        blockName: "ocspIdentifier",
-                      },
-                    },
-                  },
-                }),
-              }),
-            ],
-          }),
-        }),
-      ],
+                    blockName: "ocspIdentifier"
+                  }
+                }
+              }
+            })
+          })]
+        })
+      })]
     });
   }
   //**********************************************************************************
@@ -141,27 +113,17 @@ class OcspListID {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      OcspListID.schema({
-        names: {
-          ocspResponses: "ocspResponses",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, OcspListID.schema({
+      names: {
+        ocspResponses: "ocspResponses"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for OcspListID"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for OcspListID");
     //endregion
 
     //region Get internal properties from parsed schema
-    this.ocspResponses = Array.from(
-      asn1.result.ocspResponses,
-      (element) => new _OcspResponsesID2.default({ schema: element })
-    );
+    this.ocspResponses = Array.from(asn1.result.ocspResponses, element => new _OcspResponsesID2.default({ schema: element }));
     //endregion
   }
   //**********************************************************************************
@@ -172,13 +134,9 @@ class OcspListID {
   toSchema() {
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: [
-        new asn1js.Sequence({
-          value: Array.from(this.ocspResponses, (element) =>
-            element.toSchema()
-          ),
-        }),
-      ],
+      value: [new asn1js.Sequence({
+        value: Array.from(this.ocspResponses, element => element.toSchema())
+      })]
     });
     //endregion
   }
@@ -189,9 +147,7 @@ class OcspListID {
    */
   toJSON() {
     return {
-      ocspResponses: Array.from(this.ocspResponses, (element) =>
-        element.toJSON()
-      ),
+      ocspResponses: Array.from(this.ocspResponses, element => element.toJSON())
     };
   }
   //**********************************************************************************

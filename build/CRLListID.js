@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -14,25 +14,9 @@ var _CrlValidatedID = require("./CrlValidatedID.js");
 
 var _CrlValidatedID2 = _interopRequireDefault(_CrlValidatedID);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class CRLListID {
@@ -48,11 +32,7 @@ class CRLListID {
      * @type {Array.<CrlValidatedID>}
      * @description crls
      */
-    this.crls = (0, _pvutils.getParametersValue)(
-      parameters,
-      "crls",
-      CRLListID.defaultValues("crls")
-    );
+    this.crls = (0, _pvutils.getParametersValue)(parameters, "crls", CRLListID.defaultValues("crls"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -69,9 +49,7 @@ class CRLListID {
       case "crls":
         return [];
       default:
-        throw new Error(
-          `Invalid member name for CRLListID class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CRLListID class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -85,9 +63,7 @@ class CRLListID {
       case "crls":
         return memberValue.length === 0;
       default:
-        throw new Error(
-          `Invalid member name for CRLListID class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CRLListID class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -112,18 +88,14 @@ class CRLListID {
     return new asn1js.Sequence({
       name: names.blockName || "",
       optional: names.optional || false,
-      value: [
-        new asn1js.Repeated({
-          name: names.crls || "",
-          value: new asn1js.Sequence({
-            value: [
-              new asn1js.Repeated({
-                value: _CrlValidatedID2.default.schema(),
-              }),
-            ],
-          }),
-        }),
-      ],
+      value: [new asn1js.Repeated({
+        name: names.crls || "",
+        value: new asn1js.Sequence({
+          value: [new asn1js.Repeated({
+            value: _CrlValidatedID2.default.schema()
+          })]
+        })
+      })]
     });
   }
   //**********************************************************************************
@@ -133,27 +105,17 @@ class CRLListID {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      CRLListID.schema({
-        names: {
-          crls: "crls",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, CRLListID.schema({
+      names: {
+        crls: "crls"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for CRLListID"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for CRLListID");
     //endregion
 
     //region Get internal properties from parsed schema
-    this.crls = Array.from(
-      asn1.result.crls,
-      (element) => new _CrlValidatedID2.default({ schema: element })
-    );
+    this.crls = Array.from(asn1.result.crls, element => new _CrlValidatedID2.default({ schema: element }));
     //endregion
   }
   //**********************************************************************************
@@ -164,11 +126,9 @@ class CRLListID {
   toSchema() {
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: [
-        new asn1js.Sequence({
-          value: Array.from(this.crls, (element) => element.toSchema()),
-        }),
-      ],
+      value: [new asn1js.Sequence({
+        value: Array.from(this.crls, element => element.toSchema())
+      })]
     });
     //endregion
   }
@@ -179,7 +139,7 @@ class CRLListID {
    */
   toJSON() {
     return {
-      crls: Array.from(this.crls, (element) => element.toJSON()),
+      crls: Array.from(this.crls, element => element.toJSON())
     };
   }
   //**********************************************************************************

@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -10,21 +10,7 @@ var asn1js = _interopRequireWildcard(_asn1js);
 
 var _pvutils = require("pvutils");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 // noinspection JSUnusedGlobalSymbols
@@ -41,29 +27,17 @@ class ContentReference {
      * @type {string}
      * @description contentType
      */
-    this.contentType = (0, _pvutils.getParametersValue)(
-      parameters,
-      "contentType",
-      ContentReference.defaultValues("contentType")
-    );
+    this.contentType = (0, _pvutils.getParametersValue)(parameters, "contentType", ContentReference.defaultValues("contentType"));
     /**
      * @type {OctetString}
      * @description signedContentIdentifier
      */
-    this.signedContentIdentifier = (0, _pvutils.getParametersValue)(
-      parameters,
-      "signedContentIdentifier",
-      ContentReference.defaultValues("signedContentIdentifier")
-    );
+    this.signedContentIdentifier = (0, _pvutils.getParametersValue)(parameters, "signedContentIdentifier", ContentReference.defaultValues("signedContentIdentifier"));
     /**
      * @type {OctetString}
      * @description originatorSignatureValue
      */
-    this.originatorSignatureValue = (0, _pvutils.getParametersValue)(
-      parameters,
-      "originatorSignatureValue",
-      ContentReference.defaultValues("originatorSignatureValue")
-    );
+    this.originatorSignatureValue = (0, _pvutils.getParametersValue)(parameters, "originatorSignatureValue", ContentReference.defaultValues("originatorSignatureValue"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -83,9 +57,7 @@ class ContentReference {
       case "originatorSignatureValue":
         return new asn1js.OctetString();
       default:
-        throw new Error(
-          `Invalid member name for ContentReference class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for ContentReference class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -102,9 +74,7 @@ class ContentReference {
       case "originatorSignatureValue":
         return memberValue.isEqual(ContentReference.defaultValues(memberName));
       default:
-        throw new Error(
-          `Invalid member name for ContentReference class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for ContentReference class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -133,11 +103,7 @@ class ContentReference {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        new asn1js.ObjectIdentifier({ name: names.contentType || "" }),
-        new asn1js.OctetString({ name: names.signedContentIdentifier || "" }),
-        new asn1js.OctetString({ name: names.originatorSignatureValue || "" }),
-      ],
+      value: [new asn1js.ObjectIdentifier({ name: names.contentType || "" }), new asn1js.OctetString({ name: names.signedContentIdentifier || "" }), new asn1js.OctetString({ name: names.originatorSignatureValue || "" })]
     });
   }
   //**********************************************************************************
@@ -147,22 +113,15 @@ class ContentReference {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      ContentReference.schema({
-        names: {
-          contentType: "contentType",
-          signedContentIdentifier: "signedContentIdentifier",
-          originatorSignatureValue: "originatorSignatureValue",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, ContentReference.schema({
+      names: {
+        contentType: "contentType",
+        signedContentIdentifier: "signedContentIdentifier",
+        originatorSignatureValue: "originatorSignatureValue"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for ContentReference"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for ContentReference");
     //endregion
 
     //region Get internal properties from parsed schema
@@ -180,11 +139,7 @@ class ContentReference {
   toSchema() {
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: [
-        new asn1js.ObjectIdentifier({ value: this.contentType }),
-        this.signedContentIdentifier,
-        this.originatorSignatureValue,
-      ],
+      value: [new asn1js.ObjectIdentifier({ value: this.contentType }), this.signedContentIdentifier, this.originatorSignatureValue]
     });
     //endregion
   }
@@ -197,7 +152,7 @@ class ContentReference {
     return {
       contentType: this.contentType,
       signedContentIdentifier: this.signedContentIdentifier.toJSON(),
-      originatorSignatureValue: this.originatorSignatureValue.toJSON(),
+      originatorSignatureValue: this.originatorSignatureValue.toJSON()
     };
   }
   //**********************************************************************************

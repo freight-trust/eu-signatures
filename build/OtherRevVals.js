@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -10,21 +10,7 @@ var asn1js = _interopRequireWildcard(_asn1js);
 
 var _pvutils = require("pvutils");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class OtherRevVals {
@@ -40,20 +26,12 @@ class OtherRevVals {
      * @type {string}
      * @description otherRevValType
      */
-    this.otherRevValType = (0, _pvutils.getParametersValue)(
-      parameters,
-      "otherRevValType",
-      OtherRevVals.defaultValues("otherRevValType")
-    );
+    this.otherRevValType = (0, _pvutils.getParametersValue)(parameters, "otherRevValType", OtherRevVals.defaultValues("otherRevValType"));
     /**
      * @type {*}
      * @description otherRevVals
      */
-    this.otherRevVals = (0, _pvutils.getParametersValue)(
-      parameters,
-      "otherRevVals",
-      OtherRevVals.defaultValues("otherRevVals")
-    );
+    this.otherRevVals = (0, _pvutils.getParametersValue)(parameters, "otherRevVals", OtherRevVals.defaultValues("otherRevVals"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -72,9 +50,7 @@ class OtherRevVals {
       case "otherRevVals":
         return new asn1js.Any();
       default:
-        throw new Error(
-          `Invalid member name for OtherRevVals class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OtherRevVals class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -90,9 +66,7 @@ class OtherRevVals {
       case "otherRevVals":
         return memberValue instanceof asn1js.Any;
       default:
-        throw new Error(
-          `Invalid member name for OtherRevVals class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OtherRevVals class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -119,12 +93,9 @@ class OtherRevVals {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        new asn1js.ObjectIdentifier({ name: names.otherRevValType || "" }),
-        new asn1js.Any({
-          name: names.otherRevVals || "",
-        }),
-      ],
+      value: [new asn1js.ObjectIdentifier({ name: names.otherRevValType || "" }), new asn1js.Any({
+        name: names.otherRevVals || ""
+      })]
     });
   }
   //**********************************************************************************
@@ -134,21 +105,14 @@ class OtherRevVals {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      OtherRevVals.schema({
-        names: {
-          otherRevValType: "otherRevValType",
-          otherRevVals: "otherRevVals",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, OtherRevVals.schema({
+      names: {
+        otherRevValType: "otherRevValType",
+        otherRevVals: "otherRevVals"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for OtherRevVals"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for OtherRevVals");
     //endregion
 
     //region Get internal properties from parsed schema
@@ -164,10 +128,7 @@ class OtherRevVals {
   toSchema() {
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: [
-        new asn1js.ObjectIdentifier({ value: this.otherRevValType }),
-        this.otherRevVals,
-      ],
+      value: [new asn1js.ObjectIdentifier({ value: this.otherRevValType }), this.otherRevVals]
     });
     //endregion
   }
@@ -179,7 +140,7 @@ class OtherRevVals {
   toJSON() {
     return {
       otherRevValType: this.otherRevValType,
-      otherRevVals: this.otherRevVals.toJSON(),
+      otherRevVals: this.otherRevVals.toJSON()
     };
   }
   //**********************************************************************************

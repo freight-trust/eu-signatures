@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -12,21 +12,7 @@ var _pvutils = require("pvutils");
 
 var _pkijs = require("pkijs");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class IssuerSerial {
@@ -42,20 +28,12 @@ class IssuerSerial {
      * @type {GeneralNames}
      * @description issuer
      */
-    this.issuer = (0, _pvutils.getParametersValue)(
-      parameters,
-      "issuer",
-      IssuerSerial.defaultValues("issuer")
-    );
+    this.issuer = (0, _pvutils.getParametersValue)(parameters, "issuer", IssuerSerial.defaultValues("issuer"));
     /**
      * @type {Integer}
      * @description serialNumber
      */
-    this.serialNumber = (0, _pvutils.getParametersValue)(
-      parameters,
-      "serialNumber",
-      IssuerSerial.defaultValues("serialNumber")
-    );
+    this.serialNumber = (0, _pvutils.getParametersValue)(parameters, "serialNumber", IssuerSerial.defaultValues("serialNumber"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -74,9 +52,7 @@ class IssuerSerial {
       case "serialNumber":
         return new asn1js.Integer();
       default:
-        throw new Error(
-          `Invalid member name for IssuerSerial class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for IssuerSerial class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -92,9 +68,7 @@ class IssuerSerial {
       case "serialNumber":
         return memberValue.isEqual(IssuerSerial.defaultValues(memberName));
       default:
-        throw new Error(
-          `Invalid member name for IssuerSerial class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for IssuerSerial class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -121,10 +95,7 @@ class IssuerSerial {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        _pkijs.GeneralNames.schema(names.issuer || {}),
-        new asn1js.Integer({ name: names.serialNumber || "" }),
-      ],
+      value: [_pkijs.GeneralNames.schema(names.issuer || {}), new asn1js.Integer({ name: names.serialNumber || "" })]
     });
   }
   //**********************************************************************************
@@ -134,25 +105,18 @@ class IssuerSerial {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      IssuerSerial.schema({
-        names: {
-          issuer: {
-            names: {
-              blockName: "issuer",
-            },
-          },
-          serialNumber: "serialNumber",
+    const asn1 = asn1js.compareSchema(schema, schema, IssuerSerial.schema({
+      names: {
+        issuer: {
+          names: {
+            blockName: "issuer"
+          }
         },
-      })
-    );
+        serialNumber: "serialNumber"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for IssuerSerial"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for IssuerSerial");
     //endregion
 
     //region Get internal properties from parsed schema
@@ -170,7 +134,7 @@ class IssuerSerial {
   toSchema() {
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: [this.issuer.toSchema(), this.serialNumber],
+      value: [this.issuer.toSchema(), this.serialNumber]
     });
     //endregion
   }
@@ -182,7 +146,7 @@ class IssuerSerial {
   toJSON() {
     return {
       issuer: this.issuer.toJSON(),
-      serialNumber: this.serialNumber.toJSON(),
+      serialNumber: this.serialNumber.toJSON()
     };
   }
   //**********************************************************************************

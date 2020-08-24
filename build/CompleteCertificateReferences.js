@@ -1,24 +1,20 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _pkijs = require("pkijs");
 
 var _CompleteCertificateRefs = require("./CompleteCertificateRefs.js");
 
-var _CompleteCertificateRefs2 = _interopRequireDefault(
-  _CompleteCertificateRefs
-);
+var _CompleteCertificateRefs2 = _interopRequireDefault(_CompleteCertificateRefs);
 
 var _OtherCertID = require("./OtherCertID.js");
 
 var _OtherCertID2 = _interopRequireDefault(_OtherCertID);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //**************************************************************************************
 // noinspection JSUnusedGlobalSymbols
@@ -51,12 +47,7 @@ class CompleteCertificateReferences extends _CompleteCertificateRefs2.default {
     //region Check input parameters
     if ("hashAlgorithm" in parameters) hashAlgorithm = parameters.hashAlgorithm;
 
-    if ("signerCertificate" in parameters)
-      signerCertificate = parameters.signerCertificate;
-    else
-      return Promise.reject(
-        'Parameter "signerCertificate" is mandatory for making "complete-certificate-references" attribute'
-      );
+    if ("signerCertificate" in parameters) signerCertificate = parameters.signerCertificate;else return Promise.reject('Parameter "signerCertificate" is mandatory for making "complete-certificate-references" attribute');
     //endregion
 
     //region Put all CMS Signed Data certificates inside "completeCertificateRefs" array
@@ -65,24 +56,14 @@ class CompleteCertificateReferences extends _CompleteCertificateRefs2.default {
 
       for (let i = 0; i < cmsSigned.certificates.length; i++) {
         //region Check it is not a "signerCertificate"
-        if (
-          cmsSigned.certificates[i].issuer.isEqual(signerCertificate.issuer) &&
-          cmsSigned.certificates[i].serialNumber.isEqual(
-            signerCertificate.serialNumber
-          )
-        )
-          continue; // Not including "signer certificate" in "complete-certificate-references" attribute
+        if (cmsSigned.certificates[i].issuer.isEqual(signerCertificate.issuer) && cmsSigned.certificates[i].serialNumber.isEqual(signerCertificate.serialNumber)) continue; // Not including "signer certificate" in "complete-certificate-references" attribute
         //endregion
 
         _this.completeCertificateRefs.push(new _OtherCertID2.default());
-        promises.push(
-          _this.completeCertificateRefs[
-            _this.completeCertificateRefs.length - 1
-          ].fillValues({
-            hashAlgorithm,
-            certificate: cmsSigned.certificates[i],
-          })
-        );
+        promises.push(_this.completeCertificateRefs[_this.completeCertificateRefs.length - 1].fillValues({
+          hashAlgorithm,
+          certificate: cmsSigned.certificates[i]
+        }));
       }
 
       return Promise.all(promises);
@@ -101,7 +82,7 @@ class CompleteCertificateReferences extends _CompleteCertificateRefs2.default {
     //region Create and return attribute
     return new _pkijs.Attribute({
       type: "1.2.840.113549.1.9.16.2.21",
-      values: [this.toSchema()],
+      values: [this.toSchema()]
     });
     //endregion
   }

@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -18,25 +18,9 @@ var _SigPolicyQualifierInfo = require("./SigPolicyQualifierInfo.js");
 
 var _SigPolicyQualifierInfo2 = _interopRequireDefault(_SigPolicyQualifierInfo);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 // noinspection JSUnusedGlobalSymbols
@@ -53,31 +37,19 @@ class SignaturePolicyId {
      * @type {string}
      * @description sigPolicyId
      */
-    this.sigPolicyId = (0, _pvutils.getParametersValue)(
-      parameters,
-      "sigPolicyId",
-      SignaturePolicyId.defaultValues("sigPolicyId")
-    );
+    this.sigPolicyId = (0, _pvutils.getParametersValue)(parameters, "sigPolicyId", SignaturePolicyId.defaultValues("sigPolicyId"));
     /**
      * @type {OtherHashAlgAndValue}
      * @description sigPolicyHash
      */
-    this.sigPolicyHash = (0, _pvutils.getParametersValue)(
-      parameters,
-      "sigPolicyHash",
-      SignaturePolicyId.defaultValues("sigPolicyHash")
-    );
+    this.sigPolicyHash = (0, _pvutils.getParametersValue)(parameters, "sigPolicyHash", SignaturePolicyId.defaultValues("sigPolicyHash"));
 
     if ("sigPolicyQualifiers" in parameters)
       /**
        * @type {Array.<SigPolicyQualifierInfo>}
        * @description sigPolicyQualifiers
        */
-      this.sigPolicyQualifiers = (0, _pvutils.getParametersValue)(
-        parameters,
-        "sigPolicyQualifiers",
-        SignaturePolicyId.defaultValues("sigPolicyQualifiers")
-      );
+      this.sigPolicyQualifiers = (0, _pvutils.getParametersValue)(parameters, "sigPolicyQualifiers", SignaturePolicyId.defaultValues("sigPolicyQualifiers"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -98,9 +70,7 @@ class SignaturePolicyId {
       case "sigPolicyQualifiers":
         return [];
       default:
-        throw new Error(
-          `Invalid member name for SignaturePolicyId class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for SignaturePolicyId class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -114,22 +84,11 @@ class SignaturePolicyId {
       case "sigPolicyId":
         return memberValue === "";
       case "sigPolicyHash":
-        return (
-          _OtherHashAlgAndValue2.default.compareWithDefault(
-            "hashAlgorithm",
-            memberValue.hashAlgorithm
-          ) &&
-          _OtherHashAlgAndValue2.default.compareWithDefault(
-            "hashValue",
-            memberValue.hashValue
-          )
-        );
+        return _OtherHashAlgAndValue2.default.compareWithDefault("hashAlgorithm", memberValue.hashAlgorithm) && _OtherHashAlgAndValue2.default.compareWithDefault("hashValue", memberValue.hashValue);
       case "sigPolicyQualifiers":
         return memberValue.length === 0;
       default:
-        throw new Error(
-          `Invalid member name for SignaturePolicyId class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for SignaturePolicyId class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -156,25 +115,17 @@ class SignaturePolicyId {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        new asn1js.ObjectIdentifier({ name: names.sigPolicyId || "" }),
-        _OtherHashAlgAndValue2.default.schema(
-          names.sigPolicyHash || {
-            names: {
-              blockName: "",
-            },
-          }
-        ),
-        new asn1js.Sequence({
-          optional: true,
-          value: [
-            new asn1js.Repeated({
-              name: names.sigPolicyQualifiers || "",
-              value: _SigPolicyQualifierInfo2.default.schema(),
-            }),
-          ],
-        }),
-      ],
+      value: [new asn1js.ObjectIdentifier({ name: names.sigPolicyId || "" }), _OtherHashAlgAndValue2.default.schema(names.sigPolicyHash || {
+        names: {
+          blockName: ""
+        }
+      }), new asn1js.Sequence({
+        optional: true,
+        value: [new asn1js.Repeated({
+          name: names.sigPolicyQualifiers || "",
+          value: _SigPolicyQualifierInfo2.default.schema()
+        })]
+      })]
     });
   }
   //**********************************************************************************
@@ -184,39 +135,28 @@ class SignaturePolicyId {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      SignaturePolicyId.schema({
-        names: {
-          sigPolicyId: "sigPolicyId",
-          sigPolicyHash: {
-            names: {
-              blockName: "sigPolicyHash",
-            },
-          },
-          sigPolicyQualifiers: "sigPolicyQualifiers",
+    const asn1 = asn1js.compareSchema(schema, schema, SignaturePolicyId.schema({
+      names: {
+        sigPolicyId: "sigPolicyId",
+        sigPolicyHash: {
+          names: {
+            blockName: "sigPolicyHash"
+          }
         },
-      })
-    );
+        sigPolicyQualifiers: "sigPolicyQualifiers"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for SignaturePolicyId"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for SignaturePolicyId");
     //endregion
 
     //region Get internal properties from parsed schema
     this.sigPolicyId = asn1.result.sigPolicyId.valueBlock.toString();
     this.sigPolicyHash = new _OtherHashAlgAndValue2.default({
-      schema: asn1.result.sigPolicyHash,
+      schema: asn1.result.sigPolicyHash
     });
 
-    if ("sigPolicyQualifiers" in asn1.result)
-      this.sigPolicyQualifiers = Array.from(
-        asn1.result.sigPolicyQualifiers,
-        (element) => new _SigPolicyQualifierInfo2.default({ schema: element })
-      );
+    if ("sigPolicyQualifiers" in asn1.result) this.sigPolicyQualifiers = Array.from(asn1.result.sigPolicyQualifiers, element => new _SigPolicyQualifierInfo2.default({ schema: element }));
     //endregion
   }
   //**********************************************************************************
@@ -226,25 +166,18 @@ class SignaturePolicyId {
    */
   toSchema() {
     //region Create array for output sequence
-    const outputArray = [
-      new asn1js.ObjectIdentifier({ value: this.sigPolicyId }),
-      this.sigPolicyHash.toSchema(),
-    ];
+    const outputArray = [new asn1js.ObjectIdentifier({ value: this.sigPolicyId }), this.sigPolicyHash.toSchema()];
 
     if ("sigPolicyQualifiers" in this) {
-      outputArray.push(
-        new asn1js.Sequence({
-          value: Array.from(this.sigPolicyQualifiers, (element) =>
-            element.toSchema()
-          ),
-        })
-      );
+      outputArray.push(new asn1js.Sequence({
+        value: Array.from(this.sigPolicyQualifiers, element => element.toSchema())
+      }));
     }
     //endregion
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: outputArray,
+      value: outputArray
     });
     //endregion
   }
@@ -256,14 +189,10 @@ class SignaturePolicyId {
   toJSON() {
     const _object = {
       sigPolicyId: this.sigPolicyId,
-      sigPolicyHash: this.sigPolicyHash.toJSON(),
+      sigPolicyHash: this.sigPolicyHash.toJSON()
     };
 
-    if ("sigPolicyQualifiers" in this)
-      _object.sigPolicyQualifiers = Array.from(
-        this.sigPolicyQualifiers,
-        (element) => element.toJSON()
-      );
+    if ("sigPolicyQualifiers" in this) _object.sigPolicyQualifiers = Array.from(this.sigPolicyQualifiers, element => element.toJSON());
 
     return _object;
   }

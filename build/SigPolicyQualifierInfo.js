@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -10,21 +10,7 @@ var asn1js = _interopRequireWildcard(_asn1js);
 
 var _pvutils = require("pvutils");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class SigPolicyQualifierInfo {
@@ -40,20 +26,12 @@ class SigPolicyQualifierInfo {
      * @type {string}
      * @description sigPolicyQualifierId
      */
-    this.sigPolicyQualifierId = (0, _pvutils.getParametersValue)(
-      parameters,
-      "sigPolicyQualifierId",
-      SigPolicyQualifierInfo.defaultValues("sigPolicyQualifierId")
-    );
+    this.sigPolicyQualifierId = (0, _pvutils.getParametersValue)(parameters, "sigPolicyQualifierId", SigPolicyQualifierInfo.defaultValues("sigPolicyQualifierId"));
     /**
      * @type {*}
      * @description sigQualifier
      */
-    this.sigQualifier = (0, _pvutils.getParametersValue)(
-      parameters,
-      "sigQualifier",
-      SigPolicyQualifierInfo.defaultValues("sigQualifier")
-    );
+    this.sigQualifier = (0, _pvutils.getParametersValue)(parameters, "sigQualifier", SigPolicyQualifierInfo.defaultValues("sigQualifier"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -72,9 +50,7 @@ class SigPolicyQualifierInfo {
       case "sigQualifier":
         return new asn1js.Any();
       default:
-        throw new Error(
-          `Invalid member name for SigPolicyQualifierInfo class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for SigPolicyQualifierInfo class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -90,9 +66,7 @@ class SigPolicyQualifierInfo {
       case "sigQualifier":
         return memberValue instanceof asn1js.Any;
       default:
-        throw new Error(
-          `Invalid member name for SigPolicyQualifierInfo class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for SigPolicyQualifierInfo class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -117,12 +91,9 @@ class SigPolicyQualifierInfo {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        new asn1js.ObjectIdentifier({ name: names.sigPolicyQualifierId || "" }),
-        new asn1js.Any({
-          name: names.sigQualifier || "",
-        }),
-      ],
+      value: [new asn1js.ObjectIdentifier({ name: names.sigPolicyQualifierId || "" }), new asn1js.Any({
+        name: names.sigQualifier || ""
+      })]
     });
   }
   //**********************************************************************************
@@ -132,21 +103,14 @@ class SigPolicyQualifierInfo {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      SigPolicyQualifierInfo.schema({
-        names: {
-          sigPolicyQualifierId: "sigPolicyQualifierId",
-          sigQualifier: "sigQualifier",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, SigPolicyQualifierInfo.schema({
+      names: {
+        sigPolicyQualifierId: "sigPolicyQualifierId",
+        sigQualifier: "sigQualifier"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for SigPolicyQualifierInfo"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for SigPolicyQualifierInfo");
     //endregion
 
     //region Get internal properties from parsed schema
@@ -160,20 +124,11 @@ class SigPolicyQualifierInfo {
    * @returns {Object} asn1js object
    */
   toSchema() {
-    if (
-      SigPolicyQualifierInfo.compareWithDefault(
-        "sigQualifier",
-        this.sigQualifier
-      )
-    )
-      throw new Error('Non-initialized value for "sigQualifier"');
+    if (SigPolicyQualifierInfo.compareWithDefault("sigQualifier", this.sigQualifier)) throw new Error('Non-initialized value for "sigQualifier"');
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: [
-        new asn1js.ObjectIdentifier({ value: this.sigPolicyQualifierId }),
-        this.sigQualifier,
-      ],
+      value: [new asn1js.ObjectIdentifier({ value: this.sigPolicyQualifierId }), this.sigQualifier]
     });
     //endregion
   }
@@ -183,17 +138,11 @@ class SigPolicyQualifierInfo {
    * @returns {Object}
    */
   toJSON() {
-    if (
-      SigPolicyQualifierInfo.compareWithDefault(
-        "sigQualifier",
-        this.sigQualifier
-      )
-    )
-      throw new Error('Non-initialized value for "sigQualifier"');
+    if (SigPolicyQualifierInfo.compareWithDefault("sigQualifier", this.sigQualifier)) throw new Error('Non-initialized value for "sigQualifier"');
 
     return {
       sigPolicyQualifierId: this.sigPolicyQualifierId,
-      sigQualifier: this.sigQualifier.toJSON(),
+      sigQualifier: this.sigQualifier.toJSON()
     };
   }
   //**********************************************************************************

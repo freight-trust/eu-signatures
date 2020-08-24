@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -12,29 +12,11 @@ var _pvutils = require("pvutils");
 
 var _CommitmentTypeQualifier = require("./CommitmentTypeQualifier.js");
 
-var _CommitmentTypeQualifier2 = _interopRequireDefault(
-  _CommitmentTypeQualifier
-);
+var _CommitmentTypeQualifier2 = _interopRequireDefault(_CommitmentTypeQualifier);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 // noinspection JSUnusedGlobalSymbols
@@ -51,22 +33,14 @@ class CommitmentTypeIndication {
      * @type {string}
      * @description commitmentTypeId
      */
-    this.commitmentTypeId = (0, _pvutils.getParametersValue)(
-      parameters,
-      "commitmentTypeId",
-      CommitmentTypeIndication.defaultValues("commitmentTypeId")
-    );
+    this.commitmentTypeId = (0, _pvutils.getParametersValue)(parameters, "commitmentTypeId", CommitmentTypeIndication.defaultValues("commitmentTypeId"));
 
     if ("commitmentTypeQualifier" in parameters)
       /**
        * @type {Array.<CommitmentTypeQualifier>}
        * @description commitmentTypeQualifier
        */
-      this.commitmentTypeQualifier = (0, _pvutils.getParametersValue)(
-        parameters,
-        "commitmentTypeQualifier",
-        CommitmentTypeIndication.defaultValues("commitmentTypeQualifier")
-      );
+      this.commitmentTypeQualifier = (0, _pvutils.getParametersValue)(parameters, "commitmentTypeQualifier", CommitmentTypeIndication.defaultValues("commitmentTypeQualifier"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -85,9 +59,7 @@ class CommitmentTypeIndication {
       case "commitmentTypeQualifier":
         return [];
       default:
-        throw new Error(
-          `Invalid member name for CommitmentTypeIndication class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CommitmentTypeIndication class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -103,9 +75,7 @@ class CommitmentTypeIndication {
       case "commitmentTypeQualifier":
         return memberValue.length === 0;
       default:
-        throw new Error(
-          `Invalid member name for CommitmentTypeIndication class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CommitmentTypeIndication class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -131,18 +101,13 @@ class CommitmentTypeIndication {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        new asn1js.ObjectIdentifier({ name: names.commitmentTypeId || "" }),
-        new asn1js.Sequence({
-          optional: true,
-          value: [
-            new asn1js.Repeated({
-              name: names.commitmentTypeQualifier || "",
-              value: _CommitmentTypeQualifier2.default.schema(),
-            }),
-          ],
-        }),
-      ],
+      value: [new asn1js.ObjectIdentifier({ name: names.commitmentTypeId || "" }), new asn1js.Sequence({
+        optional: true,
+        value: [new asn1js.Repeated({
+          name: names.commitmentTypeQualifier || "",
+          value: _CommitmentTypeQualifier2.default.schema()
+        })]
+      })]
     });
   }
   //**********************************************************************************
@@ -152,31 +117,20 @@ class CommitmentTypeIndication {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      CommitmentTypeIndication.schema({
-        names: {
-          commitmentTypeId: "commitmentTypeId",
-          commitmentTypeQualifier: "commitmentTypeQualifier",
-        },
-      })
-    );
+    const asn1 = asn1js.compareSchema(schema, schema, CommitmentTypeIndication.schema({
+      names: {
+        commitmentTypeId: "commitmentTypeId",
+        commitmentTypeQualifier: "commitmentTypeQualifier"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for CommitmentTypeIndication"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for CommitmentTypeIndication");
     //endregion
 
     //region Get internal properties from parsed schema
     this.commitmentTypeId = asn1.result.commitmentTypeId.valueBlock.toString();
 
-    if ("commitmentTypeQualifier" in asn1.result)
-      this.commitmentTypeQualifier = Array.from(
-        asn1.result.commitmentTypeQualifier,
-        (element) => new _CommitmentTypeQualifier2.default({ schema: element })
-      );
+    if ("commitmentTypeQualifier" in asn1.result) this.commitmentTypeQualifier = Array.from(asn1.result.commitmentTypeQualifier, element => new _CommitmentTypeQualifier2.default({ schema: element }));
     //endregion
   }
   //**********************************************************************************
@@ -186,24 +140,18 @@ class CommitmentTypeIndication {
    */
   toSchema() {
     //region Create array for output sequence
-    const outputArray = [
-      new asn1js.ObjectIdentifier({ value: this.commitmentTypeId }),
-    ];
+    const outputArray = [new asn1js.ObjectIdentifier({ value: this.commitmentTypeId })];
 
     if ("commitmentTypeQualifier" in this) {
-      outputArray.push(
-        new asn1js.Sequence({
-          value: Array.from(this.commitmentTypeQualifier, (element) =>
-            element.toSchema()
-          ),
-        })
-      );
+      outputArray.push(new asn1js.Sequence({
+        value: Array.from(this.commitmentTypeQualifier, element => element.toSchema())
+      }));
     }
     //endregion
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: outputArray,
+      value: outputArray
     });
     //endregion
   }
@@ -214,14 +162,10 @@ class CommitmentTypeIndication {
    */
   toJSON() {
     const _object = {
-      commitmentTypeId: this.commitmentTypeId,
+      commitmentTypeId: this.commitmentTypeId
     };
 
-    if ("commitmentTypeQualifier" in this)
-      _object.commitmentTypeQualifier = Array.from(
-        this.commitmentTypeQualifier,
-        (element) => element.toJSON()
-      );
+    if ("commitmentTypeQualifier" in this) _object.commitmentTypeQualifier = Array.from(this.commitmentTypeQualifier, element => element.toJSON());
 
     return _object;
   }

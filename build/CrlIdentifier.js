@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -12,21 +12,7 @@ var _pvutils = require("pvutils");
 
 var _pkijs = require("pkijs");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class CrlIdentifier {
@@ -42,31 +28,19 @@ class CrlIdentifier {
      * @type {RelativeDistinguishedNames}
      * @description crlissuer
      */
-    this.crlissuer = (0, _pvutils.getParametersValue)(
-      parameters,
-      "crlissuer",
-      CrlIdentifier.defaultValues("crlissuer")
-    );
+    this.crlissuer = (0, _pvutils.getParametersValue)(parameters, "crlissuer", CrlIdentifier.defaultValues("crlissuer"));
     /**
      * @type {Date}
      * @description crlIssuedTime
      */
-    this.crlIssuedTime = (0, _pvutils.getParametersValue)(
-      parameters,
-      "crlIssuedTime",
-      CrlIdentifier.defaultValues("crlIssuedTime")
-    );
+    this.crlIssuedTime = (0, _pvutils.getParametersValue)(parameters, "crlIssuedTime", CrlIdentifier.defaultValues("crlIssuedTime"));
 
     if ("crlNumber" in parameters)
       /**
        * @type {Integer}
        * @description crlNumber
        */
-      this.crlNumber = (0, _pvutils.getParametersValue)(
-        parameters,
-        "crlNumber",
-        CrlIdentifier.defaultValues("crlNumber")
-      );
+      this.crlNumber = (0, _pvutils.getParametersValue)(parameters, "crlNumber", CrlIdentifier.defaultValues("crlNumber"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -87,9 +61,7 @@ class CrlIdentifier {
       case "crlNumber":
         return new asn1js.Integer();
       default:
-        throw new Error(
-          `Invalid member name for CrlIdentifier class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CrlIdentifier class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -101,24 +73,13 @@ class CrlIdentifier {
   static compareWithDefault(memberName, memberValue) {
     switch (memberName) {
       case "crlissuer":
-        return (
-          _pkijs.RelativeDistinguishedNames.compareWithDefault(
-            "typesAndValues",
-            memberValue.typesAndValues
-          ) &&
-          _pkijs.RelativeDistinguishedNames.compareWithDefault(
-            "valueBeforeDecode",
-            memberValue.valueBeforeDecode
-          )
-        );
+        return _pkijs.RelativeDistinguishedNames.compareWithDefault("typesAndValues", memberValue.typesAndValues) && _pkijs.RelativeDistinguishedNames.compareWithDefault("valueBeforeDecode", memberValue.valueBeforeDecode);
       case "crlIssuedTime":
         return memberValue === CrlIdentifier.defaultValues(memberName);
       case "crlNumber":
         return memberValue.isEqual(CrlIdentifier.defaultValues(memberName));
       default:
-        throw new Error(
-          `Invalid member name for CrlIdentifier class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for CrlIdentifier class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -145,20 +106,14 @@ class CrlIdentifier {
     return new asn1js.Sequence({
       name: names.blockName || "",
       optional: names.optional || false,
-      value: [
-        _pkijs.RelativeDistinguishedNames.schema(
-          names.crlissuer || {
-            names: {
-              blockName: "",
-            },
-          }
-        ),
-        new asn1js.UTCTime({ name: names.crlIssuedTime || "" }),
-        new asn1js.Integer({
-          name: names.crlNumber || "",
-          optional: true,
-        }),
-      ],
+      value: [_pkijs.RelativeDistinguishedNames.schema(names.crlissuer || {
+        names: {
+          blockName: ""
+        }
+      }), new asn1js.UTCTime({ name: names.crlIssuedTime || "" }), new asn1js.Integer({
+        name: names.crlNumber || "",
+        optional: true
+      })]
     });
   }
   //**********************************************************************************
@@ -168,31 +123,24 @@ class CrlIdentifier {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      CrlIdentifier.schema({
-        names: {
-          crlissuer: {
-            names: {
-              blockName: "crlissuer",
-            },
-          },
-          crlIssuedTime: "crlIssuedTime",
-          crlNumber: "crlNumber",
+    const asn1 = asn1js.compareSchema(schema, schema, CrlIdentifier.schema({
+      names: {
+        crlissuer: {
+          names: {
+            blockName: "crlissuer"
+          }
         },
-      })
-    );
+        crlIssuedTime: "crlIssuedTime",
+        crlNumber: "crlNumber"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for CrlIdentifier"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for CrlIdentifier");
     //endregion
 
     //region Get internal properties from parsed schema
     this.crlissuer = new _pkijs.RelativeDistinguishedNames({
-      schema: asn1.result.crlissuer,
+      schema: asn1.result.crlissuer
     });
     this.crlIssuedTime = asn1.result.crlIssuedTime.toDate();
 
@@ -206,17 +154,14 @@ class CrlIdentifier {
    */
   toSchema() {
     //region Create array for output sequence
-    const outputArray = [
-      this.crlissuer.toSchema(),
-      new asn1js.UTCTime({ valueDate: this.crlIssuedTime }),
-    ];
+    const outputArray = [this.crlissuer.toSchema(), new asn1js.UTCTime({ valueDate: this.crlIssuedTime })];
 
     if ("crlNumber" in this) outputArray.push(this.crlNumber);
     //endregion
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: outputArray,
+      value: outputArray
     });
     //endregion
   }
@@ -228,7 +173,7 @@ class CrlIdentifier {
   toJSON() {
     const _object = {
       crlissuer: this.crlissuer.toJSON(),
-      crlIssuedTime: this.crlIssuedTime,
+      crlIssuedTime: this.crlIssuedTime
     };
 
     if ("crlNumber" in this) _object.crlNumber = this.crlNumber.toJSON();
@@ -248,10 +193,7 @@ class CrlIdentifier {
     //region Check input parameters
     if ("crl" in parameters) crl = parameters.crl;
     // in_window.org.pkijs.simpl.CRL
-    else
-      throw new Error(
-        'Parameter "crl" is mandatory for making "CrlIdentifier"'
-      );
+    else throw new Error('Parameter "crl" is mandatory for making "CrlIdentifier"');
     //endregion
 
     //region Fill internal fields

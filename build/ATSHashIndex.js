@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -12,21 +12,7 @@ var _pvutils = require("pvutils");
 
 var _pkijs = require("pkijs");
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class ATSHashIndex {
@@ -43,39 +29,23 @@ class ATSHashIndex {
        * @type {AlgorithmIdentifier}
        * @description hashIndAlgorithm
        */
-      this.hashIndAlgorithm = (0, _pvutils.getParametersValue)(
-        parameters,
-        "hashIndAlgorithm",
-        ATSHashIndex.defaultValues("hashIndAlgorithm")
-      );
+      this.hashIndAlgorithm = (0, _pvutils.getParametersValue)(parameters, "hashIndAlgorithm", ATSHashIndex.defaultValues("hashIndAlgorithm"));
 
     /**
      * @type {Array.<OctetString>}
      * @description certificatesHashIndex
      */
-    this.certificatesHashIndex = (0, _pvutils.getParametersValue)(
-      parameters,
-      "certificatesHashIndex",
-      ATSHashIndex.defaultValues("certificatesHashIndex")
-    );
+    this.certificatesHashIndex = (0, _pvutils.getParametersValue)(parameters, "certificatesHashIndex", ATSHashIndex.defaultValues("certificatesHashIndex"));
     /**
      * @type {Array.<OctetString>}
      * @description crlsHashIndex
      */
-    this.crlsHashIndex = (0, _pvutils.getParametersValue)(
-      parameters,
-      "crlsHashIndex",
-      ATSHashIndex.defaultValues("crlsHashIndex")
-    );
+    this.crlsHashIndex = (0, _pvutils.getParametersValue)(parameters, "crlsHashIndex", ATSHashIndex.defaultValues("crlsHashIndex"));
     /**
      * @type {Array.<OctetString>}
      * @description unsignedAttrsHashIndex
      */
-    this.unsignedAttrsHashIndex = (0, _pvutils.getParametersValue)(
-      parameters,
-      "unsignedAttrsHashIndex",
-      ATSHashIndex.defaultValues("unsignedAttrsHashIndex")
-    );
+    this.unsignedAttrsHashIndex = (0, _pvutils.getParametersValue)(parameters, "unsignedAttrsHashIndex", ATSHashIndex.defaultValues("unsignedAttrsHashIndex"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -96,9 +66,7 @@ class ATSHashIndex {
       case "unsignedAttrsHashIndex":
         return [];
       default:
-        throw new Error(
-          `Invalid member name for ATSHashIndex class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for ATSHashIndex class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -110,20 +78,13 @@ class ATSHashIndex {
   static compareWithDefault(memberName, memberValue) {
     switch (memberName) {
       case "hashIndAlgorithm":
-        return (
-          _pkijs.AlgorithmIdentifier.compareWithDefault(
-            "algorithmId",
-            memberValue.algorithmId
-          ) && "algorithmParams" in memberValue === false
-        );
+        return _pkijs.AlgorithmIdentifier.compareWithDefault("algorithmId", memberValue.algorithmId) && "algorithmParams" in memberValue === false;
       case "certificatesHashIndex":
       case "crlsHashIndex":
       case "unsignedAttrsHashIndex":
         return memberValue.length === 0;
       default:
-        throw new Error(
-          `Invalid member name for ATSHashIndex class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for ATSHashIndex class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -152,40 +113,27 @@ class ATSHashIndex {
 
     return new asn1js.Sequence({
       name: names.blockName || "",
-      value: [
-        _pkijs.AlgorithmIdentifier.schema(
-          names.hashIndAlgorithm || {
-            names: {
-              blockName: "",
-              optional: true,
-            },
-          }
-        ),
-        new asn1js.Sequence({
-          value: [
-            new asn1js.Repeated({
-              name: names.certificatesHashIndex || "",
-              value: new asn1js.OctetString(),
-            }),
-          ],
-        }),
-        new asn1js.Sequence({
-          value: [
-            new asn1js.Repeated({
-              name: names.crlsHashIndex || "",
-              value: new asn1js.OctetString(),
-            }),
-          ],
-        }),
-        new asn1js.Sequence({
-          value: [
-            new asn1js.Repeated({
-              name: names.unsignedAttrsHashIndex || "",
-              value: new asn1js.OctetString(),
-            }),
-          ],
-        }),
-      ],
+      value: [_pkijs.AlgorithmIdentifier.schema(names.hashIndAlgorithm || {
+        names: {
+          blockName: "",
+          optional: true
+        }
+      }), new asn1js.Sequence({
+        value: [new asn1js.Repeated({
+          name: names.certificatesHashIndex || "",
+          value: new asn1js.OctetString()
+        })]
+      }), new asn1js.Sequence({
+        value: [new asn1js.Repeated({
+          name: names.crlsHashIndex || "",
+          value: new asn1js.OctetString()
+        })]
+      }), new asn1js.Sequence({
+        value: [new asn1js.Repeated({
+          name: names.unsignedAttrsHashIndex || "",
+          value: new asn1js.OctetString()
+        })]
+      })]
     });
   }
   //**********************************************************************************
@@ -195,42 +143,32 @@ class ATSHashIndex {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      ATSHashIndex.schema({
-        names: {
-          hashIndAlgorithm: {
-            names: {
-              blockName: "hashIndAlgorithm",
-              optional: true,
-            },
-          },
-          certificatesHashIndex: "certificatesHashIndex",
-          crlsHashIndex: "crlsHashIndex",
-          unsignedAttrsHashIndex: "unsignedAttrsHashIndex",
+    const asn1 = asn1js.compareSchema(schema, schema, ATSHashIndex.schema({
+      names: {
+        hashIndAlgorithm: {
+          names: {
+            blockName: "hashIndAlgorithm",
+            optional: true
+          }
         },
-      })
-    );
+        certificatesHashIndex: "certificatesHashIndex",
+        crlsHashIndex: "crlsHashIndex",
+        unsignedAttrsHashIndex: "unsignedAttrsHashIndex"
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for ATSHashIndex"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for ATSHashIndex");
     //endregion
 
     //region Get internal properties from parsed schema
     //region hashIndAlgorithm
-    if ("hashIndAlgorithm" in asn1.result)
-      this.hashIndAlgorithm = new _pkijs.AlgorithmIdentifier({
-        schema: asn1.result.hashIndAlgorithm,
-      });
+    if ("hashIndAlgorithm" in asn1.result) this.hashIndAlgorithm = new _pkijs.AlgorithmIdentifier({
+      schema: asn1.result.hashIndAlgorithm
+    });
     //endregion
 
     //region certificatesHashIndex
-    this.certificatesHashIndex = Array.from(
-      asn1.result.certificatesHashIndex || []
-    );
+    this.certificatesHashIndex = Array.from(asn1.result.certificatesHashIndex || []);
     //endregion
 
     //region crlsHashIndex
@@ -238,9 +176,7 @@ class ATSHashIndex {
     //endregion
 
     //region unsignedAttrsHashIndex
-    this.unsignedAttrsHashIndex = Array.from(
-      asn1.result.unsignedAttrsHashIndex || []
-    );
+    this.unsignedAttrsHashIndex = Array.from(asn1.result.unsignedAttrsHashIndex || []);
     //endregion
     //endregion
   }
@@ -253,37 +189,30 @@ class ATSHashIndex {
     //region Create array for output sequence
     const outputArray = [];
 
-    if ("hashIndAlgorithm" in this)
-      outputArray.push(this.hashIndAlgorithm.toSchema());
+    if ("hashIndAlgorithm" in this) outputArray.push(this.hashIndAlgorithm.toSchema());
 
     //region certificatesHashIndex
-    outputArray.push(
-      new asn1js.Sequence({
-        value: Array.from(this.certificatesHashIndex),
-      })
-    );
+    outputArray.push(new asn1js.Sequence({
+      value: Array.from(this.certificatesHashIndex)
+    }));
     //endregion
 
     //region crlsHashIndex
-    outputArray.push(
-      new asn1js.Sequence({
-        value: Array.from(this.crlsHashIndex),
-      })
-    );
+    outputArray.push(new asn1js.Sequence({
+      value: Array.from(this.crlsHashIndex)
+    }));
     //endregion
 
     //region unsignedAttrsHashIndex
-    outputArray.push(
-      new asn1js.Sequence({
-        value: Array.from(this.unsignedAttrsHashIndex),
-      })
-    );
+    outputArray.push(new asn1js.Sequence({
+      value: Array.from(this.unsignedAttrsHashIndex)
+    }));
     //endregion
     //endregion
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: outputArray,
+      value: outputArray
     });
     //endregion
   }
@@ -295,27 +224,18 @@ class ATSHashIndex {
   toJSON() {
     const _object = {};
 
-    if ("hashIndAlgorithm" in this)
-      _object.hashIndAlgorithm = this.hashIndAlgorithm.toJSON();
+    if ("hashIndAlgorithm" in this) _object.hashIndAlgorithm = this.hashIndAlgorithm.toJSON();
 
     //region certificatesHashIndex
-    _object.certificatesHashIndex = Array.from(
-      this.certificatesHashIndex,
-      (element) => element.toJSON()
-    );
+    _object.certificatesHashIndex = Array.from(this.certificatesHashIndex, element => element.toJSON());
     //endregion
 
     //region crlsHashIndex
-    _object.crlsHashIndex = Array.from(this.crlsHashIndex, (element) =>
-      element.toJSON()
-    );
+    _object.crlsHashIndex = Array.from(this.crlsHashIndex, element => element.toJSON());
     //endregion
 
     //region unsignedAttrsHashIndex
-    _object.unsignedAttrsHashIndex = Array.from(
-      this.unsignedAttrsHashIndex,
-      (element) => element.toJSON()
-    );
+    _object.unsignedAttrsHashIndex = Array.from(this.unsignedAttrsHashIndex, element => element.toJSON());
     //endregion
 
     return _object;
@@ -343,22 +263,18 @@ class ATSHashIndex {
 
     //region Get a "crypto" extension
     const crypto = (0, _pkijs.getCrypto)();
-    if (typeof crypto === "undefined")
-      return Promise.reject("Unable to create WebCrypto object");
+    if (typeof crypto === "undefined") return Promise.reject("Unable to create WebCrypto object");
     //endregion
 
     //region Fill correct value for "hashIndAlgorithm"
     sequence = sequence.then(() => {
       if (hashAlgorithm.toUpperCase() !== "SHA-256") {
         const oid = (0, _pkijs.getOIDByAlgorithm)({ name: hashAlgorithm });
-        if (oid === "")
-          return Promise.reject(
-            `Incorrect hashing algorithm: ${hashAlgorithm}`
-          );
+        if (oid === "") return Promise.reject(`Incorrect hashing algorithm: ${hashAlgorithm}`);
 
         _this.hashIndAlgorithm = new _pkijs.AlgorithmIdentifier({
           algorithmId: oid,
-          algorithmParams: new asn1js.Null(),
+          algorithmParams: new asn1js.Null()
         });
       }
 
@@ -367,121 +283,69 @@ class ATSHashIndex {
     //endregion
 
     //region Create array of indexes for all certificates
-    sequence = sequence
-      .then(
-        () => {
-          const promises = [];
+    sequence = sequence.then(() => {
+      const promises = [];
 
-          if ("certificates" in cmsSigned === false) return promises;
+      if ("certificates" in cmsSigned === false) return promises;
 
-          //region Prepare "CertificateChoices" type from existing values
-          for (let i = 0; i < cmsSigned.certificates.length; i++) {
-            const schema = cmsSigned.certificates[i].toSchema();
+      //region Prepare "CertificateChoices" type from existing values
+      for (let i = 0; i < cmsSigned.certificates.length; i++) {
+        const schema = cmsSigned.certificates[i].toSchema();
 
-            if (
-              cmsSigned.certificates[i] instanceof _pkijs.OtherCertificateFormat
-            ) {
-              schema.idBlock.tagClass = 3;
-              schema.idBlock.tagNumber = 3;
-            }
+        if (cmsSigned.certificates[i] instanceof _pkijs.OtherCertificateFormat) {
+          schema.idBlock.tagClass = 3;
+          schema.idBlock.tagNumber = 3;
+        }
 
-            promises.push(
-              crypto.digest({ name: hashAlgorithm }, schema.toBER(false))
-            );
-          }
-          //endregion
+        promises.push(crypto.digest({ name: hashAlgorithm }, schema.toBER(false)));
+      }
+      //endregion
 
-          return Promise.all(promises);
-        },
-        (error) => Promise.reject(error)
-      )
-      .then(
-        (result) => {
-          for (let i = 0; i < result.length; i++)
-            _this.certificatesHashIndex.push(
-              new asn1js.OctetString({ valueHex: result[i] })
-            );
-        },
-        (error) => Promise.reject(error)
-      );
+      return Promise.all(promises);
+    }, error => Promise.reject(error)).then(result => {
+      for (let i = 0; i < result.length; i++) _this.certificatesHashIndex.push(new asn1js.OctetString({ valueHex: result[i] }));
+    }, error => Promise.reject(error));
     //endregion
 
     //region Create array of indexes for all revocation values
-    sequence = sequence
-      .then(
-        () => {
-          const promises = [];
+    sequence = sequence.then(() => {
+      const promises = [];
 
-          if ("crls" in cmsSigned === false) return promises;
+      if ("crls" in cmsSigned === false) return promises;
 
-          //region Prepare "RevocationInfoChoice" type from existing values
-          for (let i = 0; i < cmsSigned.crls.length; i++) {
-            const schema = cmsSigned.crls[i].toSchema();
+      //region Prepare "RevocationInfoChoice" type from existing values
+      for (let i = 0; i < cmsSigned.crls.length; i++) {
+        const schema = cmsSigned.crls[i].toSchema();
 
-            if (cmsSigned.crls[i] instanceof _pkijs.OtherRevocationInfoFormat) {
-              schema.idBlock.tagClass = 3;
-              schema.idBlock.tagNumber = 1;
-            }
+        if (cmsSigned.crls[i] instanceof _pkijs.OtherRevocationInfoFormat) {
+          schema.idBlock.tagClass = 3;
+          schema.idBlock.tagNumber = 1;
+        }
 
-            promises.push(
-              crypto.digest({ name: hashAlgorithm }, schema.toBER(false))
-            );
-          }
-          //endregion
+        promises.push(crypto.digest({ name: hashAlgorithm }, schema.toBER(false)));
+      }
+      //endregion
 
-          return Promise.all(promises);
-        },
-        (error) => Promise.reject(error)
-      )
-      .then(
-        (result) => {
-          for (let i = 0; i < result.length; i++)
-            _this.crlsHashIndex.push(
-              new asn1js.OctetString({ valueHex: result[i] })
-            );
-        },
-        (error) => Promise.reject(error)
-      );
+      return Promise.all(promises);
+    }, error => Promise.reject(error)).then(result => {
+      for (let i = 0; i < result.length; i++) _this.crlsHashIndex.push(new asn1js.OctetString({ valueHex: result[i] }));
+    }, error => Promise.reject(error));
     //endregion
 
     //region Create array of indexes for unsigned attributes
-    sequence = sequence
-      .then(
-        () => {
-          const promises = [];
+    sequence = sequence.then(() => {
+      const promises = [];
 
-          if ("unsignedAttrs" in cmsSigned.signerInfos[signerIndex] === false)
-            return promises;
+      if ("unsignedAttrs" in cmsSigned.signerInfos[signerIndex] === false) return promises;
 
-          //region Prepare "RevocationInfoChoice" type from existing values
-          for (
-            let i = 0;
-            i < cmsSigned.signerInfos[signerIndex].unsignedAttrs.length;
-            i++
-          )
-            promises.push(
-              crypto.digest(
-                { name: hashAlgorithm },
-                cmsSigned.signerInfos[signerIndex].unsignedAttrs[i]
-                  .toSchema()
-                  .toBER(false)
-              )
-            );
-          //endregion
+      //region Prepare "RevocationInfoChoice" type from existing values
+      for (let i = 0; i < cmsSigned.signerInfos[signerIndex].unsignedAttrs.length; i++) promises.push(crypto.digest({ name: hashAlgorithm }, cmsSigned.signerInfos[signerIndex].unsignedAttrs[i].toSchema().toBER(false)));
+      //endregion
 
-          return Promise.all(promises);
-        },
-        (error) => Promise.reject(error)
-      )
-      .then(
-        (result) => {
-          for (let i = 0; i < result.length; i++)
-            _this.unsignedAttrsHashIndex.push(
-              new asn1js.OctetString({ valueHex: result[i] })
-            );
-        },
-        (error) => Promise.reject(error)
-      );
+      return Promise.all(promises);
+    }, error => Promise.reject(error)).then(result => {
+      for (let i = 0; i < result.length; i++) _this.unsignedAttrsHashIndex.push(new asn1js.OctetString({ valueHex: result[i] }));
+    }, error => Promise.reject(error));
     //endregion
 
     return sequence;
@@ -496,7 +360,7 @@ class ATSHashIndex {
     //region Create and return attribute
     return new _pkijs.Attribute({
       type: "0.4.0.1733.2.5",
-      values: [this.toSchema()],
+      values: [this.toSchema()]
     });
     //endregion
   }

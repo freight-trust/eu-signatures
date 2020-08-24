@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 
 var _asn1js = require("asn1js");
@@ -20,25 +20,9 @@ var _OtherHashAlgAndValue = require("./OtherHashAlgAndValue.js");
 
 var _OtherHashAlgAndValue2 = _interopRequireDefault(_OtherHashAlgAndValue);
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) {
-  if (obj && obj.__esModule) {
-    return obj;
-  } else {
-    var newObj = {};
-    if (obj != null) {
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key))
-          newObj[key] = obj[key];
-      }
-    }
-    newObj.default = obj;
-    return newObj;
-  }
-}
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //**************************************************************************************
 class OcspResponsesID {
@@ -54,22 +38,14 @@ class OcspResponsesID {
      * @type {OcspIdentifier}
      * @description ocspIdentifier
      */
-    this.ocspIdentifier = (0, _pvutils.getParametersValue)(
-      parameters,
-      "ocspIdentifier",
-      OcspResponsesID.defaultValues("ocspIdentifier")
-    );
+    this.ocspIdentifier = (0, _pvutils.getParametersValue)(parameters, "ocspIdentifier", OcspResponsesID.defaultValues("ocspIdentifier"));
 
     if ("ocspRepHash" in parameters)
       /**
        * @type {OctetString|OtherHashAlgAndValue|Any}
        * @description ocspRepHash
        */
-      this.ocspRepHash = (0, _pvutils.getParametersValue)(
-        parameters,
-        "ocspRepHash",
-        OcspResponsesID.defaultValues("ocspRepHash")
-      );
+      this.ocspRepHash = (0, _pvutils.getParametersValue)(parameters, "ocspRepHash", OcspResponsesID.defaultValues("ocspRepHash"));
     //endregion
 
     //region If input argument array contains "schema" for this object
@@ -88,9 +64,7 @@ class OcspResponsesID {
       case "ocspRepHash":
         return new asn1js.Any();
       default:
-        throw new Error(
-          `Invalid member name for OcspResponsesID class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OcspResponsesID class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -102,22 +76,11 @@ class OcspResponsesID {
   static compareWithDefault(memberName, memberValue) {
     switch (memberName) {
       case "ocspIdentifier":
-        return (
-          _OcspIdentifier2.default.compareWithDefault(
-            "ocspResponderID",
-            memberValue.ocspResponderID
-          ) &&
-          _OcspIdentifier2.default.compareWithDefault(
-            "producedAt",
-            memberValue.producedAt
-          )
-        );
+        return _OcspIdentifier2.default.compareWithDefault("ocspResponderID", memberValue.ocspResponderID) && _OcspIdentifier2.default.compareWithDefault("producedAt", memberValue.producedAt);
       case "ocspRepHash":
         return memberValue instanceof asn1js.Any;
       default:
-        throw new Error(
-          `Invalid member name for OcspResponsesID class: ${memberName}`
-        );
+        throw new Error(`Invalid member name for OcspResponsesID class: ${memberName}`);
     }
   }
   //**********************************************************************************
@@ -144,28 +107,18 @@ class OcspResponsesID {
     return new asn1js.Sequence({
       name: names.blockName || "",
       optional: names.optional || false,
-      value: [
-        _OcspIdentifier2.default.schema(
-          names.ocspIdentifier || {
-            names: {
-              blockName: "",
-            },
+      value: [_OcspIdentifier2.default.schema(names.ocspIdentifier || {
+        names: {
+          blockName: ""
+        }
+      }), new asn1js.Choice({
+        optional: true,
+        value: [new asn1js.OctetString({ name: names.ocspRepHashSimple || "" }), _OtherHashAlgAndValue2.default.schema(names.ocspRepHashComplex || {
+          names: {
+            blockName: ""
           }
-        ),
-        new asn1js.Choice({
-          optional: true,
-          value: [
-            new asn1js.OctetString({ name: names.ocspRepHashSimple || "" }),
-            _OtherHashAlgAndValue2.default.schema(
-              names.ocspRepHashComplex || {
-                names: {
-                  blockName: "",
-                },
-              }
-            ),
-          ],
-        }),
-      ],
+        })]
+      })]
     });
   }
   //**********************************************************************************
@@ -175,44 +128,34 @@ class OcspResponsesID {
    */
   fromSchema(schema) {
     //region Check the schema is valid
-    const asn1 = asn1js.compareSchema(
-      schema,
-      schema,
-      OcspResponsesID.schema({
-        names: {
-          ocspIdentifier: {
-            names: {
-              blockName: "ocspIdentifier",
-            },
-          },
-          ocspRepHashSimple: "ocspRepHash",
-          ocspRepHashComplex: {
-            names: {
-              blockName: "ocspRepHash",
-            },
-          },
+    const asn1 = asn1js.compareSchema(schema, schema, OcspResponsesID.schema({
+      names: {
+        ocspIdentifier: {
+          names: {
+            blockName: "ocspIdentifier"
+          }
         },
-      })
-    );
+        ocspRepHashSimple: "ocspRepHash",
+        ocspRepHashComplex: {
+          names: {
+            blockName: "ocspRepHash"
+          }
+        }
+      }
+    }));
 
-    if (asn1.verified === false)
-      throw new Error(
-        "Object's schema was not verified against input data for OcspResponsesID"
-      );
+    if (asn1.verified === false) throw new Error("Object's schema was not verified against input data for OcspResponsesID");
     //endregion
 
     //region Get internal properties from parsed schema
     this.ocspIdentifier = new _OcspIdentifier2.default({
-      schema: asn1.result.ocspIdentifier,
+      schema: asn1.result.ocspIdentifier
     });
 
     if ("ocspRepHash" in asn1.result) {
-      if (asn1.result.ocspRepHash instanceof asn1js.OctetString)
-        this.ocspRepHash = asn1.result.ocspRepHash;
-      else
-        this.ocspRepHash = new _OtherHashAlgAndValue2.default({
-          schema: asn1.result.ocspRepHash,
-        });
+      if (asn1.result.ocspRepHash instanceof asn1js.OctetString) this.ocspRepHash = asn1.result.ocspRepHash;else this.ocspRepHash = new _OtherHashAlgAndValue2.default({
+        schema: asn1.result.ocspRepHash
+      });
     }
     //endregion
   }
@@ -226,15 +169,13 @@ class OcspResponsesID {
     const outputArray = [this.ocspIdentifier.toSchema()];
 
     if ("ocspRepHash" in this) {
-      if (this.ocspRepHash instanceof asn1js.OctetString)
-        outputArray.push(this.ocspRepHash);
-      else outputArray.push(this.ocspRepHash.toSchema());
+      if (this.ocspRepHash instanceof asn1js.OctetString) outputArray.push(this.ocspRepHash);else outputArray.push(this.ocspRepHash.toSchema());
     }
     //endregion
 
     //region Construct and return new ASN.1 schema for this object
     return new asn1js.Sequence({
-      value: outputArray,
+      value: outputArray
     });
     //endregion
   }
@@ -245,7 +186,7 @@ class OcspResponsesID {
    */
   toJSON() {
     const _object = {
-      ocspIdentifier: this.ocspIdentifier.toJSON(),
+      ocspIdentifier: this.ocspIdentifier.toJSON()
     };
 
     if ("ocspRepHash" in this) _object.ocspRepHash = this.ocspRepHash.toJSON();
@@ -272,32 +213,25 @@ class OcspResponsesID {
 
     if ("ocspResponse" in parameters) ocspResponse = parameters.ocspResponse;
     // in_window.org.pkijs.simpl.OCSP_RESPONSE
-    else
-      return Promise.reject(
-        'Parameter "ocspResponse" is mandatory for making "OcspResponsesID"'
-      );
+    else return Promise.reject('Parameter "ocspResponse" is mandatory for making "OcspResponsesID"');
     //endregion
 
     //region Get a "crypto" extension
     const crypto = (0, _pkijs.getCrypto)();
-    if (typeof crypto === "undefined")
-      return Promise.reject("Unable to create WebCrypto object");
+    if (typeof crypto === "undefined") return Promise.reject("Unable to create WebCrypto object");
     //endregion
 
     //region Fill correct value for "hashIndAlgorithm"
     sequence = sequence.then(() => {
       if (hashAlgorithm.toUpperCase() !== "SHA-1") {
         const oid = (0, _pkijs.getOIDByAlgorithm)({ name: hashAlgorithm });
-        if (oid === "")
-          return Promise.reject(
-            `Incorrect hashing algorithm: ${hashAlgorithm}`
-          );
+        if (oid === "") return Promise.reject(`Incorrect hashing algorithm: ${hashAlgorithm}`);
 
         this.ocspRepHash = new _OtherHashAlgAndValue2.default({
           hashAlgorithm: new _pkijs.AlgorithmIdentifier({
             algorithmId: oid,
-            algorithmParams: new asn1js.Null(),
-          }),
+            algorithmParams: new asn1js.Null()
+          })
         });
       }
 
@@ -306,30 +240,16 @@ class OcspResponsesID {
     //endregion
 
     //region Create all remaining attributes
-    sequence = sequence
-      .then(
-        () =>
-          crypto.digest(
-            { name: hashAlgorithm },
-            ocspResponse.toSchema().toBER(false)
-          ),
-        (error) => Promise.reject(error)
-      )
-      .then(
-        (result) => {
-          if (this.ocspRepHash instanceof _OtherHashAlgAndValue2.default)
-            this.ocspRepHash.hashValue = new asn1js.OctetString({
-              valueHex: result,
-            });
-          else this.ocspRepHash = new asn1js.OctetString({ valueHex: result });
+    sequence = sequence.then(() => crypto.digest({ name: hashAlgorithm }, ocspResponse.toSchema().toBER(false)), error => Promise.reject(error)).then(result => {
+      if (this.ocspRepHash instanceof _OtherHashAlgAndValue2.default) this.ocspRepHash.hashValue = new asn1js.OctetString({
+        valueHex: result
+      });else this.ocspRepHash = new asn1js.OctetString({ valueHex: result });
 
-          this.ocspIdentifier = new _OcspIdentifier2.default();
-          this.ocspIdentifier.fillValues({
-            ocspResponse,
-          });
-        },
-        (error) => Promise.reject(error)
-      );
+      this.ocspIdentifier = new _OcspIdentifier2.default();
+      this.ocspIdentifier.fillValues({
+        ocspResponse
+      });
+    }, error => Promise.reject(error));
     //endregion
 
     return sequence;
